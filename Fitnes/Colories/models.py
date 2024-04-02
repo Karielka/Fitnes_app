@@ -1,0 +1,67 @@
+from django.db import models
+from django.contrib.auth.models import User
+
+class Product(models.Model):
+    name = models.CharField(max_length=255)
+    measurement_unit = models.CharField(max_length=20)
+    calories_per_unit = models.PositiveIntegerField()
+    proteins_per_unit = models.FloatField()  # белки на единицу измерения
+    fats_per_unit = models.FloatField()      # жиры на единицу измерения
+    carbohydrates_per_unit = models.FloatField()  # углеводы на единицу измерения
+
+class MealRecord(models.Model):
+    category_choices = [('Breakfast','Завтрак'),('Dinner','Обед'),('Supper','Ужин'),('Snack','Перекус')]
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='meal_records')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    measure = models.FloatField() # сколько граммов/литров было употреблено
+    meal_time = models.DateTimeField(auto_now_add=True)
+    category = models.CharField(max_length=20, choices=category_choices, default='Новая')
+
+#экземпляр класса должен создаваться каждый день для каждого пользователя
+#или же создаваться после циклом, для более детальной обработки калорий за день
+class History(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='history')
+    date = models.DateField()
+    total_meals = models.PositiveIntegerField(default=0)  # количество приемов пищи за день
+    total_calories = models.PositiveIntegerField(default=0)  # количество потребленных калорий за день
+    total_proteins = models.FloatField(default=0)  # общее количество белков за день
+    total_fats = models.FloatField(default=0)      # общее количество жиров за день
+    total_carbohydrates = models.FloatField(default=0)  # общее количество углеводов за день
+
+    def update_history(self):
+        # Получаем все записи MealRecord для данного пользователя и даты
+        records = self.user.meal_records.filter(meal_time__date=self.date)
+        self.total_meals = records.count()
+        self.total_calories = records.aggregate(total_calories=models.Sum('product__calories_per_unit'))['total_calories'] or 0
+        self.total_proteins = records.aggregate(total_proteins=models.Sum('product__proteins_per_unit'))['total_proteins'] or 0
+        self.total_fats = records.aggregate(total_fats=models.Sum('product__fats_per_unit'))['total_fats'] or 0
+        self.total_carbohydrates = records.aggregate(total_carbohydrates=models.Sum('product__carbohydrates_per_unit'))['total_carbohydrates'] or 0
+        self.save()
+
+class Selection(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    category = models.CharField(max_length=100)  # Категория подборки(завтрак, обед)
+    products = models.ManyToManyField(Product)
+
+class TimeTable(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='time_tables')
+    breakfast_time = models.TimeField(blank=True, null=True)
+    lunch_time = models.TimeField(blank=True, null=True)
+    dinner_time = models.TimeField(blank=True, null=True)
+
+class UserCaloryProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='calory_profile')
+    daily_calorie_goal = models.PositiveIntegerField()
+    consumed_calories = models.PositiveIntegerField(default=0)
+    burned_calories_exercise = models.PositiveIntegerField(default=0)  # Количество сожженных калорий посредством тренировок
+    burned_calories_sleep = models.PositiveIntegerField(default=0)  # Количество сожженных калорий посредством сна
+    history = models.ForeignKey(History, on_delete=models.SET_NULL, null=True, blank=True)
+    recommendations = models.ManyToManyField(Selection)
+
+    def update_consumed_calories(self):
+        if self.history:
+            self.consumed_calories = self.history.total_calories - self.burned_calories_exercise - self.burned_calories_sleep
+        else:
+            self.consumed_calories = 0
+        self.save()
