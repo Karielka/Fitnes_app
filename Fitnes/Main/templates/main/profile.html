@@ -1,0 +1,16 @@
+<!-- templates/profile.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profile</title>
+</head>
+<body>
+    <h2>Profile</h2>
+    {% if profile.type == 'expert' %}
+        <p>Вы эксперт</p>
+    {% else %}
+        <p>Вы пользователь</p>
+        {{profile}}
+    {% endif %}
+</body>
+</html>

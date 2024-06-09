@@ -8,12 +8,24 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'main/css/styles.css' %}" type="text/css" media="all">
   </head>
+  <header>
     <div class="row">
       <div class="col-2">
         <a class="btn btn-primary" href="/admin/">Перейти в <strong>админку</strong></a>
       </div>
     </div>
-    <hr>
+
+
+
+    <nav>
+      {% if user.is_authenticated %}
+        <a href="{% url 'profile' %}">Profile</a>
+        <a href="{% url 'logout' %}">Logout</a>
+      {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'register' %}">Register</a>
+      {% endif %}
+    </nav>
   </header>
 
   <body>
