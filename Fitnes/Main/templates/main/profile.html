@@ -1,0 +1,16 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'Main/css/forms.css' %}" type="text/css" media="all">
+<body>
+    <h2>Ваш профиль</h2>
+    {% if profile.type == 'expert' %}
+        <p>Ваша роль: эксперт</p>
+    {% else %}
+        <p>Ваша роль: пользователь</p>
+        {{profile}}
+    {% endif %}
+</body>
+{% endblock content %}
