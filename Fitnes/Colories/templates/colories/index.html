@@ -1,6 +1,9 @@
 {% extends "main/base.html" %}
 
+{% load static %}
+
 {% block content %}
+<link rel="stylesheet" href="{% static 'tasks/css/forms.css' %}" type="text/css" media="all">
 <body>
   <div class="container">
     <h1>
@@ -20,6 +23,16 @@
     <a class="btn btn-primary" href="/progress/">Приложение Progress</a>
   </div>
 </div>
+
+<!--Read + delete-->
+  <nav>
+    <ul>
+        <li><a href="{% url 'index' %}">Главная</a></li>
+        <li><a href="{% url 'meal_record_read' %}">Записи о приёмах пищи</a></li>
+        <li><a href="{% url 'meal_record_create' %}">Добавить запись о приёме пищи</a></li>
+        <!-- Добавить другие ссылки по мере необходимости -->
+    </ul>
+  </nav>
 
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>

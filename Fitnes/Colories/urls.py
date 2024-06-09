@@ -4,8 +4,8 @@ import Colories.views as colories
 
 urlpatterns = [
     path('', colories.index, name='index'),
-    # path('create/<slug:profile_pk>/', tasks.task_create, name='task-create'),
-    # path('read/<slug:task_pk>/', tasks.task_read, name='task-read'),
-    # path('edit/<slug:task_pk>/', tasks.task_update, name='task-update'),
-    # path('delete/<slug:task_pk>/', tasks.task_delete, name='task-delete'),
+    path('meal_record/',colories.meal_records_read, name='meal_record_read'),
+    path('meal_record/create/', colories.meal_record_create, name='meal_record_create'),
+    path('meal_record/update/<int:meal_record_id>/', colories.meal_record_update, name='meal_record_update'),
+    path('meal_record/delete/<int:meal_record_id>/', colories.meal_record_delete, name='meal_record_delete'),
 ]

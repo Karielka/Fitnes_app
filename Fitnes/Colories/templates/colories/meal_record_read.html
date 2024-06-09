@@ -1,0 +1,18 @@
+<!-- colories/templates/colories/meal_records_read.html -->
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2>{{ title }}</h2>
+    <ul>
+        {% for record in meal_records %}
+            <li>
+                {{ record.product.name }} - {{ record.measure }} {{ record.product.measurement_unit }} ({{ record.category }})
+                <a href="{% url 'meal_record_update' record.id %}">Редактировать</a>
+                <a href="{% url 'meal_record_delete' record.id %}">Удалить</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
