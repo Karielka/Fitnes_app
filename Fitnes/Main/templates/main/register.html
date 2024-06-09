@@ -1,15 +1,15 @@
-<!-- templates/register.html -->
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Register</title>
-</head>
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'Main/css/forms.css' %}" type="text/css" media="all">
 <body>
-    <h2>Register</h2>
+    <h2>Регистрация</h2>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Register</button>
+        <button type="submit">Регистрация</button>
     </form>
 </body>
-</html>
+{% endblock content %}

@@ -1,16 +1,16 @@
-<!-- templates/profile.html -->
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Profile</title>
-</head>
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'Main/css/forms.css' %}" type="text/css" media="all">
 <body>
-    <h2>Profile</h2>
+    <h2>Ваш профиль</h2>
     {% if profile.type == 'expert' %}
-        <p>Вы эксперт</p>
+        <p>Ваша роль: эксперт</p>
     {% else %}
-        <p>Вы пользователь</p>
+        <p>Ваша роль: пользователь</p>
         {{profile}}
     {% endif %}
 </body>
-</html>
+{% endblock content %}

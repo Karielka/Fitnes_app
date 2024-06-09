@@ -6,8 +6,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from .models import Profile
 
 class RegistrationForm(UserCreationForm):
-    #email = forms.EmailField(required=True)
-    #phone = forms.CharField(max_length=15)
+    email = forms.EmailField(required=True)
+    phone = forms.CharField(max_length=15)
     USER_TYPE_CHOICES = [
         ('user', 'User'),
         ('expert', 'Expert'),
@@ -16,11 +16,11 @@ class RegistrationForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['username', 'password1', 'password2', 'type'] #'email', 'phone',
+        fields = ['username','email', 'phone', 'password1', 'password2', 'type']
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        #user.email = self.cleaned_data['email']
+        user.email = self.cleaned_data['email']
         if commit:
             user.save()
 

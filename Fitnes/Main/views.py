@@ -32,17 +32,21 @@ def register(request):
                 return redirect('profile')
     else:
         form = RegistrationForm()
-    return render(request, 'main/register.html', {'form': form})
+    context = {
+        'form': form,
+        'page': 'register'
+    }
+    return render(request, 'main/register.html', context)
 
 @login_required
 def profile(request):
-    # Проверка на существование профиля
     try:
         profile = request.user.profile
     except Profile.DoesNotExist:
         profile = Profile.objects.create(user=request.user)
     context = {
         'profile': profile,
+        'page': 'profile'
     }
     return render(request, 'main/profile.html', context)
 
@@ -58,7 +62,11 @@ def login_view(request):
                 return redirect('profile')
     else:
         form = LoginForm()
-    return render(request, 'main/login.html', {'form': form})
+    context = {
+        'form': form,
+        'page': 'login',
+    }
+    return render(request, 'main/login.html', context)
 
 def logout_view(request):
     logout(request)
