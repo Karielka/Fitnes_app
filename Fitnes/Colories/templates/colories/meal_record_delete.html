@@ -1,0 +1,13 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2>{{ title }}</h2>
+    <p>Вы уверены, что хотите удалить запись о приёме пищи?</p>
+    <form action="{% url 'meal_record_delete' meal_record.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Удалить</button>
+    </form>    
+</div>
+{% endblock %}
