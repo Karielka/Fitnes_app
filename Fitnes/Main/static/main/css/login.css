@@ -1,0 +1,47 @@
+.page-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f0f0; 
+    padding: 20px; /* добавлено для обеспечения отступа от краев окна */
+}
+.container{
+    background-color: #faf7f7;
+    border: 2px solid #000000;
+    padding: 40px; /* увеличен для большего пространства внутри контейнера */
+    max-width: 800px; /* установлена максимальная ширина для контейнера */
+    width: 100%;
+    box-sizing: border-box; /* учитывает padding и border в общей ширине */
+}
+.form-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.login-form, .login-text {
+    flex: 1;
+    margin: 0 20px;
+}
+
+.login-form {
+    max-width: 50%;
+}
+
+.login-text {
+    max-width: 50%;
+    background: linear-gradient(to bottom left, #5da130, #F8C325);
+    color: white;
+    padding: 20px; /* увеличен для большего пространства внутри элемента */
+    border-radius: 8px;
+}
+
+.login-form p {
+    margin: 0;
+}
+
+.login-form button {
+    display: block;
+    margin-top: 10px;
+}
