@@ -6,13 +6,51 @@ from django.contrib.auth.forms import AuthenticationForm
 from .models import Profile
 
 class RegistrationForm(UserCreationForm):
-    email = forms.EmailField(required=True)
-    phone = forms.CharField(max_length=15)
+    username = forms.CharField(max_length=15, 
+    label='',
+    widget=forms.TextInput(attrs={
+            'autofocus': True,
+            'placeholder': 'Имя пользователя'
+        }),
+    )
+
+    email = forms.CharField(max_length=15,
+    label='',
+    widget=forms.TextInput(attrs={
+            'autofocus': True,
+            'placeholder': 'Почта'
+        }),                        
+    )
+
+    phone = forms.CharField(max_length=15, 
+    label='',
+    widget=forms.TextInput(attrs={
+            'autofocus': True,
+            'placeholder': 'Номер телефона'
+        }), 
+    )
+
+    password1 = forms.CharField(strip=False, 
+    label='',
+    widget=forms.PasswordInput(attrs={
+            'autofocus': True,
+            'placeholder': 'Пароль'
+        }), 
+    )
+
+    password2 = forms.CharField(strip=False, 
+    label='',
+    widget=forms.PasswordInput(attrs={
+            'autofocus': True,
+            'placeholder': 'Повторить пароль',
+        }), 
+    )    
+
     USER_TYPE_CHOICES = [
         ('user', 'User'),
         ('expert', 'Expert'),
     ]
-    type = forms.ChoiceField(choices=USER_TYPE_CHOICES)
+    type = forms.ChoiceField(choices=USER_TYPE_CHOICES, label='')
 
     class Meta:
         model = User
