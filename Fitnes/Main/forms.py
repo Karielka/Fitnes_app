@@ -34,5 +34,18 @@ class RegistrationForm(UserCreationForm):
         return user
 
 class LoginForm(AuthenticationForm):
-    username = forms.CharField(max_length=254, widget=forms.TextInput(attrs={'autofocus': True}))
-    password = forms.CharField(label="Password", strip=False, widget=forms.PasswordInput)
+    username = forms.CharField(
+        max_length=254,
+        widget=forms.TextInput(attrs={
+            'autofocus': True,
+            'placeholder': 'Имя пользователя'
+        }),
+        label=''
+    )
+    password = forms.CharField(
+        strip=False,
+        widget=forms.PasswordInput(attrs={
+            'placeholder': 'Пароль'
+        }),
+        label=''
+    )

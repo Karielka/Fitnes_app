@@ -10,10 +10,14 @@
         <div class="container">
             <div class="form-container">
                 <form method="post" class="login-form">
-                    <h2>Авторизация</h2>
+                    <div class="text-wrapper">
+                        <h2>Авторизация</h2>
+                    </div>
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <button type="submit">Войти</button>
+                    <div class="button-wrapper">
+                        <button type="submit">Войти</button>
+                    </div>
                 </form>
                 <div class="login-text">
                     <p>СУПЕР ДУПЕР ИКОНКА</p>
