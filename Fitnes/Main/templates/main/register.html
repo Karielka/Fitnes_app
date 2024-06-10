@@ -6,19 +6,32 @@
 <link rel="stylesheet" href="{% static 'main/css/forms.css' %}" type="text/css" media="all">
 <link rel="stylesheet" href="{% static 'main/css/register.css' %}" type="text/css" media="all">
 <body>
-    <div class="main-container">
-        <h2>Регистрация</h2>
-        <div class="form-container">
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit">Регистрация</button>
-            </form>
+    <div class="page-wrapper">
+        
+        <div class="container">
+
+                    <form method="post" class="register-form">
+                        <div class="text-wrapper">
+                            <h2>Регистрация</h2>
+                        </div>
+                        <div class="field-container">
+                            {% csrf_token %}
+                            <div class="first-container">
+                                {{ form.username }}
+                                {{ form.email }}
+                                {{ form.phone }}
+                            </div>
+                            <div class="second-container">
+                                {{ form.password1 }}
+                                {{ form.password2 }}
+                                {{ form.type }}
+                            </div>
+                        </div>
+                        <button type="submit">Регистрация</button>
+                    </form>
+
         </div>
-        <div class="register-text">
-            Станьте частью [название проекта] сегодня!
-            Зарегистрируйтесь за несколько минут и откройте для себя [указать ключевую ценность проекта].
-        </div>
+
     </div>
 </body>
 {% endblock content %}

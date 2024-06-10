@@ -32,7 +32,7 @@
 
 .login-text {
     flex: 2;
-    height: 270px;
+    height: 290px;
     max-width: 50%;
     background: linear-gradient(to bottom left, #5da130, #F8C325);
     color: white;
@@ -40,6 +40,8 @@
     padding: 15px; 
     border-radius: 8px;
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .login-form p {
@@ -51,6 +53,37 @@
     margin-top: 10px;
 }
 
+.text-button{
+    font-size: 20px;
+    margin-bottom: 5px;
+    margin-top: 12px;
+    margin-right: 5px;
+}
+
+.button-wrapper{
+    margin-top: 50px;
+}
+
 .btn_btn-primary{
-    margin-top: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 40px;
+    padding-right: 40px;
+    background-color: #F8C325;
+    border: none;
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bolder;
+    font-size: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    padding: 0;
+    line-height: 5px;
+    text-decoration: none !important;
+}
+
+.btn_btn-primary:hover {
+    background-color: #5da130;
 }
