@@ -1,3 +1,7 @@
 body {
-    background-color: rgba(164, 225, 234, 0.994);
+    background-color: #f6f6f6;
+}
+
+header {
+    background-color: #5da130;
 }

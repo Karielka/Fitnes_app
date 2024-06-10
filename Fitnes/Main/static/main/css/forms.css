@@ -1,6 +1,6 @@
 /* Стили для контейнера формы */
 body {
-    background-color: rgba(164, 225, 234, 0.994);
+    background-color: #f6f6f6;
 }
 
 .container {
@@ -12,12 +12,13 @@ body {
     background-color: #f9f9f9;
 }
 form {
-    background-color: cadetblue;
+    background-color: #f6f6f6;
+    margin-right: 60%;
 }
 form input[type="text"],
 form textarea {
-    width: 100%;
-    padding: 12px;
+    width: 30%;
+    padding: 3px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
