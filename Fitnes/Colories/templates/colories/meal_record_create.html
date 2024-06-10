@@ -1,0 +1,17 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'main/css/forms.css' %}" type="text/css" media="all">
+<link rel="stylesheet" href="{% static 'colories/css/styles_colories.css' %}" type="text/css" media="all">
+
+<div class="container">
+    <h2>{{ title }}</h2>
+    <form action="{% url 'meal_record_create' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Создать запись о приёме пищи</button>
+    </form>    
+</div>
+
+{% endblock %}
