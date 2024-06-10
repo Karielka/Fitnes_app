@@ -30,6 +30,7 @@ class RegistrationForm(UserCreationForm):
     username = forms.CharField(max_length=15, 
     label='',
     widget=forms.TextInput(attrs={
+            "class":"myfield1",
             'autofocus': True,
             'placeholder': 'Имя пользователя'
         }),
@@ -38,6 +39,7 @@ class RegistrationForm(UserCreationForm):
     email = forms.CharField(max_length=15,
     label='',
     widget=forms.TextInput(attrs={
+            "class":"myfield1",
             'autofocus': True,
             'placeholder': 'Почта'
         }),                        
@@ -46,6 +48,7 @@ class RegistrationForm(UserCreationForm):
     phone = forms.CharField(max_length=15, 
     label='',
     widget=forms.TextInput(attrs={
+            "class":"myfield1",
             'autofocus': True,
             'placeholder': 'Номер телефона'
         }), 
@@ -54,6 +57,7 @@ class RegistrationForm(UserCreationForm):
     password1 = forms.CharField(strip=False, 
     label='',
     widget=forms.PasswordInput(attrs={
+            "class":"myfield2",
             'autofocus': True,
             'placeholder': 'Пароль'
         }), 
@@ -62,6 +66,7 @@ class RegistrationForm(UserCreationForm):
     password2 = forms.CharField(strip=False, 
     label='',
     widget=forms.PasswordInput(attrs={
+            "class":"myfield2",
             'autofocus': True,
             'placeholder': 'Повторить пароль',
         }), 
