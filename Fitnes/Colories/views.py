@@ -4,10 +4,12 @@ from .models import MealRecord
 from .forms import MealRecordFormForCreate, MealRecordFormForEdit
 
 def index(request):
+    #meal_record = MealRecord.objects.filter(user=request.user)
     context = {
         'title': 'Страница для учёта Ваших калорий',
         'message': 'Вы находитесь на главной странице Colories',
         'page': 'colories_main',
+        #mealrecord': meal_record
     }
     return render(request, 'colories/index.html', context)
 
