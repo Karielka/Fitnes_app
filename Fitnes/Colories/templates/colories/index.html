@@ -4,12 +4,9 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'tasks/css/forms.css' %}" type="text/css" media="all">
+<link rel="stylesheet" href="{% static 'colories/css/styles_colories.css' %}" type="text/css" media="all">
+
 <body>
-  <div class="container">
-    <h1>
-      {{ message }}
-    </h1>
-  </div>
 
 <!--Создание меню адресации по приложению и его ключевыми страницами -->
 <div class="col">
@@ -28,8 +25,7 @@
   <nav>
     <ul>
         <li><a href="{% url 'index' %}">Главная</a></li>
-        <li><a href="{% url 'meal_record_read' %}">Записи о приёмах пищи</a></li>
-        <li><a href="{% url 'meal_record_create' %}">Добавить запись о приёме пищи</a></li>
+        
         <!-- Добавить другие ссылки по мере необходимости -->
     </ul>
   </nav>
@@ -38,6 +34,122 @@
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+  <div class="header">
+    <div>Тренировки</div>
+    <div>Сегодня</div>
+    <div class="icon">-</div>
+    <div>Личный кабинет</div>
+</div>
 
+<div class="left-section">
+  <div class="container">
+      <div class="food-entry breakfast">
+        <div class="label">Завтрак</div>
+        <div class="value" id="proteins">0</div>
+        <div class="value" id="fats">0</div>
+        <div class="value" id="carbs">0</div>
+        <div class="value" id="calories">0</div>
+        <form action="{% url 'meal_record_create' %}" method="get">
+            <button class="button_colories" type="submit">+</button>
+        </form>
+      </div>
+  </div>
+  <div class="container">
+      <div class="food-entry lunch">
+          <div class="label">Обед</div>
+          <div class="value" id="proteins">0</div>
+          <div class="value" id="fats">0</div>
+          <div class="value" id="carbs">0</div>
+          <div class="value" id="calories">0</div>
+          <form action="{% url 'meal_record_create' %}" method="get">
+              <button class="button_colories" type="submit">+</button>
+          </form>
+      </div>
+  </div>
+  <div class="container">
+      <div class="food-entry dinner">
+          <div class="label">Ужин</div>
+          <div class="value" id="proteins">0</div>
+          <div class="value" id="fats">0</div>
+          <div class="value" id="carbs">0</div>
+          <div class="value" id="calories">0</div>
+          <form action="{% url 'meal_record_create' %}" method="get">
+              <button class="button_colories" type="submit">+</button>
+          </form>
+      </div>
+  </div>
+  <div class="container">
+    <div class="food-entry snack">
+        <div class="label">Перекус</div>
+        <div class="value" id="proteins">0</div>
+        <div class="value" id="fats">0</div>
+        <div class="value" id="carbs">0</div>
+        <div class="value" id="calories">0</div>
+        <form action="{% url 'meal_record_create' %}" method="get">
+            <button class="button_colories" type="submit">+</button>
+        </form>
+    </div>
+  </div>
+  <div class="container">
+      <div class="food-entry water">
+          <div class="label">Вода</div>
+          <div class="value" id="water">0</div>
+          <div class="value">л</div>
+          <form action="{% url 'meal_record_create' %}" method="get">
+              <button class="button_colories" type="submit">+</button>
+          </form>
+      </div>
+  </div>
+  <div class="container">
+      <div class="food-entry workout">
+          <div class="label">Тренировки</div>
+          <div class="value" id="calories">0</div>
+          <form action="{% url 'meal_record_create' %}" method="get">
+              <button class="button_colories" type="submit">+</button>
+          </form>
+      </div>
+  </div>
+<div class="container">
+  <div class="food-entry sleep">
+      <div class="label">Сон</div>
+      <div class="value" id="hours">0</div>
+      <div class="value">ч</div>
+      <div class="value" id="calories">0</div>
+      <form action="{% url 'meal_record_create' %}" method="get">
+          <button class="button_colories" type="submit">+</button>
+      </form>
+  </div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+    <div class="summary">
+        <div class="chart">
+            <!-- Pie chart here -->
+        </div>
+        <div class="details">
+            <div>Осталось: 1540,2</div>
+            <div>Съедено: 100,8</div>
+            <div>Всего: 1641</div>
+            <div class="macros">
+                <div>Белки: 40%</div>
+                <div>Жиры: 30%</div>
+                <div>Углеводы: 30%</div>
+            </div>
+            <div>Вы съели недостаточно! Рекомендуем вам съесть:</div>
+        </div>
+    </div>
+    <div class="graph">
+        <!-- Graph here -->
+    </div>
+</div>
 </body>
 {% endblock content %}

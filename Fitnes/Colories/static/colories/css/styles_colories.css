@@ -1,0 +1,150 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #F6F6F6;
+}
+
+.header {
+    background-color: #5DA130;
+    width: 100%;
+    padding: 10px 0;
+    text-align: center;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.header div {
+    font-size: 20px;
+    color: #fff;
+}
+
+
+.left-section {
+    width: 50%; 
+    float: left; 
+    background-color: #f0f0f0;
+    padding: 20px; 
+}
+
+.container {
+    margin-bottom: 31px; /* Расстояние между контейнерами */
+}
+
+.food-entry {
+    background-color: #fff;
+    border-radius: 20px;
+    font-size: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    height: 81px;
+}
+
+.summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+.summary .chart {
+    flex: 1;
+}
+
+.summary .details {
+    flex: 2;
+    padding-left: 20px;
+}
+
+.summary .details .macros {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.summary .details .macros div {
+    text-align: center;
+}
+
+.graph {
+    text-align: center;
+    margin-top: 892px;
+    margin-left: 1028px;
+    height: 200px;
+    width: 668px;
+}
+
+.graph canvas {
+    width: 100%;
+    max-width: 1000px;
+}
+
+.button_colories {
+    width: 50px;
+    height: 50px;
+    border-radius: 40px;
+    background-color: #F8C325; 
+    border: none; 
+    color: white; 
+    font-size: 45px; 
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    cursor: pointer;
+    padding: 0;
+    line-height: 5px; 
+}
+
+.food-entry {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.label {
+    flex: 1;
+    margin-right: 40px;
+}
+
+.value {
+    min-width: 50px; 
+    text-align: center;
+    margin-right: 40px; 
+    grid-template-columns: repeat(5, 1fr); 
+}
+
+.button_colories {
+    margin-left: 10px; 
+}
+
+/* Цвета для меток каждого типа приема пищи */
+.breakfast .label {
+    color: #F8C325; 
+}
+
+.lunch .label {
+    color: #CE3C3C; 
+}
+
+.dinner .label {
+    color: #0E4128; 
+}
+
+.snack .label {
+    color: #A043C0; 
+}
+
+.water .label {
+    color: #1E90FF; 
+}
+
+.workout .label {
+    color: #32CD32; 
+}
+
+.sleep .label {
+    color: #1E1E1E; 
+}
+
+
