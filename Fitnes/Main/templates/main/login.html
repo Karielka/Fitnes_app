@@ -2,8 +2,8 @@
 
 {% block content %}
 
-<link rel="stylesheet" href="{% static 'Main/css/forms.css' %}" type="text/css" media="all">
-<link rel="stylesheet" href="{% static 'Main/css/login.css' %}" type="text/css" media="all">
+<link rel="stylesheet" href="{% static 'main/css/forms.css' %}" type="text/css" media="all">
+<link rel="stylesheet" href="{% static 'main/css/login.css' %}" type="text/css" media="all">
 <body>
     <div class="page-wrapper">
         <div class="container">
@@ -20,9 +20,11 @@
                     </div>
                 </form>
                 <div class="login-text">
-                    <p>СУПЕР ДУПЕР ИКОНКА</p>
-                    <p>Добро пожаловать! Пожалуйста, введите свои учетные данные, чтобы войти в систему. Если у вас нет учетной записи, пожалуйста, зарегистрируйтесь.</p>
-                    <a class="btn btn-primary" href="{% url 'register' %}">Зарегистрироваться</a>
+                    <div class="text1-wrapper">
+                        <p>СУПЕР ДУПЕР ИКОНКА</p>
+                        <p>Добро пожаловать! Пожалуйста, введите свои учетные данные, чтобы войти в систему. Если у вас нет учетной записи, пожалуйста, зарегистрируйтесь.</p>
+                    </div>
+                    <div class="button-wrapper"><a class="btn_btn-primary" href="{% url 'register' %}">Зарегистрироваться</a></div>
                 </div>
             </div>
         </div>
