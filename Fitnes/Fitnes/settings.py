@@ -125,7 +125,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 #Добавить для статических файлов
-STATICFILES_DIRS = [BASE_DIR / "Main/static", ]#BASE_DIR / "quality_control/static",]
+STATICFILES_DIRS = [BASE_DIR / "Main/static", BASE_DIR / "Colories/static", ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
