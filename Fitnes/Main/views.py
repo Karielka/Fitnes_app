@@ -3,11 +3,11 @@ from django.http import HttpResponse
 from django.contrib.auth import login, authenticate, logout
 from .forms import RegistrationForm
 from django.contrib.auth.decorators import login_required
-
+from django.contrib.auth.models import User
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import RegistrationForm, LoginForm
-
+from .forms import RegistrationForm, LoginForm, PasswordResetForm
+from django.contrib.auth.hashers import make_password
 from Main.models import Profile
 
 def index(request):
@@ -18,6 +18,21 @@ def index(request):
     }
     return render(request, 'main/index.html', context)
 
+def password_reset(request):
+    if request.method == 'POST':
+        form = PasswordResetForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            new_password = form.cleaned_data.get('new_password1')
+            user = User.objects.get(username=username)
+            user.password = make_password(new_password)
+            user.save()
+            if user is not None:
+                login(request, user)
+                return redirect('profile')
+    else:
+        form = PasswordResetForm()
+    return render(request, 'main/password_reset.html', {'form': form})
 
 def register(request):
     if request.method == 'POST':
