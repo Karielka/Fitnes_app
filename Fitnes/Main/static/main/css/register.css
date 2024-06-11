@@ -45,6 +45,10 @@
     flex-wrap: wrap; /* Позволяет элементам обтекать, если необходимо */
 }
 
+.text-wrapper{
+    color: white;
+}
+
 .first-container{
     display: flex;
     flex-direction: column; 
