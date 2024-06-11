@@ -1,45 +1,170 @@
-{% extends "main/base.html" %}
-
 {% load static %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'tasks/css/forms.css' %}" type="text/css" media="all">
 <link rel="stylesheet" href="{% static 'colories/css/styles_colories.css' %}" type="text/css" media="all">
-
-<body>
-
-<!--Создание меню адресации по приложению и его ключевыми страницами -->
-<div class="col">
-  <div class="row-3">
-    <a class="btn btn-primary" href="/activity/">Приложение Activity</a>
-  </div>
-  <div class="row-3">
-    <a class="btn btn-primary" href="/expertise/">Приложение Expertise</a>
-  </div>
-  <div class="row-3">
-    <a class="btn btn-primary" href="/progress/">Приложение Progress</a>
-  </div>
-</div>
-
-<!--Read + delete-->
-  <nav>
-    <ul>
-        <li><a href="{% url 'index' %}">Главная</a></li>
-        
-        <!-- Добавить другие ссылки по мере необходимости -->
-    </ul>
-  </nav>
-
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ title }}</title>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/i18n/jquery-ui-i18n.min.js"></script>
+</head>
+<body>
+  <script>
+    $(document).ready(function() {
+      $.datepicker.setDefaults($.datepicker.regional["ru"]);
+        // Инициализация календаря
+        $('.datepicker').click(function() {
+          $('#overlay').fadeIn();
+      });
+      $('#datepicker').datepicker({
+          dateFormat: "dd-mm",
+          firstDay: 1,
+          onSelect: function(dateText) {
+              $('.date .text').text(dateText === $.datepicker.formatDate('dd-mm', new Date()) ? 'СЕГОДНЯ' : dateText);
+              $('#overlay').fadeOut();
+          },
+          beforeShowDay: function(date) {
+              if (date.toDateString() === new Date().toDateString()) {
+                  return [1, '', 'СЕГОДНЯ'];
+              }
+              return [1];
+          }
+        });
+
+        // Обработчик события клика на треугольник
+        $('.triangle').click(function() {
+            // Отображаем затемнение и всплывающее окно с календарем
+            $('#overlay').fadeIn();
+        });
+
+        // Закрытие календаря при клике вне всплывающего окна
+        $(document).mouseup(function(e) {
+            var container = $(".popup");
+            if (!container.is(e.target) && container.has(e.target).length === 0) {
+                $('#overlay').fadeOut();
+            }
+        });
+    });
+</script>
+  
+<script>
+  $(document).ready(function() {
+    // Обработчик события клика на бургерное меню
+    $('.burger-menu').click(function(event) {
+        event.stopPropagation(); // Остановить всплытие события, чтобы клик на бургерном меню не приводил к закрытию меню
+        $('.dropdown-menu').toggle();
+    });
+
+    // Обработчик события клика на документ (вне меню)
+    $(document).click(function(event) {
+        if (!$(event.target).closest('.header').length) { // Проверка, что клик был сделан вне области меню
+            $('.dropdown-menu').hide(); // Скрыть меню
+        }
+    });
+});
+</script>
+
 
   <div class="header">
-    <div>Тренировки</div>
-    <div>Сегодня</div>
-    <div class="icon">-</div>
-    <div>Личный кабинет</div>
+    <div class="burger-menu">
+        <div class="burger-line"></div>
+        <div class="burger-line"></div>
+        <div class="burger-line"></div>
+    </div>
+    <div class="dropdown-menu">
+        <a class="dropdown-item" href="/expertise/">Тренировки</a>
+        <a class="dropdown-item" href="{% url 'index' %}">Главная</a>
+        <a class="dropdown-item" href="/fitnes/profile/">Личный кабинет</a>
+    </div>
+    <div class="logout">Выйти</div>
 </div>
+  
+
+
+  <div class="col-2">
+    <a class="btn btn-primary" href="/admin/">Перейти в <strong>админку</strong></a>
+  </div>
+
+  <div class="date">
+    <div class="text">СЕГОДНЯ</div>
+    <div class="triangle"></div>
+</div>
+
+<div class="overlay" id="overlay">
+    <div class="popup">
+        <div id="datepicker"></div>
+    </div>
+</div>
+
+<table class="data">
+  <tr>
+    <td class="column">
+      <div class="label colored">Белки</div>
+      <div class="value" id="proteins_sum">0</div>
+    </td>
+    <td class="column">
+      <div class="label colored">Жиры</div>
+      <div class="value" id="fats_sum">0</div>
+    </td>
+    <td class="column">
+      <div class="label colored">Углев</div>
+      <div class="value" id="carbs_sum">0</div>
+    </td>
+    <td class="column">
+      <div class="label colored">ККал</div>
+      <div class="value" id="calories_sum">0</div>
+    </td>
+  </tr>
+</table>
+
+<script>
+  // Функция для обновления суммарных значений белков, жиров, углеводов и калорий для каждого приема пищи
+  function updateTotalValues() {
+      var meals = ['breakfast', 'lunch', 'dinner', 'snack']; // Список приемов пищи
+
+      // Проходимся по каждому приему пищи
+      meals.forEach(function(meal) {
+          var proteinsSum = 0;
+          var fatsSum = 0;
+          var carbsSum = 0;
+          var caloriesSum = 0;
+
+          // Находим все продукты в текущем приеме пищи
+          var products = document.querySelectorAll('.' + meal + ' .food-entry');
+
+          // Проходимся по каждому продукту и считаем сумму белков, жиров, углеводов и калорий
+          products.forEach(function(product) {
+              var proteins = parseFloat(product.querySelector('.value.proteins').textContent);
+              var fats = parseFloat(product.querySelector('.value.fats').textContent);
+              var carbs = parseFloat(product.querySelector('.value.carbs').textContent);
+              var calories = parseFloat(product.querySelector('.value.calories').textContent);
+
+              proteinsSum += proteins;
+              fatsSum += fats;
+              carbsSum += carbs;
+              caloriesSum += calories;
+          });
+
+          // Обновляем суммарные значения в соответствующих полях для текущего приема пищи
+          document.querySelector('.' + meal + ' .value#proteins').textContent = proteinsSum;
+          document.querySelector('.' + meal + ' .value#fats').textContent = fatsSum;
+          document.querySelector('.' + meal + ' .value#carbs').textContent = carbsSum;
+          document.querySelector('.' + meal + ' .value#calories').textContent = caloriesSum;
+      });
+  }
+
+  // Вызываем функцию для обновления значений при загрузке страницы
+  window.onload = function() {
+      updateTotalValues();
+  };
+</script>
+
+
 
 <div class="left-section">
   <div class="container">
@@ -102,7 +227,7 @@
   </div>
   <div class="container">
       <div class="food-entry workout">
-          <div class="label">Тренировки</div>
+          <div class="label">Активность</div>
           <div class="value" id="calories">0</div>
           <form action="{% url 'meal_record_create' %}" method="get">
               <button class="button_colories" type="submit">+</button>
@@ -122,34 +247,87 @@
 </div>
 </div>
 
+<div class="right-section">
+  <div class="summary">
+      <div class="details">
+          <!-- Скрипт для вычисления значений -->
+          <script>
+              // Получение значений из профиля пользователя и суммарного числа съеденных калорий
+              var totalCalories = 2000; // Пример
+              var eatenCalories = 1800; // Пример
 
+              // Вычисление оставшихся калорий
+              var remainingCalories = totalCalories - eatenCalories;
 
+              // Примерные значения для процентного соотношения белков, жиров и углеводов
+              var proteinPercent = 30;
+              var fatPercent = 30;
+              var carbPercent = 40;
 
+              // Проверка на превышение или недостаток калорий
+              var message = "";
+              if (eatenCalories < totalCalories) {
+                  message = "Вы съели слишком мало! Рекомендуем вам увеличить количество приемов пищи.";
+              } else if (eatenCalories > totalCalories * 1.1) {
+                  message = "Вы съели слишком много! Рекомендуем вам добавить тренировки.";
+              } else {
+                  message = "Отлично! Вы уложились в норму калорий! Чтобы получить желаемый результат, продолжайте в том же духе.";
+              }
+          </script>
 
-
-
-
-
-
-    <div class="summary">
-        <div class="chart">
-            <!-- Pie chart here -->
-        </div>
-        <div class="details">
-            <div>Осталось: 1540,2</div>
-            <div>Съедено: 100,8</div>
-            <div>Всего: 1641</div>
-            <div class="macros">
-                <div>Белки: 40%</div>
-                <div>Жиры: 30%</div>
-                <div>Углеводы: 30%</div>
-            </div>
-            <div>Вы съели недостаточно! Рекомендуем вам съесть:</div>
-        </div>
+          <div>Осталось: <span id="remainingCalories"></span></div>
+          <div>Съедено: <span id="eatenCalories"></span></div>
+          <div>Всего: <span id="totalCalories"></span></div>
+          <div class="macros">
+              <div>Белки: <span id="proteinPercent"></span>%</div>
+              <div>Жиры: <span id="fatPercent"></span>%</div>
+              <div>Углеводы: <span id="carbPercent"></span>%</div>
+          </div>
+      </div>
+      <div class="chart">
+        <!-- Pie chart here -->
+        <canvas id="pieChart"></canvas>
     </div>
-    <div class="graph">
-        <!-- Graph here -->
-    </div>
+  </div>
+  <div class="graph">
+      <!-- Graph here -->
+  </div>
+  <div class="container_message"></div>
 </div>
+
+<!-- Скрипт для построения круговой диаграммы -->
+<script>
+  var ctx = document.getElementById('pieChart').getContext('2d');
+  var pieChart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+          labels: ['Белки', 'Жиры', 'Углеводы'],
+          datasets: [{
+              label: 'Macros',
+              data: [proteinPercent, fatPercent, carbPercent],
+              backgroundColor: [
+                  'rgb(255, 99, 132)',
+                  'rgb(54, 162, 235)',
+                  'rgb(255, 205, 86)'
+              ]
+          }]
+      },
+      options: {
+          responsive: true,
+          maintainAspectRatio: false
+      }
+  });
+
+  // Установка значений в HTML
+  document.getElementById('remainingCalories').innerText = remainingCalories;
+  document.getElementById('eatenCalories').innerText = eatenCalories;
+  document.getElementById('totalCalories').innerText = totalCalories;
+  document.getElementById('proteinPercent').innerText = proteinPercent;
+  document.getElementById('fatPercent').innerText = fatPercent;
+  document.getElementById('carbPercent').innerText = carbPercent;
+  document.getElementById('message').innerText = message;
+</script>
+
 </body>
+</html>
 {% endblock content %}
