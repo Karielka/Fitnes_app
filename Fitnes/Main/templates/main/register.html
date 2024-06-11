@@ -3,13 +3,35 @@
 
 {% block content %}
 
-<link rel="stylesheet" href="{% static 'Main/css/forms.css' %}" type="text/css" media="all">
+<link rel="stylesheet" href="{% static 'main/css/forms.css' %}" type="text/css" media="all">
+<link rel="stylesheet" href="{% static 'main/css/register.css' %}" type="text/css" media="all">
 <body>
-    <h2>Регистрация</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Регистрация</button>
-    </form>
+    <div class="page-wrapper">
+        
+        <div class="container">
+
+                    <form method="post" class="register-form">
+                        <div class="text-wrapper">
+                            <h2>Регистрация</h2>
+                        </div>
+                        <div class="field-container">
+                            {% csrf_token %}
+                            <div class="first-container">
+                                {{ form.username }}
+                                {{ form.email }}
+                                {{ form.phone }}
+                            </div>
+                            <div class="second-container">
+                                {{ form.password1 }}
+                                {{ form.password2 }}
+                                {{ form.type }}
+                            </div>
+                        </div>
+                        <div class="button-wrapper"><button type="submit">Регистрация</button></div>
+                    </form>
+
+        </div>
+
+    </div>
 </body>
 {% endblock content %}
