@@ -20,7 +20,9 @@
     </div>
 
     <a class="btn btn-primary" href="{% url 'index-progress' %}">Подробнее про цели (перейти в контекст Progress)</a>
-    
+    <p>Goal</p>
+    <p> {{goal.target_weight}}</p>
+    <p> {{goal.description}}</p>
     <div>
         <h2>Профиль калорий</h2>
         {% if calory_profile %}
