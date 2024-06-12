@@ -9,6 +9,28 @@ from django.contrib.auth.forms import AuthenticationForm
 from .forms import RegistrationForm, LoginForm, PasswordResetForm
 from django.contrib.auth.hashers import make_password
 from Main.models import Profile
+from Profiles.models import UserCaloryProfile
+from .forms import UserProfileForm
+
+@login_required
+def profile_edit(request):
+    user = request.user
+    try:
+        profile = user.profile
+    except Profile.DoesNotExist:
+        profile = Profile.objects.create(user=user)
+
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        initial_data = {
+            'phone': profile.phone,
+        }
+        form = UserProfileForm(instance=user, initial=initial_data)
+    return render(request, 'main/profile_edit.html', {'form': form})
 
 def index(request):
     context = {
@@ -59,8 +81,15 @@ def profile(request):
         profile = request.user.profile
     except Profile.DoesNotExist:
         profile = Profile.objects.create(user=request.user)
+
+    try:
+        calory_profile = request.user.calory_profile
+    except UserCaloryProfile.DoesNotExist:
+        calory_profile = None
+
     context = {
         'profile': profile,
+        'calory_profile': calory_profile,
         'page': 'profile'
     }
     return render(request, 'main/profile.html', context)

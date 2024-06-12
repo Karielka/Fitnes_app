@@ -1,6 +1,6 @@
-/* Стили для контейнера формы */
-body {
-    background-color: #f6f6f6;
+body { 
+    background-color: rgba(164, 225, 234, 0.994);
+    overflow-x: hidden; 
 }
 
 .container {
@@ -71,4 +71,3 @@ form button[type="submit"] {
 form button[type="submit"]:hover {
     background-color: #5da130;
 }
-

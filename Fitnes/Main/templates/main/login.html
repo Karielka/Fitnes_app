@@ -12,6 +12,9 @@
                     <div class="text-wrapper">
                         <h2>Авторизация</h2>
                     </div>
+                    <div class="error-container">
+                        {{ form.errors }}
+                    </div>
                     {% csrf_token %}
                     {{ form.as_p }}
                     <a class="btn btn-primary" href="{% url 'password_reset' %}" >Забыли пароль?</a>

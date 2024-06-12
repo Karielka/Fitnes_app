@@ -8,18 +8,18 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'main/css/styles.css' %}" type="text/css" media="all">
   </head>
-  <header>
-    <div class="row">
-      <div class="col-2">
-        <a class="btn btn-primary" href="/admin/">Перейти в <strong>админку</strong></a>
-      </div>
+  <div class="row">
+    <div class="col-2">
+      <a class="btn btn-primary" href="/admin/">Перейти в <strong>админку</strong></a>
+    </div>
+    <header>
       <div class="col-4">
         {% if page != "main" %}
-          <a class="btn btn-primary" href="{% url 'index' %}">На главную</a>
+          <a class="btn btn-primary" href="{% url 'index' %}">Главная</a>
         {% endif %}
         {% if user.is_authenticated %}
           {% if page != "profile" %}
-            <a class="btn btn-primary" href="{% url 'profile' %}">Профиль</a>
+            <a class="btn btn-primary" href="{% url 'profile' %}">Личный кабинет</a>
           {% endif %}
           <a class="btn btn-primary" href="{% url 'logout' %}">Выйти</a>
         {% else %}
@@ -33,6 +33,7 @@
       </div>
     </div>
   </header>
+  
 
   <body>
     {% block content %}

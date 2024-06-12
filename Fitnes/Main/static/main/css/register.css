@@ -9,14 +9,17 @@
 .container{
     background-color: #faf7f7;
     box-shadow: 0 0 10px #5da130;
+    background: linear-gradient(to bottom left, #5da130, #F8C325);
     padding: 30px; 
     max-width: 800px; 
     width: 100%;
     box-sizing: border-box; 
 }
 
-.register-form, .register-text {
+.register-form {
     margin: 0 20px;
+    background: linear-gradient(to bottom left, #5da130, #F8C325);
+
 }
 
 .register-form {
@@ -37,22 +40,37 @@
 .field-container{
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    flex-direction: row;
+    align-items: center; 
+    flex-direction: row; /* Предполагаем, что у вас столбцы */
+    flex-wrap: wrap; /* Позволяет элементам обтекать, если необходимо */
+}
+
+.text-wrapper{
+    color: white;
 }
 
 .first-container{
-    flex: 1;
-    margin-right: 60px;
-    margin-left: 30px;
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start;
+    padding: 10px; /* Пример отступа */
+    width: 48%; /* Настройте ширину столбца */
 }
 
 .second-container{
-    flex: 2;
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start;
+    padding: 10px; /* Пример отступа */
+    width: 48%; /* Настройте ширину столбца */
+}
+
+.button-wrapper{
+    flex: 3;
 }
 
 form input[type="text"] {
-    width: 120%;
+    width: 100%;
     height: 45px;
     padding: 3px;
     margin-bottom: 15px;
@@ -64,7 +82,7 @@ form input[type="text"] {
 }
 
 form input[type="password"] {
-    width: 65%;
+    width: 100%;
     height: 45px;
     padding: 3px;
     margin-bottom: 15px;
@@ -76,9 +94,9 @@ form input[type="password"] {
 }
 
 form button[type="submit"] {
-    width: 50%;
+    width: 60%;
     height: 100%;
-    background-color: #f8c325;
+    background-color: #5da130;
     color: white;
     font-size: large;
     padding-left: 50px;
@@ -94,8 +112,15 @@ form button[type="submit"] {
     transition: background-color 0.3s ease;
 }
 
+form button[type="submit"]:hover {
+    background-color: #f8c325;
+}
+
 .register-form p {
     margin: 0;
+    display: flex; 
+    align-items: center; /* Выравнивание текста по вертикали */
+    margin-bottom: 5px; /* Пример поля */
 }
 
 .register-form button {
@@ -103,7 +128,7 @@ form button[type="submit"] {
     margin-top: 10px;
 }
 select#id_type {
-    width: 65%;
+    width: 100%;
     height: 45px;
     padding: 3px;
     margin-bottom: 15px;
