@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 import io
 from django.contrib.auth.models import User
 import datetime
+import base64
 
 
 def index(request):
@@ -32,27 +33,28 @@ def index(request):
         }
     return render(request, 'colories/index.html', context)
 
+
+def get_user_history(user_id, start_date=None, end_date=None):
+    user = get_object_or_404(User, pk=user_id)
+    histories = user.history.all()
+
+    if start_date:
+        histories = histories.filter(date__gte=start_date)
+    if end_date:
+        histories = histories.filter(date__lte=end_date)
+
+    return histories
+
+
 @login_required
 def calories_chart(request, user_id):
     # Получаем данные о калориях пользователя
     user = get_object_or_404(User, pk=user_id)
-    user_calory_profile = user.calory_profile
-    
-    # Создаем или обновляем историю
-    today = datetime.date.today() 
-    try:
-        user_history = user_calory_profile.history.get(date=today)
-    except History.DoesNotExist:
-        user_history = History.objects.create(
-            user=user,
-            date=today
-        )
-        user_calory_profile.history = user_history
-        user_calory_profile.save()
+    user_history = get_user_history(user_id, start_date=None, end_date=None)
 
     # Создаем данные для графика
-    dates = [record.date for record in user_history.all()]  # Получаем даты из user_history
-    calories = [record.total_calories for record in user_history.all()] # Получаем калории из user_history
+    dates = [record.date for record in user_history]
+    calories = [record.total_calories for record in user_history]
 
     # Создаем график plotly
     fig = go.Figure(data=go.Scatter(x=dates, y=calories))
@@ -60,43 +62,46 @@ def calories_chart(request, user_id):
                       xaxis_title="Дата",
                       yaxis_title="Калории")
 
-    # Возвращаем график в формате HTML
-    return fig.to_html(full_html=False, include_plotlyjs='cdn')
+    buf = io.BytesIO()
+    fig.write_image(buf, format='png')
+    buf.seek(0)
+
+    # Возвращаем график в виде base64-строки
+    chart_data = base64.b64encode(buf.getvalue()).decode('utf-8')
+
+    # Возвращаем данные о графике в контекст
+    return chart_data
+
 
 @login_required
 def macronutrient_chart(request, user_id):
     # Получаем данные о питании пользователя
     user = get_object_or_404(User, pk=user_id)
-    user_calory_profile = user.calory_profile
-    
-    # Создаем или обновляем историю
-    today = datetime.date.today() 
-    try:
-        user_history = user_calory_profile.history.get(date=today)
-    except History.DoesNotExist:
-        user_history = History.objects.create(
-            user=user,
-            date=today
-        )
-        user_calory_profile.history = user_history
-        user_calory_profile.save()
+    user_history = get_user_history(user_id, start_date=None, end_date=None)
 
     # Создаем данные для графика
     total_proteins = 0
     total_fats = 0
     total_carbohydrates = 0
-    for record in user_history.all():
-        total_proteins += record.product.proteins_per_unit * record.measure
-        total_fats += record.product.fats_per_unit * record.measure
-        total_carbohydrates += record.product.carbohydrates_per_unit * record.measure
+    for record in user_history:
+        total_proteins += record.total_proteins
+        total_fats += record.total_fats
+        total_carbohydrates += record.total_carbohydrates
 
     # Создаем график plotly
     labels = ['Белки', 'Жиры', 'Углеводы']
     fig = go.Figure(data=[go.Pie(labels=labels, values=[total_proteins, total_fats, total_carbohydrates])])
     fig.update_layout(title="Процентное соотношение БЖУ")
 
-    # Возвращаем график в формате HTML
-    return fig.to_html(full_html=False, include_plotlyjs='cdn')
+    buf = io.BytesIO()
+    fig.write_image(buf, format='png')
+    buf.seek(0)
+
+    # Возвращаем график в виде base64-строки
+    chart_data = base64.b64encode(buf.getvalue()).decode('utf-8')
+
+    # Возвращаем данные о графике в контекст
+    return chart_data
 
 @login_required
 def food_dynamics_view(request):
@@ -108,10 +113,11 @@ def food_dynamics_view(request):
     macronutrient_chart_data = macronutrient_chart(request, user_id)
 
     # Рендерим шаблон
-    return render(request, 'colories/food_dynamics.html', {
+    return render(request, 'colories/index.html', {
         'calories_chart_data': calories_chart_data,
         'macronutrient_chart_data': macronutrient_chart_data,
     })
+
 
 def update_history_for_user(user):
     # Получаем или создаем History для пользователя

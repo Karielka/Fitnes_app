@@ -33,7 +33,7 @@
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> 
   <div class="header">
     <div>Тренировки</div>
     <div>Сегодня</div>
@@ -134,7 +134,7 @@
     <div class="summary">
         <div class="chart">
             <!-- Pie chart here -->
-            {{ macronutrient_chart_data }}
+            <img src="data:image/png;base64,{{ macronutrient_chart_data }}" alt="Процентное соотношение БЖУ">
         </div>
         <div class="details">
             <div>Осталось: 1540,2</div>
@@ -150,7 +150,7 @@
     </div>
     <div class="graph">
         <!-- Graph here -->
-        {{ calories_chart_data }}
+        <img src="data:image/png;base64,{{ calories_chart_data }}" alt="График калорийности"> 
     </div>
 </div>
 </body>
