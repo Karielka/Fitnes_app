@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import MealRecord
 from .forms import MealRecordFormForCreate, MealRecordFormForEdit
-import plotly.graph_objects as go
+import plotly.graph_objects as go # type: ignore
 from django.http import HttpResponse
 from .models import MealRecord, UserCaloryProfile, Product, History
 from django.contrib.auth.decorators import login_required
@@ -11,7 +11,7 @@ import datetime
 
 
 def index(request):
-    #meal_record = MealRecord.objects.filter(user=request.user)
+    meal_record = MealRecord.objects.filter(user=request.user)
     if request.user.is_authenticated:
         user_id = request.user.id
         calories_chart_data = calories_chart(request, user_id)
@@ -22,76 +22,17 @@ def index(request):
             'page': 'colories_main',
             'calories_chart_data': calories_chart_data,
             'macronutrient_chart_data': macronutrient_chart_data,
-            #mealrecord': meal_record
+            'mealrecord': meal_record,
         }
     else:
         context = {
-            'title': 'Страница для учёта Ваших калорий',
+            'title': 'Страница для учёта калорий',
             'message': 'Вы находитесь на главной странице Colories',
             'page': 'colories_main',
-            #mealrecord': meal_record
         }
     return render(request, 'colories/index.html', context)
 
-
-
-def meal_record_create(request):
-    if request.method == 'POST':
-        form = MealRecordFormForCreate(request.POST)
-        if form.is_valid():
-            meal_record = form.save(commit=False)
-            meal_record.user = request.user  # Привязка к текущему пользователю
-            meal_record.save()
-            # Обновляем историю калорий после добавления новой записи
-            update_history_for_user(request.user)
-            return redirect('meal_record_read')  # Перенаправление после создания
-    else:
-        form = MealRecordFormForCreate()
-    context = {
-        'title': 'Создать запись о приёме пищи',
-        'form': form,
-    }
-    return render(request, 'colories/meal_record_create.html', context)
-
-def meal_records_read(request):
-    meal_records = MealRecord.objects.filter(user=request.user)
-    context = {
-        'title': 'Список записей о приёмах пищи',
-        'meal_records': meal_records,
-    }
-    return render(request, 'colories/meal_record_read.html', context)
-
-def meal_record_update(request, meal_record_id):
-    meal_record = get_object_or_404(MealRecord, pk=meal_record_id)
-    if request.method == 'POST':
-        form = MealRecordFormForEdit(request.POST, instance=meal_record)
-        if form.is_valid():
-            form.save()
-            update_history_for_user(request.user) # Обновляем историю после редактирования
-            return redirect('meal_record_read')
-    else:
-        form = MealRecordFormForEdit(instance=meal_record)
-    context = {
-        'title': 'Редактировать запись о приёме пищи',
-        'form': form,
-    }
-    return render(request, 'colories/meal_record_update.html', context)
-
-def meal_record_delete(request, meal_record_id):
-    meal_record = get_object_or_404(MealRecord, pk=meal_record_id)
-    if request.method == 'POST':
-        meal_record.delete()
-        update_history_for_user(request.user) # Обновляем историю после удаления
-        return redirect('meal_record_read')
-    context = {
-        'title': 'Удалить запись о приёме пищи',
-        'meal_record': meal_record,
-    }
-    return render(request, 'colories/meal_record_delete.html', context)
-
-
-
-
+@login_required
 def calories_chart(request, user_id):
     # Получаем данные о калориях пользователя
     user = get_object_or_404(User, pk=user_id)
@@ -122,6 +63,7 @@ def calories_chart(request, user_id):
     # Возвращаем график в формате HTML
     return fig.to_html(full_html=False, include_plotlyjs='cdn')
 
+@login_required
 def macronutrient_chart(request, user_id):
     # Получаем данные о питании пользователя
     user = get_object_or_404(User, pk=user_id)
@@ -183,3 +125,65 @@ def update_history_for_user(user):
         )
     # Обновляем данные в History
     user_history.update_history()
+
+
+
+
+
+
+
+
+
+def meal_record_create(request):
+    if request.method == 'POST':
+        form = MealRecordFormForCreate(request.POST)
+        if form.is_valid():
+            meal_record = form.save(commit=False)
+            meal_record.user = request.user  # Привязка к текущему пользователю
+            meal_record.save()
+            # Обновляем историю калорий после добавления новой записи
+            update_history_for_user(request.user)
+            return redirect('meal_record_read')  # Перенаправление после создания
+    else:
+        form = MealRecordFormForCreate()
+    context = {
+        'title': 'Создать запись о приёме пищи',
+        'form': form,
+    }
+    return render(request, 'colories/meal_record_create.html', context)
+
+def meal_records_read(request):
+    meal_records = MealRecord.objects.filter(user=request.user)
+    context = {
+        'title': 'Список записей о приёмах пищи',
+        'meal_records': meal_records,
+    }
+    return render(request, 'colories/meal_record_read.html', context)
+
+def meal_record_update(request, meal_record_id):
+    meal_record = get_object_or_404(MealRecord, pk=meal_record_id)
+    if request.method == 'POST':
+        form = MealRecordFormForEdit(request.POST, instance=meal_record)
+        if form.is_valid():
+            form.save()
+            update_history_for_user(request.user) # Обновляем историю после редактирования
+            return redirect('meal_record_read')
+    else:
+        form = MealRecordFormForEdit(instance=meal_record)
+    context = {
+        'title': 'Редактировать запись о приёме пищи',
+        'form': form,
+    }
+    return render(request, 'colories/meal_record_update.html', context)
+
+def meal_record_delete(request, meal_record_id):
+    meal_record = get_object_or_404(MealRecord, pk=meal_record_id)
+    if request.method == 'POST':
+        meal_record.delete()
+        update_history_for_user(request.user) # Обновляем историю после удаления
+        return redirect('meal_record_read')
+    context = {
+        'title': 'Удалить запись о приёме пищи',
+        'meal_record': meal_record,
+    }
+    return render(request, 'colories/meal_record_delete.html', context)

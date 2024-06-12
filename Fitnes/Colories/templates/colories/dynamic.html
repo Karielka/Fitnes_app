@@ -5,5 +5,18 @@
 <link rel="stylesheet" href="{% static 'main/css/forms.css' %}" type="text/css" media="all">
 
 <h2>Динамика изменения питания по дням/неделям/месяцам/годам</h2>
+<body>
+    <h1>Ваша динамика питания</h1>
+
+    <div>
+        <h2>График калорийности</h2>
+        {{ calories_chart_data }} 
+    </div>
+
+    <div>
+        <h2>Процентное соотношение БЖУ</h2>
+        {{ macronutrient_chart_data }}
+    </div>
+</body>
 
 {% endblock %}
