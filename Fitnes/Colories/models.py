@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import datetime
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
@@ -55,19 +56,3 @@ class TimeTable(models.Model):
     breakfast_time = models.TimeField(blank=True, null=True)
     lunch_time = models.TimeField(blank=True, null=True)
     dinner_time = models.TimeField(blank=True, null=True)
-
-class UserCaloryProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='calory_profile')
-    daily_calorie_goal = models.PositiveIntegerField()
-    consumed_calories = models.PositiveIntegerField(default=0)
-    burned_calories_exercise = models.PositiveIntegerField(default=0)  # Количество сожженных калорий посредством тренировок
-    burned_calories_sleep = models.PositiveIntegerField(default=0)  # Количество сожженных калорий посредством сна
-    history = models.ForeignKey(History, on_delete=models.SET_NULL, null=True, blank=True)
-    recommendations = models.ManyToManyField(Selection)
-
-    def update_consumed_calories(self):
-        if self.history:
-            self.consumed_calories = self.history.total_calories - self.burned_calories_exercise - self.burned_calories_sleep
-        else:
-            self.consumed_calories = 0
-        self.save()
