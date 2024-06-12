@@ -1,3 +1,140 @@
-.main-container{
-    padding: 15px;
+.page-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f0f0; 
+    padding: 20px; 
+}
+.container{
+    background-color: #faf7f7;
+    box-shadow: 0 0 10px #5da130;
+    background: linear-gradient(to bottom left, #5da130, #F8C325);
+    padding: 30px; 
+    max-width: 800px; 
+    width: 100%;
+    box-sizing: border-box; 
+}
+
+.register-form {
+    margin: 0 20px;
+    background: linear-gradient(to bottom left, #5da130, #F8C325);
+
+}
+
+.register-form {
+    max-width: 100%;
+}
+
+.register-text {
+    height: 270px;
+    max-width: 50%;
+    background: linear-gradient(to bottom left, #5da130, #F8C325);
+    color: white;
+    font-size: medium;
+    padding: 15px; 
+    border-radius: 8px;
+    flex-grow: 1;
+}
+
+.field-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+    flex-direction: row; /* Предполагаем, что у вас столбцы */
+    flex-wrap: wrap; /* Позволяет элементам обтекать, если необходимо */
+}
+
+.text-wrapper{
+    color: white;
+}
+
+.first-container{
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start;
+    padding: 10px; /* Пример отступа */
+    width: 48%; /* Настройте ширину столбца */
+}
+
+.second-container{
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start;
+    padding: 10px; /* Пример отступа */
+    width: 48%; /* Настройте ширину столбца */
+}
+
+.button-wrapper{
+    flex: 3;
+}
+
+form input[type="text"] {
+    width: 100%;
+    height: 45px;
+    padding: 3px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+    box-shadow: 0 0 10px #f8c325;
+}
+
+form input[type="password"] {
+    width: 100%;
+    height: 45px;
+    padding: 3px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+    box-shadow: 0 0 10px #f8c325;
+}
+
+form button[type="submit"] {
+    width: 60%;
+    height: 100%;
+    background-color: #5da130;
+    color: white;
+    font-size: large;
+    padding-left: 50px;
+    padding-top: 7px;
+    padding-bottom: 0px;
+    padding-right: 100px;
+    padding: 7px 25px;
+    margin-top: 30px;
+    align-items: center;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button[type="submit"]:hover {
+    background-color: #f8c325;
+}
+
+.register-form p {
+    margin: 0;
+    display: flex; 
+    align-items: center; /* Выравнивание текста по вертикали */
+    margin-bottom: 5px; /* Пример поля */
+}
+
+.register-form button {
+    display: block;
+    margin-top: 10px;
+}
+select#id_type {
+    width: 100%;
+    height: 45px;
+    padding: 3px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+    box-shadow: 0 0 10px #f8c325;
 }

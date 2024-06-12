@@ -5,12 +5,36 @@
 
 <link rel="stylesheet" href="{% static 'Main/css/forms.css' %}" type="text/css" media="all">
 <body>
-    <h2>Ваш профиль</h2>
-    {% if profile.type == 'expert' %}
-        <p>Ваша роль: эксперт</p>
-    {% else %}
-        <p>Ваша роль: пользователь</p>
-        {{profile}}
-    {% endif %}
+    <h1>Профиль пользователя</h1>
+    <div>
+        <h2>Основная информация</h2>
+        <p>Имя пользователя: {{ profile.user.username }}</p>
+        <p>Email: {{ profile.user.email }}</p>
+        <p>Телефон: {{ profile.phone }}</p>
+        {% if profile.type == 'expert' %}
+            <p>Ваша роль: эксперт</p>
+        {% else %}
+            <p>Ваша роль: пользователь</p>
+        {% endif %}
+        <a href="{% url 'profile_edit' %}" class="btn btn-primary">Редактировать профиль</a>
+    </div>
+    
+    <div>
+        <h2>Профиль калорий</h2>
+        {% if calory_profile %}
+            <p>Пол: {{ calory_profile.gender }}</p>
+            <p>Возраст: {{ calory_profile.age }}</p>
+            <p>Рост: {{ calory_profile.height }} см</p>
+            <p>Текущий вес: {{ calory_profile.weight }} кг</p>
+            <p>Желаемый вес: {{ calory_profile.target_weight }} кг</p>
+            <p>Цель: {{ calory_profile.goal }}</p>
+            <p>Достичь к: {{ calory_profile.target_date }}</p>
+            <p>Активность: {{ calory_profile.activity_level }}</p>
+            <a href="{% url 'profile_edit' %}" class="btn btn-primary">Редактировать профиль калорий</a>
+        {% else %}
+            <p>Профиль калорий еще не создан.</p>
+            <a href="{% url 'profile_create' %}" class="btn btn-secondary">Создать профиль калорий</a>
+        {% endif %}
+    </div>
 </body>
 {% endblock content %}
