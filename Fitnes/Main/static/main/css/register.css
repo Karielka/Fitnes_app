@@ -6,7 +6,8 @@
     background-color: #f0f0f0; 
     padding: 20px; 
 }
-.container{
+
+.container-log{
     background-color: #faf7f7;
     box-shadow: 0 0 10px #5da130;
     background: linear-gradient(to bottom left, #5da130, #F8C325);
@@ -127,6 +128,7 @@ form button[type="submit"]:hover {
     display: block;
     margin-top: 10px;
 }
+
 select#id_type {
     width: 100%;
     height: 45px;

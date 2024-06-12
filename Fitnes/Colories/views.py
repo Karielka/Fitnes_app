@@ -199,7 +199,6 @@ def meal_record_delete(request, meal_record_id):
 @login_required
 def update_current_weight(request):
     user = request.user
-
     # Находим последнюю активную цель пользователя
     active_goal = Goal.objects.filter(user=user, status__in=['New', 'In_work']).order_by('-start_date').first()
 
