@@ -9,6 +9,7 @@ class Profile(models.Model):
     ]
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    phone = models.CharField(max_length=15, blank=True, null=True)
     #avatar = models.ImageField(null=True, blank=True, upload_to="avatars/", default='avatars/default.png')
     rating = models.IntegerField(default=0)
     type = models.CharField(max_length=10, choices=USER_TYPE_CHOICES, default='user')
