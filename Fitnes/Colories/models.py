@@ -56,17 +56,3 @@ class TimeTable(models.Model):
     breakfast_time = models.TimeField(blank=True, null=True)
     lunch_time = models.TimeField(blank=True, null=True)
     dinner_time = models.TimeField(blank=True, null=True)
-
-class UserCaloryProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='calory_profile')
-    daily_calorie_goal = models.PositiveIntegerField()
-    consumed_calories = models.PositiveIntegerField(default=0)
-    burned_calories_exercise = models.PositiveIntegerField(default=0)  # Количество сожженных калорий посредством тренировок
-    burned_calories_sleep = models.PositiveIntegerField(default=0)  # Количество сожженных калорий посредством сна
-    recommendations = models.ManyToManyField(Selection)
-
-    def update_consumed_calories(self):
-        self.consumed_calories = (
-            self.history.total_calories if self.history else 0
-        ) - self.burned_calories_exercise - self.burned_calories_sleep
-        self.save()

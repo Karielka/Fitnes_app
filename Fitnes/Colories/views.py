@@ -3,7 +3,7 @@ from .models import MealRecord
 from .forms import MealRecordFormForCreate, MealRecordFormForEdit
 import plotly.graph_objects as go # type: ignore
 from django.http import HttpResponse
-from .models import MealRecord, UserCaloryProfile, Product, History
+from .models import MealRecord, Product, History
 from django.contrib.auth.decorators import login_required
 import io
 from django.contrib.auth.models import User
