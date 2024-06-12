@@ -8,23 +8,36 @@
     </h1>
   </div>
 
-<!--Создание меню адресации по приложению и его ключевыми страницами -->
-<div class="col">
-  <div class="row-3">
-    <a class="btn btn-primary" href="/colories/">Приложение Colories</a>
+  <!--Создание меню адресации по приложению и его ключевыми страницами -->
+  <div class="col">
+    <div class="row-3">
+      <a href="/colories/">Приложение Colories</a>
+    </div>
+    <div class="row-3">
+      <a href="/activity/">Приложение Activity</a>
+    </div>
+    <div class="row-3">
+      <a href="/expertise/">Приложение Expertise</a>
+    </div>
   </div>
-  <div class="row-3">
-    <a class="btn btn-primary" href="/activity/">Приложение Activity</a>
-  </div>
-  <div class="row-3">
-    <a class="btn btn-primary" href="/expertise/">Приложение Expertise</a>
-  </div>
-</div>
 
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+  <a class="btn btn-primary" href="{% url 'create_goal' %}">Создать цель</a>
+  <h2>Мои цели:</h2>
+    <ul>
+        {% for goal in goals %}
+            <li>
+                <strong>{{ goal.description }}</strong><br>
+                <p>All fields are available</p>
+                Стартовый вес: {{ goal.start_weight }} кг<br>
+                Текущий вес: {{ goal.current_weight }} кг<br>
+                Целевой вес: {{ goal.target_weight }} кг<br>
+                Статус: {{ goal.get_status_display }}<br>
+                <!-- Кнопка для редактирования -->
+                <a class="btn btn-primary" href="{% url 'edit_goal' pk=goal.pk %}">Редактировать</a><br>
+                <a class="btn btn-primary" href="{% url 'delete_goal' pk=goal.pk %}">Удалить</a>
+            </li>
+        {% endfor %}
+    </ul>
 
 </body>
 {% endblock content %}

@@ -10,7 +10,9 @@ class Goal(models.Model):
     ]
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='goals')
     description = models.CharField(max_length=255)
-    target_weight = models.FloatField()
+    start_weight = models.FloatField(default=50)
+    current_weight = models.FloatField(default=50)
+    target_weight = models.FloatField(default=50)
     start_date = models.DateField()
     end_date = models.DateField()
     status = models.CharField(max_length=20, choices=status_choices, default='Новая')

@@ -2,13 +2,22 @@
 {% load static %}
 
 {% block content %}
-<h1>Обновить текущий вес</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Сохранить</button>
-</form>
-<p>Желаемый вес:{{calory_profile.target_weight}}</p>
-<p>Осталось: {{for_goat_left}}</p>
+    <h1>Обновить текущий вес</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+    </form>
+    {% if active_goal %}
+    <h3>Цель:</h3>
+        <p>Описание: {{ active_goal.description }}</p>
+        <p>Начальный вес: {{ active_goal.start_weight }}</p>
+        <p>Желаемый вес: {{ active_goal.target_weight }}</p>
+        <p>Текущий вес: {{ active_goal.current_weight }}</p>
+    {% else %}
+        <p>Нет цели</p>
+    {% endif %}
+
+    <p>Осталось: {{for_goal_left}}</p>
 
 {% endblock %}

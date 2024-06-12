@@ -18,17 +18,15 @@
         {% endif %}
         <a href="{% url 'profile_edit' %}" class="btn btn-primary">Редактировать профиль</a>
     </div>
+
+    <a class="btn btn-primary" href="{% url 'index-progress' %}">Подробнее про цели (перейти в контекст Progress)</a>
     
     <div>
         <h2>Профиль калорий</h2>
         {% if calory_profile %}
             <p>Пол: {{ calory_profile.gender }}</p>
-            <p>Возраст: {{ calory_profile.age }}</p>
             <p>Рост: {{ calory_profile.height }} см</p>
-            <p>Текущий вес: {{ calory_profile.weight }} кг</p>
-            <p>Желаемый вес: {{ calory_profile.target_weight }} кг</p>
-            <p>Цель: {{ calory_profile.goal }}</p>
-            <p>Достичь к: {{ calory_profile.target_date }}</p>
+            <p>Don't forget about age</p>
             <p>Активность: {{ calory_profile.activity_level }}</p>
             <a href="{% url 'calory_profile_edit' %}" class="btn btn-primary">Редактировать профиль калорий</a>
             <a href="{% url 'tracking_current_weight' %}" class="btn btn-secondary">Отслеживать вес</a>
