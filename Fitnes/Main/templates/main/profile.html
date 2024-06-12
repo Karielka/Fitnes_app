@@ -30,7 +30,8 @@
             <p>Цель: {{ calory_profile.goal }}</p>
             <p>Достичь к: {{ calory_profile.target_date }}</p>
             <p>Активность: {{ calory_profile.activity_level }}</p>
-            <a href="{% url 'profile_edit' %}" class="btn btn-primary">Редактировать профиль калорий</a>
+            <a href="{% url 'calory_profile_edit' %}" class="btn btn-primary">Редактировать профиль калорий</a>
+            <a href="{% url 'tracking_current_weight' %}" class="btn btn-secondary">Отслеживать вес</a>
         {% else %}
             <p>Профиль калорий еще не создан.</p>
             <a href="{% url 'profile_create' %}" class="btn btn-secondary">Создать профиль калорий</a>

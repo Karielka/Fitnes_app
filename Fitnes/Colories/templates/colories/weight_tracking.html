@@ -1,0 +1,14 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block content %}
+<h1>Обновить текущий вес</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>
+<p>Желаемый вес:{{calory_profile.target_weight}}</p>
+<p>Осталось: {{for_goat_left}}</p>
+
+{% endblock %}

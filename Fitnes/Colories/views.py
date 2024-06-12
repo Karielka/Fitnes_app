@@ -9,7 +9,8 @@ import io
 from django.contrib.auth.models import User
 import datetime
 import base64
-
+from .forms import UpdateCurrentWeightForm
+from Profiles.models import UserCaloryProfile
 
 def index(request):
     meal_record = MealRecord.objects.filter(user=request.user)
@@ -193,3 +194,24 @@ def meal_record_delete(request, meal_record_id):
         'meal_record': meal_record,
     }
     return render(request, 'colories/meal_record_delete.html', context)
+
+@login_required
+def update_current_weight(request):
+    try:
+        calory_profile = UserCaloryProfile.objects.get(user=request.user)
+    except UserCaloryProfile.DoesNotExist:
+        return redirect('create_calory_profile')  # Если профиль не существует, перенаправляем на создание
+
+    if request.method == 'POST':
+        form = UpdateCurrentWeightForm(request.POST, instance=calory_profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')  # Перенаправляем на профиль пользователя после сохранения
+    else:
+        form = UpdateCurrentWeightForm(instance=calory_profile)
+    context = {
+        'form':form,
+        'calory_profile':calory_profile,
+        'for_goat_left':abs(calory_profile.weight - calory_profile.target_weight)
+    }
+    return render(request, 'colories/weight_tracking.html', context)

@@ -20,9 +20,10 @@ class UserCaloryProfile(models.Model):
     age = models.PositiveIntegerField()
     gender = models.CharField(max_length=10)
     height = models.FloatField()  # Height in centimeters
-    weight = models.FloatField()  # Weight in kilograms
+    weight = models.FloatField()  # Weight in kilograms #start_weight
+    #current_weight = models.FloatField()  # Weight in kilograms
+    target_weight = models.FloatField()  # Weight in kilograms
     goal = models.CharField(max_length=10, choices=GOAL_CHOICES)
-    target_weight = models.FloatField()  # Target weight in kilograms
     activity_level = models.CharField(max_length=20, choices=ACTIVITY_LEVEL_CHOICES)
     target_date = models.DateField()  # Date to reach the goal
 
