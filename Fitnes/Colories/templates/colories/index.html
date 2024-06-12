@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/i18n/jquery-ui-i18n.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> 
 </head>
 <body>
   <script>
@@ -286,11 +287,12 @@
       </div>
       <div class="chart">
         <!-- Pie chart here -->
-        <canvas id="pieChart"></canvas>
-    </div>
+        <img src="data:image/png;base64,{{ macronutrient_chart_data }}" alt="Процентное соотношение БЖУ">
+      </div>
   </div>
   <div class="graph">
-      <!-- Graph here -->
+    <!-- Graph here -->
+    <img src="data:image/png;base64,{{ calories_chart_data }}" alt="График калорийности"> 
   </div>
   <div class="container_message"></div>
 </div>
