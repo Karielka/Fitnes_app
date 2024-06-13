@@ -127,6 +127,7 @@ form button[type="submit"]:hover {
     display: block;
     margin-top: 10px;
 }
+
 select#id_type {
     width: 100%;
     height: 45px;

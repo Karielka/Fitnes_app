@@ -11,6 +11,7 @@ from django.contrib.auth.hashers import make_password
 from Main.models import Profile
 from Profiles.models import UserCaloryProfile
 from .forms import UserProfileForm
+from Progress.models import Goal
 
 @login_required
 def profile_edit(request):
@@ -87,10 +88,14 @@ def profile(request):
     except UserCaloryProfile.DoesNotExist:
         calory_profile = None
 
+    user = request.user
+    active_goal = Goal.objects.filter(user=user, status__in=['New', 'In_work']).order_by('-start_date').first()
+
     context = {
         'profile': profile,
         'calory_profile': calory_profile,
-        'page': 'profile'
+        'page': 'profile',
+        'goal': active_goal,
     }
     return render(request, 'main/profile.html', context)
 

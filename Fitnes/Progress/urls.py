@@ -1,11 +1,9 @@
 from django.urls import path
-
-import Progress.views as progress
+from . import views
 
 urlpatterns = [
-    path('', progress.index, name='index'),
-    # path('create/<slug:profile_pk>/', tasks.task_create, name='task-create'),
-    # path('read/<slug:task_pk>/', tasks.task_read, name='task-read'),
-    # path('edit/<slug:task_pk>/', tasks.task_update, name='task-update'),
-    # path('delete/<slug:task_pk>/', tasks.task_delete, name='task-delete'),
+    path('', views.index, name='index-progress'),
+    path('goal/create/', views.create_goal, name='create_goal'),
+    path('goal/edit/<int:pk>/', views.edit_goal, name='edit_goal'),
+    path('goal/delete/<int:pk>/', views.delete_goal, name='delete_goal'),
 ]

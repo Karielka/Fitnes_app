@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="{% static 'main/css/profile.css' %}" type="text/css" media="all">
 
 <body>
+    <h1>Личный кабинет пользователя</h1>
     <div class="container-main">
         <div class="container-head">
             <div class="container-image">
@@ -18,6 +19,7 @@
                     <p>Имя пользователя: {{ profile.user.username }}</p>
                     <p>Телефон: {{ profile.phone }}</p>
                     <p>Почта: {{ profile.user.email }}</p>
+                    <p>Роль: {{profile.type}}</p>
                 </div>
                 <div class="container-button"><a href="{% url 'profile_edit' %}" class="btn btn-primary">Редактировать профиль</a></div>
             </div>
@@ -27,9 +29,10 @@
                 <div class="wrapper-second">
                     <div class="container-text-head">Ваша цель</div>
                     <div class="container-text-base">
-                        <p>Достигнуть вес ... кг к ...</p>
+                        <p>Достигнуть вес {{goal.target_weight}} (кг) к {{goal.end_date}}</p>
+                        <a href="{% url 'tracking_current_weight' %}" class="btn btn-secondary">Отслеживать вес</a>
                     </div>
-                    <a href="{% url 'tracking_current_weight' %}" class="btn btn-secondary">Отслеживать вес</a>
+                    <a class="btn btn-primary" href="{% url 'index-progress' %}">Подробнее про цели</a>
                 </div>
             </div>
             <div class="container-second-second">
@@ -63,32 +66,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div>
-            <h2>Основная информация</h2>
-            {% if profile.type == 'expert' %}
-                <p>Ваша роль: эксперт</p>
-            {% else %}
-                <p>Ваша роль: пользователь</p>
-            {% endif %}
-            
-        </div>
-        
-        <div>
-            <h2>Профиль калорий</h2>
-            {% if calory_profile %}
-                <p>Возраст: {{ calory_profile.age }}</p>
-                <p>Желаемый вес: {{ calory_profile.target_weight }} кг</p>
-                <p>Цель: {{ calory_profile.goal }}</p>
-                <p>Достичь к: {{ calory_profile.target_date }}</p>
-                <p>Активность: {{ calory_profile.activity_level }}</p>
-                
-                
-            {% else %}
-                <p>Профиль калорий еще не создан.</p>
-                <a href="{% url 'profile_create' %}" class="btn btn-secondary">Создать профиль калорий</a>
-            {% endif %}
-        </div>
+        </div>        
     </div>
 </body>
 {% endblock content %}
