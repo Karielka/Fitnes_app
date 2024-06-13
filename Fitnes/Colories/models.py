@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-import datetime
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
@@ -14,12 +13,13 @@ class Product(models.Model):
         return self.name
 
 class MealRecord(models.Model):
-    category_choices = [('Breakfast','Завтрак'),('Dinner','Обед'),('Supper','Ужин'),('Snack','Перекус')]
+    category_choices = [('Breakfast','Завтрак'),('Dinner','Обед'),('Supper','Ужин'),('Snack','Перекус'), ('Water', 'Вода')]
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='meal_records')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    measure = models.FloatField() # сколько граммов/литров было употреблено
+    measure = models.FloatField() # сколько граммов/милилитров было употреблено
     meal_time = models.DateTimeField(auto_now_add=True)
     category = models.CharField(max_length=20, choices=category_choices, default='Новая')
+    is_water = is_water = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.maesure} {self.product} в {self.meal_time}"

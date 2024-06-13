@@ -21,7 +21,7 @@
                     <p>Почта: {{ profile.user.email }}</p>
                     <p>Роль: {{profile.type}}</p>
                 </div>
-                <div class="container-button"><a href="{% url 'profile_edit' %}" class="btn btn-primary">Редактировать профиль</a></div>
+                <div class="container-button"><a href="{% url 'profile_edit' %}" class="btn-btn-primary">Редактировать профиль</a></div>
             </div>
         </div>
         <div class="container-second">
@@ -66,7 +66,25 @@
                     </div>
                 </div>
             </div>
-        </div>        
+        </div>   
+        <div class="container-third">
+            <div class="container-third-first">
+                <div class="wrapper-second">
+                    <div class="container-third-text-head">
+                        <div class="wrapper-img"><img src="{% static 'main/img/sad-emoji.png' %}" alt="Image 10"></div>
+                        <j>Пока нет соревнований</j>
+                    </div>
+                    <div class="container-text-base">
+
+                    </div>
+                </div>
+            </div>
+        </div> 
+        <div class="container-fourth">
+            <div class="wrapper-fourth">
+                <div class="container-text-head">Последние тренировки</div>
+            </div>
+        </div>    
     </div>
 </body>
 {% endblock content %}
