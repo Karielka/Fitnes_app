@@ -103,24 +103,24 @@
 </div>
 
 <table class="data">
-  <tr>
-    <td class="column">
-      <div class="label colored">Белки</div>
-      <div class="value" id="proteins_sum">0</div>
-    </td>
-    <td class="column">
-      <div class="label colored">Жиры</div>
-      <div class="value" id="fats_sum">0</div>
-    </td>
-    <td class="column">
-      <div class="label colored">Углев</div>
-      <div class="value" id="carbs_sum">0</div>
-    </td>
-    <td class="column">
-      <div class="label colored">ККал</div>
-      <div class="value" id="calories_sum">0</div>
-    </td>
-  </tr>
+    <tr>
+        <td class="column">
+          <div class="label colored">Белки</div>
+          <div class="value" id="proteins_sum">{{ proteins_sum|floatformat:1 }}</div>
+        </td>
+        <td class="column">
+          <div class="label colored">Жиры</div>
+          <div class="value" id="fats_sum">{{ fats_sum|floatformat:1 }}</div>
+        </td>
+        <td class="column">
+          <div class="label colored">Углев</div>
+          <div class="value" id="carbs_sum">{{ carbs_sum|floatformat:1 }}</div>
+        </td>
+        <td class="column">
+          <div class="label colored">ККал</div>
+          <div class="value" id="calories_sum">{{ calories_sum }}</div>
+        </td>
+      </tr>
 </table>
 
 
@@ -179,7 +179,7 @@
   <div class="container">
     <div class="food-entry water" id="water">
         <div class="label">Вода</div>
-        <div class="value" id="water">{{ water_data.calories }}</div>
+        <div class="value" id="water">{{ water_data.water_l|floatformat:1 }}</div>
         <div class="value">л</div>
         <form action="{% url 'meal_record_create' %}" method="get">
             <button class="button_colories" type="submit">+</button>
@@ -240,10 +240,10 @@
           <div>Съедено: <span id="eatenCalories"></span></div>
           <div>Всего: <span id="totalCalories"></span></div>
           <div class="macros">
-              <div>Белки: <span id="proteinPercent"></span>%</div>
-              <div>Жиры: <span id="fatPercent"></span>%</div>
-              <div>Углеводы: <span id="carbPercent"></span>%</div>
-          </div>
+            <div style="color: rgb(248, 195, 37);">Белки: <span id="proteinPercent">{{ protein_percent|floatformat:1 }}</span>%</div>
+            <div style="color: rgb(93, 161, 48);">Жиры: <span id="fatPercent">{{ fat_percent|floatformat:1 }}</span>%</div>
+            <div style="color: rgb(36, 56, 23);">Углеводы: <span id="carbPercent">{{ carb_percent|floatformat:1 }}</span>%</div>
+        </div>
       </div>
       <div class="chart">
         <!-- Pie chart here -->
@@ -273,7 +273,7 @@
   <script>
       $(document).ready(function() {
           // Получение данных из контекста
-          var breakfastProteins = parseFloat("{{ breakfast_data.proteins|floatformat:1 }}");
+    var breakfastProteins = parseFloat("{{ breakfast_data.proteins|floatformat:1 }}");
     var breakfastFats = parseFloat("{{ breakfast_data.fats|floatformat:1 }}");
     var breakfastCarbs = parseFloat("{{ breakfast_data.carbs|floatformat:1 }}");
     var breakfastCalories = parseInt("{{ breakfast_data.calories }}");
@@ -289,7 +289,10 @@
     var snackFats = parseFloat("{{ snack_data.fats|floatformat:1 }}");
     var snackCarbs = parseFloat("{{ snack_data.carbs|floatformat:1 }}");
     var snackCalories = parseInt("{{ snack_data.calories }}");
-    var waterCalories = parseInt("{{ water_data.calories }}");
+    var water_l = parseFloat("{{ water_data.water_l|floatformat:2 }}");
+    var proteinPercent = parseFloat("{{ protein_percent|floatformat:1 }}"); 
+    var fatPercent = parseFloat("{{ fat_percent|floatformat:1 }}"); 
+    var carbPercent = parseFloat("{{ carb_percent|floatformat:1 }}");
     // Заполнение полей
     $('#breakfast #proteins').text(breakfastProteins);
     $('#breakfast #fats').text(breakfastFats);
@@ -307,40 +310,10 @@
     $('#snack #fats').text(snackFats);
     $('#snack #carbs').text(snackCarbs);
     $('#snack #calories').text(snackCalories);
-    $('#water #water').text(waterCalories);
-    // Обновляем суммарные значения белков, жиров, углеводов и калорий для каждого приема пищи
-    updateTotalValues();
-         
-  
-          // Функция для обновления суммарных значений
-          function updateTotalValues() {
-              var proteinsSum = 0;
-              var fatsSum = 0;
-              var carbsSum = 0;
-              var caloriesSum = 0;
-  
-              // Находим все элементы .food-entry
-              var products = document.querySelectorAll('.food-entry');
-  
-              // Проходимся по каждому элементу и суммируем значения
-              products.forEach(function(product) {
-                  var proteins = parseFloat(product.querySelector('.value.proteins').textContent);
-                  var fats = parseFloat(product.querySelector('.value.fats').textContent);
-                  var carbs = parseFloat(product.querySelector('.value.carbs').textContent);
-                  var calories = parseFloat(product.querySelector('.value.calories').textContent);
-  
-                  proteinsSum += proteins;
-                  fatsSum += fats;
-                  carbsSum += carbs;
-                  caloriesSum += calories;
-              });
-  
-              // Обновляем суммарные значения в соответствующих полях
-              document.getElementById('proteins_sum').textContent = proteinsSum.toFixed(1);
-              document.getElementById('fats_sum').textContent = fatsSum.toFixed(1);
-              document.getElementById('carbs_sum').textContent = carbsSum.toFixed(1);
-              document.getElementById('calories_sum').textContent = caloriesSum;
-          }
+    $('#water #water').text(water_l);    
+    $('#proteinPercent').text(proteinPercent);
+    $('#fatPercent').text(fatPercent);
+    $('#carbPercent').text(carbPercent);
       });
   </script>
 </body>
