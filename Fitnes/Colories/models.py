@@ -22,7 +22,7 @@ class MealRecord(models.Model):
     is_water = is_water = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.maesure} {self.product} в {self.meal_time}"
+        return f"{self.measure} {self.product} в {self.meal_time}"
 
 #экземпляр класса должен создаваться каждый день для каждого пользователя
 #или же создаваться после циклом, для более детальной обработки калорий за день
