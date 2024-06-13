@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from simple_history.models import HistoricalRecords # type: ignore
 
 class Goal(models.Model):
     status_choices = [
@@ -17,6 +18,7 @@ class Goal(models.Model):
     end_date = models.DateField()
     status = models.CharField(max_length=20, choices=status_choices, default='Новая')
     points = models.PositiveIntegerField(default=0)  # Количество баллов за выполнение цели
+    history = HistoricalRecords()  # Добавляем историю изменений
 
 class Achievement(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='achievements')
