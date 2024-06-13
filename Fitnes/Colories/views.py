@@ -18,6 +18,12 @@ def index(request):
         user_id = request.user.id
         calories_chart_data = calories_chart(request, user_id)
         macronutrient_chart_data = macronutrient_chart(request, user_id)
+        todays_meals = MealRecord.objects.filter(user=request.user, meal_time__date=datetime.date.today())
+        breakfast_data = get_meal_data(todays_meals, 'Breakfast')
+        lunch_data = get_meal_data(todays_meals, 'Dinner')
+        dinner_data = get_meal_data(todays_meals, 'Supper')
+        snack_data = get_meal_data(todays_meals, 'Snack')
+        water_data = get_meal_data(todays_meals, 'Water')
         context = {
             'title': 'Страница для учёта Ваших калорий',
             'message': 'Вы находитесь на главной странице Colories',
@@ -25,6 +31,11 @@ def index(request):
             'calories_chart_data': calories_chart_data,
             'macronutrient_chart_data': macronutrient_chart_data,
             'mealrecord': meal_record,
+            'breakfast_data': breakfast_data,
+            'lunch_data': lunch_data,
+            'dinner_data': dinner_data,
+            'snack_data': snack_data,
+            'water_data': water_data,  # Передаем данные о воде
         }
     else:
         context = {
@@ -34,6 +45,23 @@ def index(request):
         }
     return render(request, 'colories/index.html', context)
 
+def get_meal_data(meals, category):
+    total_proteins = 0
+    total_fats = 0
+    total_carbs = 0
+    total_calories = 0
+    for meal in meals:
+        if meal.category == category:
+            total_proteins += meal.product.proteins_per_unit * meal.measure
+            total_fats += meal.product.fats_per_unit * meal.measure
+            total_carbs += meal.product.carbohydrates_per_unit * meal.measure
+            total_calories += meal.product.calories_per_unit * meal.measure
+    return {
+        'proteins': total_proteins,
+        'fats': total_fats,
+        'carbs': total_carbs,
+        'calories': total_calories,
+    }
 
 def get_user_history(user_id, start_date=None, end_date=None):
     user = get_object_or_404(User, pk=user_id)
