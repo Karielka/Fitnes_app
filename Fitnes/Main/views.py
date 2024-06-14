@@ -8,30 +8,6 @@ from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import RegistrationForm, LoginForm, PasswordResetForm
 from django.contrib.auth.hashers import make_password
-from Main.models import Profile
-from Profiles.models import UserCaloryProfile
-from .forms import UserProfileForm
-from Progress.models import Goal
-
-@login_required
-def profile_edit(request):
-    user = request.user
-    try:
-        profile = user.profile
-    except Profile.DoesNotExist:
-        profile = Profile.objects.create(user=user)
-
-    if request.method == 'POST':
-        form = UserProfileForm(request.POST, instance=user)
-        if form.is_valid():
-            form.save()
-            return redirect('profile')
-    else:
-        initial_data = {
-            'phone': profile.phone,
-        }
-        form = UserProfileForm(instance=user, initial=initial_data)
-    return render(request, 'main/profile_edit.html', {'form': form})
 
 def index(request):
     context = {
@@ -75,29 +51,6 @@ def register(request):
         'page': 'register'
     }
     return render(request, 'main/register.html', context)
-
-@login_required
-def profile(request):
-    try:
-        profile = request.user.profile
-    except Profile.DoesNotExist:
-        profile = Profile.objects.create(user=request.user)
-
-    try:
-        calory_profile = request.user.calory_profile
-    except UserCaloryProfile.DoesNotExist:
-        calory_profile = None
-
-    user = request.user
-    active_goal = Goal.objects.filter(user=user, status__in=['New', 'In_work']).order_by('-start_date').first()
-
-    context = {
-        'profile': profile,
-        'calory_profile': calory_profile,
-        'page': 'profile',
-        'goal': active_goal,
-    }
-    return render(request, 'main/profile.html', context)
 
 def login_view(request):
     if request.method == 'POST':
