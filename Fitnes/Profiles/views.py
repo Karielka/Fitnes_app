@@ -34,7 +34,7 @@ def calory_profile_edit(request):
             return redirect('profile')
     else:
         form = UserCaloryProfileForm(instance=profile)
-    return render(request, 'profiles/edit_profile.html', {'form': form})
+    return render(request, 'profiles/calory_profile_edit.html', {'form': form})
 
 @login_required
 def profile_create(request):
