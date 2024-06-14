@@ -1,0 +1,13 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2>{{ title }}</h2>
+    <p>Вы уверены, что хотите удалить запись о сне?</p>
+    <form action="{% url 'sleep_record_delete' sleep_record.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Удалить</button>
+    </form>    
+</div>
+{% endblock %}
