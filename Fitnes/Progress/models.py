@@ -3,6 +3,12 @@ from django.contrib.auth.models import User
 from simple_history.models import HistoricalRecords # type: ignore
 from django.utils import timezone
 
+class WeightHistory(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='weight_history')
+    weight = models.FloatField()
+    date = models.DateTimeField(auto_now_add=True)
+
+
 class Goal(models.Model):
     status_choices = [
         ('New', 'Новая'),
@@ -27,6 +33,7 @@ class Goal(models.Model):
             old_instance = Goal.objects.get(pk=self.pk)
             if old_instance.current_weight != self.current_weight:
                 self.updated_at = timezone.now()
+                WeightHistory.objects.create(user=self.user, weight=self.current_weight)  # Добавляем запись в историю
         super(Goal, self).save(*args, **kwargs)
 
 class Achievement(models.Model):
