@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import timedelta
 
 class Exercise(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='exercises')
@@ -20,11 +21,11 @@ class Sleep(models.Model):
     notes = models.TextField(blank=True)  
 
     def calculate_sleep_quality(self):
-        if self.duration < 3:
+        if self.duration < timedelta(hours=3):
             self.quality = 'poor'
-        elif self.duration < 6:
+        elif self.duration < timedelta(hours=6):
             self.quality = 'fair'
-        elif self.duration < 9:
+        elif self.duration < timedelta(hours=9):
             self.quality = 'good'
         else:
             self.quality = 'excellent'

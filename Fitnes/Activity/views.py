@@ -46,8 +46,8 @@ def sleep_records_read(request):
     return render(request, 'activity/sleep_records_read.html', context)
 
 @login_required
-def sleep_record_update(request, sleep_record_id):
-    sleep_record = get_object_or_404(Sleep, pk=sleep_record_id)
+def sleep_record_update(request, sleep_id):
+    sleep_record = get_object_or_404(Sleep, pk=sleep_id)
     if request.method == 'POST':
         form = SleepRecordFormForCreate(request.POST, instance=sleep_record)
         if form.is_valid():
@@ -63,8 +63,8 @@ def sleep_record_update(request, sleep_record_id):
     return render(request, 'activity/sleep_record_update.html', context)
 
 @login_required
-def sleep_record_delete(request, sleep_record_id):
-    sleep_record = get_object_or_404(Sleep, pk=sleep_record_id)
+def sleep_record_delete(request, sleep_id):
+    sleep_record = get_object_or_404(Sleep, pk=sleep_id)
     if request.method == 'POST':
         sleep_record.delete()
         #update_history_for_user(request.user) # Обновляем историю после удаления
