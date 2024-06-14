@@ -6,8 +6,8 @@
     <h2>{{ title }}</h2>
     <ul>
         {% for record in sleep_records %}
-
             <li>
+                <p>{{ record.notes }}</p>
                 <p>{{ record.duration }}</p>
                 <a href="{% url 'sleep_record_update' record.id %}">Редактировать</a>
                 <a href="{% url 'sleep_record_delete' record.id %}">Удалить</a>

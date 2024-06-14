@@ -7,15 +7,44 @@ from .models import MealRecord, Product, History
 from django.contrib.auth.decorators import login_required
 import io
 from django.contrib.auth.models import User
-import datetime
 import base64
+from Activity.models import Sleep, Exercise
+#import datetime
+from datetime import datetime, timedelta, date
+
+def calculate_today_sleep(user):
+    today = date.today()
+    start_of_today = datetime.combine(today, datetime.min.time())
+    end_of_today = datetime.combine(today, datetime.max.time())
+    
+    total_sleep_duration = timedelta()
+    sleep_records = Sleep.objects.filter(user=user, date=today)
+    for record in sleep_records:
+        # Начало и конец сна
+        sleep_start = datetime.combine(record.date, datetime.min.time())
+        sleep_end = sleep_start + record.duration
+        
+        # Пересечение сна с сегодняшним днем
+        if sleep_end > start_of_today and sleep_start < end_of_today:
+            # Начало периода внутри сегодняшнего дня
+            if sleep_start < start_of_today:
+                sleep_start = start_of_today
+            # Конец периода внутри сегодняшнего дня
+            if sleep_end > end_of_today:
+                sleep_end = end_of_today
+            total_sleep_duration += (sleep_end - sleep_start)
+    # Возвращаем продолжительность сна в секундах, минутах и часах
+    total_sleep_seconds = total_sleep_duration.total_seconds()
+    sleep_hours = int(total_sleep_seconds // 3600)
+    sleep_minutes = int((total_sleep_seconds % 3600) // 60)
+    return sleep_hours, sleep_minutes
 
 def index(request):
     meal_record = MealRecord.objects.filter(user=request.user)
     if request.user.is_authenticated:
         user_id = request.user.id
         calories_chart_data = calories_chart(request, user_id)
-        todays_meals = MealRecord.objects.filter(user=request.user, meal_time__date=datetime.date.today())
+        todays_meals = MealRecord.objects.filter(user=request.user, meal_time__date=date.today())
         breakfast_data = get_meal_data(todays_meals, 'Breakfast')
         lunch_data = get_meal_data(todays_meals, 'Dinner')
         dinner_data = get_meal_data(todays_meals, 'Supper')
@@ -33,6 +62,8 @@ def index(request):
         fat_percent = (fats_sum / total_macros) * 100 if total_macros else 0
         carb_percent = (carbs_sum / total_macros) * 100 if total_macros else 0
         macronutrient_chart_data = macronutrient_chart(request, user_id, proteins_sum, fats_sum, carbs_sum)
+        # Вычисляем количество сна за сегодняшний день
+        sleep_hours, sleep_minutes = calculate_today_sleep(request.user)
         context = {
             'title': 'Страница для учёта Ваших калорий',
             'message': 'Вы находитесь на главной странице Colories',
@@ -51,7 +82,9 @@ def index(request):
             'calories_sum': calories_sum,
             'protein_percent': protein_percent,
             'fat_percent': fat_percent,
-            'carb_percent': carb_percent
+            'carb_percent': carb_percent,
+            'sleep_hours': sleep_hours,  # Передаем количество сна в часах
+            'sleep_minutes': sleep_minutes,  # Передаем количество сна в минутах
         }
     else:
         context = {
@@ -166,7 +199,7 @@ def food_dynamics_view(request):
 
 def update_history_for_user(user):
     # Получаем или создаем History для пользователя
-    today = datetime.date.today() 
+    today = date.today() 
     try:
         user_history = user.history.get(date=today)
     except History.DoesNotExist:
