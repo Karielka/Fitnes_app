@@ -2,8 +2,7 @@
 {% load static %}
 
 {% block content %}
-
-<h1>Редактировать профиль</h1>
+<h1>Редактировать обычный профиль</h1>
 <form method="post" action="{% url 'profile_edit' %}">
     {% csrf_token %}
     {{ form.as_p }}

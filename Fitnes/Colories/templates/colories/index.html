@@ -136,7 +136,8 @@
           <div class="value carbs" id="carbs">{{ breakfast_data.carbs }}</div>
           <div class="value calories" id="calories">{{ breakfast_data.calories }}</div>
           <form action="{% url 'meal_record_create' %}" method="get">
-              <button class="button_colories" type="submit">+</button>
+            <input type="hidden" name="category" value="Breakfast">
+            <button class="button_colories" type="submit">+</button>
           </form>
         </div>
     </div>
@@ -148,10 +149,11 @@
         <div class="value carbs" id="carbs">{{ lunch_data.carbs }}</div>
         <div class="value calories" id="calories">{{ lunch_data.calories }}</div>
         <form action="{% url 'meal_record_create' %}" method="get">
-            <button class="button_colories" type="submit">+</button>
+          <input type="hidden" name="category" value="Dinner">
+          <button class="button_colories" type="submit">+</button>
         </form>
     </div>
-</div>
+  </div>
   <div class="container">
     <div class="food-entry dinner" id="dinner">
         <div class="label">Ужин</div>
@@ -160,10 +162,11 @@
         <div class="value carbs" id="carbs">{{ dinner_data.carbs }}</div>
         <div class="value calories" id="calories">{{ dinner_data.calories }}</div>
         <form action="{% url 'meal_record_create' %}" method="get">
-            <button class="button_colories" type="submit">+</button>
+          <input type="hidden" name="category" value="Supper">
+          <button class="button_colories" type="submit">+</button>
         </form>
     </div>
-</div>
+  </div>
   <div class="container">
     <div class="food-entry snack" id="snack">
         <div class="label">Перекус</div>
@@ -172,20 +175,22 @@
         <div class="value carbs" id="carbs">{{ snack_data.carbs }}</div>
         <div class="value calories" id="calories">{{ snack_data.calories }}</div>
         <form action="{% url 'meal_record_create' %}" method="get">
-            <button class="button_colories" type="submit">+</button>
+          <input type="hidden" name="category" value="Snack">
+          <button class="button_colories" type="submit">+</button>
         </form>
     </div>
   </div>
   <div class="container">
     <div class="food-entry water" id="water">
         <div class="label">Вода</div>
-        <div class="value" id="water">{{ water_data.water_l|floatformat:1 }}</div>
-        <div class="value">л</div>
+        <div class="value" id="water">{{ water_data.water_l|floatformat:3 }}</div>
+        <div class="value">мл</div>
         <form action="{% url 'meal_record_create' %}" method="get">
-            <button class="button_colories" type="submit">+</button>
+          <input type="hidden" name="category" value="Water">
+          <button class="button_colories" type="submit">+</button>
         </form>
     </div>
-</div>
+  </div>
   <div class="container">
       <div class="food-entry workout">
           <div class="label">Активность</div>
@@ -195,17 +200,17 @@
           </form>
       </div>
   </div>
-<div class="container">
-  <div class="food-entry sleep">
-      <div class="label">Сон</div>
-      <div class="value" id="hours">0</div>
-      <div class="value">ч</div>
-      <div class="value" id="calories">0</div>
-      <form action="{% url 'meal_record_create' %}" method="get">
-          <button class="button_colories" type="submit">+</button>
-      </form>
+  <div class="container">
+    <div class="food-entry sleep">
+        <div class="label">Сон</div>
+        <div class="value" id="hours">0</div>
+        <div class="value">ч</div>
+        <div class="value" id="calories">0</div>
+        <form action="{% url 'meal_record_create' %}" method="get">
+            <button class="button_colories" type="submit">+</button>
+        </form>
+    </div>
   </div>
-</div>
 </div>
 
 

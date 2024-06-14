@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import MealRecord
-from .forms import MealRecordFormForCreate, MealRecordFormForEdit
+from .forms import MealRecordFormForCreate, MealRecordFormForEdit, WaterRecordForm
 import plotly.graph_objects as go # type: ignore
 from django.http import HttpResponse
 from .models import MealRecord, Product, History
@@ -9,8 +9,6 @@ import io
 from django.contrib.auth.models import User
 import datetime
 import base64
-from Progress.forms import UpdateCurrentWeightForm
-from Progress.models import Goal
 
 def index(request):
     meal_record = MealRecord.objects.filter(user=request.user)
@@ -85,7 +83,7 @@ def get_meal_data(meals, category):
         'fats': total_fats,
         'carbs': total_carbs,
         'calories': total_calories,
-        'water_l': water_l/1000  # Добавлен ключ water_l
+        'water_l': water_l # Добавлен ключ water_l
     }
 
 def get_user_history(user_id, start_date=None, end_date=None):
@@ -181,30 +179,41 @@ def update_history_for_user(user):
 
 
 
-
-
-
-
-
-
+@login_required
 def meal_record_create(request):
+    category = request.GET.get('category', '')  # Получаем значение категории из GET параметров
+    water_product = Product.objects.get(name='Вода')  # Получаем продукт "Вода"
+    if category == 'Water':
+        form_class = WaterRecordForm
+        title = 'Создать запись о приёме воды'
+        product = water_product
+    else:
+        form_class = MealRecordFormForCreate
+        title = 'Создать запись о приёме пищи'
+        product = None
     if request.method == 'POST':
-        form = MealRecordFormForCreate(request.POST)
+        form = form_class(request.POST)
         if form.is_valid():
             meal_record = form.save(commit=False)
-            meal_record.user = request.user  # Привязка к текущему пользователю
+            meal_record.user = request.user
+            meal_record.category = category if category else request.POST.get('category')  # Получаем значение категории
+            if product:
+                meal_record.product = product  # Задаем продукт "Вода", если это категория "Water"
             meal_record.save()
-            # Обновляем историю калорий после добавления новой записи
             update_history_for_user(request.user)
-            return redirect('meal_record_read')  # Перенаправление после создания
+            return redirect('meal_record_read')
     else:
-        form = MealRecordFormForCreate()
+        form = form_class()
     context = {
-        'title': 'Создать запись о приёме пищи',
+        'title': title,
         'form': form,
+        'category': category  # Передаем категорию в контексте
     }
     return render(request, 'colories/meal_record_create.html', context)
 
+
+
+@login_required
 def meal_records_read(request):
     meal_records = MealRecord.objects.filter(user=request.user)
     context = {
@@ -213,6 +222,7 @@ def meal_records_read(request):
     }
     return render(request, 'colories/meal_record_read.html', context)
 
+@login_required
 def meal_record_update(request, meal_record_id):
     meal_record = get_object_or_404(MealRecord, pk=meal_record_id)
     if request.method == 'POST':
@@ -229,6 +239,7 @@ def meal_record_update(request, meal_record_id):
     }
     return render(request, 'colories/meal_record_update.html', context)
 
+@login_required
 def meal_record_delete(request, meal_record_id):
     meal_record = get_object_or_404(MealRecord, pk=meal_record_id)
     if request.method == 'POST':
@@ -240,28 +251,3 @@ def meal_record_delete(request, meal_record_id):
         'meal_record': meal_record,
     }
     return render(request, 'colories/meal_record_delete.html', context)
-
-
-@login_required
-def update_current_weight(request):
-    user = request.user
-    # Находим последнюю активную цель пользователя
-    active_goal = Goal.objects.filter(user=user, status__in=['New', 'In_work']).order_by('-start_date').first()
-
-    if not active_goal:
-        return redirect('create_goal')  # Если нет активной цели, перенаправляем на создание цели
-
-    if request.method == 'POST':
-        form = UpdateCurrentWeightForm(request.POST, instance=active_goal)
-        if form.is_valid():
-            form.save()
-            return redirect('tracking_current_weight')  # Перенаправляем на профиль пользователя после сохранения
-    else:
-        form = UpdateCurrentWeightForm(instance=active_goal)
-    
-    context = {
-        'form': form,
-        'active_goal': active_goal,
-        'for_goal_left': abs(active_goal.current_weight - active_goal.target_weight)
-    }
-    return render(request, 'colories/weight_tracking.html', context)
