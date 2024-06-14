@@ -1,7 +1,7 @@
 html, body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #f6f6f6;
+    background-color: white;
     margin: 0;
     padding: 0;
     overflow-x: hidden; 
@@ -10,7 +10,6 @@ html, body {
 a {
     color: black;
     text-decoration: none;
-    margin-right: 10px;
 }
 
 .burger-menu {
@@ -55,8 +54,15 @@ a {
   }
 
 .logout {
-    margin-left:auto;
+    margin-left: 600px;
     color: black;
+    justify-content: right;
+}
+
+.logout:hover {
+    margin-left: 600px;
+    color: #5DA130;
+    text-decoration: none;
     justify-content: right;
 }
 
@@ -64,33 +70,91 @@ a {
     position: relative;
     width: 100%;
     height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .hero-text h1 {
-    font-size: 36px;
+    font-size: 60px;
     color: #333;
+    margin-top: 40px;
+    margin-left: 10px;
+    padding: 10px;
+    font-family: 'Oswald', sans-serif;
+    color: #5da130;
+
 }
 
 .hero-text p {
-    font-size: 24px;
+    font-size: 22px;
     color: #666;
+    width: 650px;
+    margin-left: 20px;
+    padding: 10px;
+    text-align: center;
 }
 
 .hero-buttons {
     display: flex;
-    justify-content: center;
+    margin-left: 200px;
     gap: 10px;
     margin-top: 20px;
 }
 
 .hero-btn {
-    background: #ff0;
-    border: none;
-    padding: 10px 20px;
+    appearance: none;
+    text-decoration: none;
+    width: 300px;
+    background-color: #90ee90;
+    border-radius: 40em;
+    border-style: none;
+    box-shadow: #5DA130 0 -12px 6px inset;
+    box-sizing: border-box;
+    color: #0E4128;
     cursor: pointer;
-    font-size: 18px;
+    display: inline-block; 
+    font-family: -apple-system, sans-serif;
+    font-size: 1.2rem;
+    font-weight: lighter;
+    letter-spacing: -.24px;
+    margin: 0;
+    outline: none;
+    padding: 1rem 1.3rem;
+    quotes: auto;
+    text-align: center;
+    text-decoration: none;
+    transition: all .15s;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
 }
 
+.hero-btn:hover {
+    background-color: #FFC229;
+    box-shadow: #FF6314 0 -6px 8px inset;
+    color: white;
+    transform: scale(1.125);
+    text-decoration: none;
+}
+
+.hero-btn:active {
+    transform: scale(1.025);
+}
+
+@media (min-width: 768px) {
+    .hero-btn {
+        font-size: 1.5rem;
+        padding: .75rem 2rem;
+    }
+}
+
+.logo img{
+    width: 400px;
+    height: 146px;
+    margin-left: 10%;
+    margin-top: 50px;
+
+}
 section {
     padding: 20px;
 }
@@ -101,6 +165,8 @@ section {
     position: relative;
     height: 100%;
     margin-top: 20px;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .nutrition-text h2, .nutrition-text h3 {
@@ -125,14 +191,6 @@ section {
     align-items: center;
 }
 
-.cta-btn {
-    background: #ff0;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 18px;
-}
-
 
 .workout {
     color: white;
@@ -144,23 +202,112 @@ section {
 
 .workout-content {
     display: flex;
+    justify-items: flex-start;
+    gap: 20px;
+}
+
+.workout h2 {
+    font-size: 40px;
+    color: #333;
+    text-align: right;
+    width: 1000px;
+    padding: 10px;
+    font-family: 'Oswald', sans-serif;
+    color: #5da130;
+
+}
+
+.workout p {
+    font-size: 18px;
+    color: #666;
+    width: 800px;
+    padding: 10px;
+    text-align: center;
+    justify-content: center;
+}
+
+.motivation {
+    position: relative;
+    width: 100%;
+}
+.motivation-content {
+    display: flex;
     justify-content: center;
     align-items: center;
     gap: 20px;
 }
 
-.cta-btn {
-    background: #ff0;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 18px;
+.motivation h1 {
+    font-size: 40px;
+    color: #333;
+    text-align: center;
+    padding: 10px;
+    font-family: 'Oswald', sans-serif;
+    color: #5da130;
+
 }
 
-footer {
-    background: #0f0;
+.motivation p {
+    font-size: 18px;
+    color: #666;
+    width: 800px;
     padding: 10px;
     text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.motivation-btn {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.cta-btn {
+    appearance: none;
+    text-decoration: none;
+    width: 300px;
+    background-color: #90ee90;
+    border-radius: 40em;
+    border-style: none;
+    box-shadow: #5DA130 0 -12px 6px inset;
+    box-sizing: border-box;
+    color: #0E4128;
+    cursor: pointer;
+    display: inline-block; 
+    font-family: -apple-system, sans-serif;
+    font-size: 1.2rem;
+    font-weight: lighter;
+    letter-spacing: -.24px;
+    margin: 0;
+    outline: none;
+    padding: 1rem 1.3rem;
+    quotes: auto;
+    text-align: center;
+    text-decoration: none;
+    transition: all .15s;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+}
+
+.cta-btn:hover {
+    background-color: #FFC229;
+    box-shadow: #FF6314 0 -6px 8px inset;
+    color: white;
+    transform: scale(1.125);
+    text-decoration: none;
+}
+
+.cta-btn:active {
+    transform: scale(1.025);
+}
+
+@media (min-width: 768px) {
+    .cta-btn {
+        font-size: 1.5rem;
+        padding: .75rem 2rem;
+    }
 }
 
 .marquee-container {
