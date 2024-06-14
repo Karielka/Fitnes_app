@@ -1,10 +1,41 @@
 {% extends "main/base.html" %}
+{% load static %}
+
 
 {% block content %}
-<h1>Редактирование профиля</h1>
+<link rel="stylesheet" href="{% static 'profiles/css/edit_profile.css' %}" type="text/css" media="all">
+
+<body>
+    <div class="page-wrapper">
+            <div class="page-wrapper">
+                <div class="container-edit">
+                    <div class="form-container">
+                        <form method="post" class="login-edit">
+                            <div class="text-wrapper">
+                                <h2>Редактирование профиля</h2>
+                            </div>
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <div class="button-wrapper">    
+                                <button type="submit" class="btn btn-primary">Сохранить</button>
+                            </div>
+                        </form>
+                        <div class="login-text">
+                            <div class="text1-wrapper">
+                                <p>СУПЕР ДУПЕР ИКОНКА</p>
+                                <p>Добро пожаловать! Пожалуйста, введите свои учетные данные, чтобы войти в систему. Если у вас нет учетной записи, пожалуйста, зарегистрируйтесь.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Сохранить</button>
+    
 </form>
 {% endblock %}
