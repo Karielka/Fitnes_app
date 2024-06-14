@@ -9,21 +9,26 @@ import io
 from django.contrib.auth.models import User
 import base64
 from Activity.models import Sleep, Exercise
-#import datetime
 from datetime import datetime, timedelta, date
+
+def colory_dynamic(request):
+    context = {
+        'title': 'Страница для отображения изменения калорий',
+        'message': 'Вы находитесь на странице Colories_dynamic',
+        'page': 'colories_dynamic',
+    }
+    return render(request, 'colories/dynamic.html', context)
 
 def calculate_today_sleep(user):
     today = date.today()
     start_of_today = datetime.combine(today, datetime.min.time())
     end_of_today = datetime.combine(today, datetime.max.time())
-    
     total_sleep_duration = timedelta()
     sleep_records = Sleep.objects.filter(user=user, date=today)
     for record in sleep_records:
         # Начало и конец сна
         sleep_start = datetime.combine(record.date, datetime.min.time())
         sleep_end = sleep_start + record.duration
-        
         # Пересечение сна с сегодняшним днем
         if sleep_end > start_of_today and sleep_start < end_of_today:
             # Начало периода внутри сегодняшнего дня
@@ -100,7 +105,6 @@ def get_meal_data(meals, category):
     total_carbs = 0
     total_calories = 0
     water_l = 0  # Добавленная переменная для воды
-
     for meal in meals:
         if meal.category == category:
             if meal.product.name.lower() == "вода":  # Проверка на "вода" в нижнем регистре
@@ -110,7 +114,6 @@ def get_meal_data(meals, category):
                 total_fats += meal.product.fats_per_unit * meal.measure
                 total_carbs += meal.product.carbohydrates_per_unit * meal.measure
                 total_calories += meal.product.calories_per_unit * meal.measure
-
     return {
         'proteins': total_proteins,
         'fats': total_fats,
@@ -130,17 +133,14 @@ def get_user_history(user_id, start_date=None, end_date=None):
 
     return histories
 
-
 @login_required
 def calories_chart(request, user_id):
     # Получаем данные о калориях пользователя
     user = get_object_or_404(User, pk=user_id)
     user_history = get_user_history(user_id, start_date=None, end_date=None)
-
     # Создаем данные для графика
     dates = [record.date for record in user_history]
     calories = [record.total_calories for record in user_history]
-
     # Создаем график plotly
     fig = go.Figure(data=go.Scatter(x=dates, y=calories))
     fig.update_layout(title="Динамика калорийности",
@@ -150,10 +150,8 @@ def calories_chart(request, user_id):
     buf = io.BytesIO()
     fig.write_image(buf, format='png')
     buf.seek(0)
-
     # Возвращаем график в виде base64-строки
     chart_data = base64.b64encode(buf.getvalue()).decode('utf-8')
-
     # Возвращаем данные о графике в контекст
     return chart_data
 
@@ -167,17 +165,14 @@ def macronutrient_chart(request, user_id, proteins_sum, fats_sum, carbs_sum):
                                   showlegend=False,
                                   textinfo='none')]) 
     fig.update_layout(
-
         paper_bgcolor="#f0f0f0",  # Цвет фона графика
         plot_bgcolor="#f0f0f0"  # Цвет области графика
     )
     buf = io.BytesIO()
     fig.write_image(buf, format='png')
     buf.seek(0)
-
     # Возвращаем график в виде base64-строки
     chart_data = base64.b64encode(buf.getvalue()).decode('utf-8')
-
     # Возвращаем данные о графике в контекст
     return chart_data
 
@@ -196,7 +191,6 @@ def food_dynamics_view(request):
         'macronutrient_chart_data': macronutrient_chart_data,
     })
 
-
 def update_history_for_user(user):
     # Получаем или создаем History для пользователя
     today = date.today() 
@@ -209,8 +203,6 @@ def update_history_for_user(user):
         )
     # Обновляем данные в History
     user_history.update_history()
-
-
 
 @login_required
 def meal_record_create(request):
@@ -243,8 +235,6 @@ def meal_record_create(request):
         'category': category  # Передаем категорию в контексте
     }
     return render(request, 'colories/meal_record_create.html', context)
-
-
 
 @login_required
 def meal_records_read(request):

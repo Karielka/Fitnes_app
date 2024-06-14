@@ -8,4 +8,5 @@ urlpatterns = [
     path('meal_record/create/', colories.meal_record_create, name='meal_record_create'),
     path('meal_record/update/<int:meal_record_id>/', colories.meal_record_update, name='meal_record_update'),
     path('meal_record/delete/<int:meal_record_id>/', colories.meal_record_delete, name='meal_record_delete'),
+    path('colories_dynamic/', colories.colory_dynamic, name='colory_dynamic'),
 ]

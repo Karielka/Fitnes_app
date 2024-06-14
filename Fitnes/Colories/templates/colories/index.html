@@ -203,10 +203,7 @@
   <div class="container">
     <div class="food-entry sleep">
         <div class="label">Сон</div>
-        <div class="value" id="hours">{{sleep_hours}}</div>
-        <div class="value">ч</div>
-        <div class="value">{{sleep_minutes}}</div>
-        <div class="value" id="minutes">м</div>
+        <div class="value" id="hours">{{sleep_hours}}:{{sleep_minutes}}</div>
         <div class="value">0</div>
         <div class="value" id="calories">ККал</div>
         <form action="{% url 'sleep_record_create' %}" method="get">
@@ -260,6 +257,7 @@
       <div class="chart">
         <!-- Pie chart here -->
         <img src="data:image/png;base64,{{ macronutrient_chart_data }}" alt="Процентное соотношение БЖУ">
+        <a class="btn-info" href="{%url 'colory_dynamic' %}">На страницу с графиками колорий</a>
       </div>
   </div>
   <div class="graph">
