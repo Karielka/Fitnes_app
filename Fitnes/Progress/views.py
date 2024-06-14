@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from .forms import CreateGoalForm, UpdateGoalForm
+from .forms import CreateGoalForm, UpdateGoalForm, UpdateCurrentWeightForm
 from .models import Goal
 
 @login_required
@@ -48,3 +48,27 @@ def delete_goal(request, pk):
         goal.delete()
         return redirect('index-progress')
     return render(request, 'progress/delete_goal.html', {'goal': goal})
+
+@login_required
+def update_current_weight(request):
+    user = request.user
+    # Находим последнюю активную цель пользователя
+    active_goal = Goal.objects.filter(user=user, status__in=['New', 'In_work']).order_by('-start_date').first()
+
+    if not active_goal:
+        return redirect('create_goal')  # Если нет активной цели, перенаправляем на создание цели
+
+    if request.method == 'POST':
+        form = UpdateCurrentWeightForm(request.POST, instance=active_goal)
+        if form.is_valid():
+            form.save()
+            return redirect('tracking_current_weight')  # Перенаправляем на профиль пользователя после сохранения
+    else:
+        form = UpdateCurrentWeightForm(instance=active_goal)
+    
+    context = {
+        'form': form,
+        'active_goal': active_goal,
+        'for_goal_left': abs(active_goal.current_weight - active_goal.target_weight)
+    }
+    return render(request, 'progress/weight_tracking.html', context)

@@ -7,11 +7,17 @@
 
 <div class="container">
     <h2>{{ title }}</h2>
-    <form action="{% url 'meal_record_create' %}" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Создать запись о приёме пищи</button>
-    </form>    
+    
+    {% if error_message %}
+        <div class="error-message">{{ error_message }}</div>
+    {% else %}
+        <form action="{% url 'meal_record_create' %}?category={{ category }}" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="hidden" name="category" value="{{ category }}">
+            <button type="submit">Создать запись</button>
+        </form>    
+    {% endif %}
 </div>
 
 {% endblock %}

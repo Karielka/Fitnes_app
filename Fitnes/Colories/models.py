@@ -19,7 +19,6 @@ class MealRecord(models.Model):
     measure = models.FloatField() # сколько граммов/милилитров было употреблено
     meal_time = models.DateTimeField(auto_now_add=True)
     category = models.CharField(max_length=20, choices=category_choices, default='Новая')
-    is_water = is_water = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.measure} {self.product} в {self.meal_time}"
