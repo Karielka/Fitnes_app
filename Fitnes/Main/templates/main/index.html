@@ -42,7 +42,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-  <section class="hero" style="background-image: url('{%static "main/img/main.png" %}')">
+  <section class="hero" style="background-image: url('/static/main/img/main.png')">
     <div class="burger-menu">
       <div class="burger-line"></div>
       <div class="burger-line"></div>
@@ -73,11 +73,12 @@
         {% else %}
             <a href="/fitnes/login/" class="hero-btn">Попробовать</a>
         {% endif %}
+      </div>
   </section>
 
   <div id="nutritionCarousel" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
-      <div class="carousel-item active" style="background-image: url('{% static "main/img/nutr.png" %}'); background-size: cover; height: 100vh;">
+      <div class="carousel-item active" style="background-image: url('/static/main/img/nutr.png'); background-size: cover; height: 100vh;">
         <div class="carousel-caption d-none d-md-block">
           <div class="nutrition-text">
           <h2>ПИТАЙТЕСЬ ПРАВИЛЬНО</h2>
@@ -88,11 +89,15 @@
           </div>
           <img src="{% static 'main/img/graph1.png' %}" alt="Graph 1" class="nutrition-image">
           <div class="nutrition-content">
-              <button class="cta-btn btn btn-primary">Попробовать</button>
+            {% if user.is_authenticated %}
+              <a href="/colories/" class="hero-btn">Попробовать</a>
+            {% else %}
+                <a href="/fitnes/login/" class="hero-btn">Попробовать</a>
+            {% endif %}
           </div>
         </div>
       </div>
-      <div class="carousel-item" style="background-image: url('{% static "main/img/nutr.png" %}'); background-size: cover; height: 100vh;">
+      <div class="carousel-item" style="background-image: url('/static/main/img/nutr.png'); background-size: cover; height: 100vh;">
         <div class="carousel-caption d-none d-md-block">
           <div class="nutrition-text">
           <h2>ПИТАЙТЕСЬ ПРАВИЛЬНО</h2>
@@ -101,11 +106,11 @@
           </div>
           <img src="{% static 'main/img/graph2.png' %}" alt="Graph 2" class="nutrition-image">
           <div class="nutrition-content">
-              <button class="cta-btn btn btn-primary">Попробовать</button>
+              <button class="cta-btn">Попробовать</button>
           </div>
         </div>
       </div>
-      <div class="carousel-item" style="background-image: url('{% static "main/img/nutr.png" %}'); background-size: cover; height: 100vh;">
+      <div class="carousel-item" style="background-image: url('/static/main/img/nutr.png'); background-size: cover; height: 100vh;">
         <div class="carousel-caption d-none d-md-block">
           <div class="nutrition-text">
           <h2>ПИТАЙТЕСЬ ПРАВИЛЬНО</h2>
@@ -114,7 +119,7 @@
           </div>
           <img src="{% static 'main/img/graph3.png' %}" alt="Graph 3" class="nutrition-image">
           <div class="nutrition-content">
-              <button class="cta-btn btn btn-primary">Попробовать</button>
+              <button class="cta-btn">Попробовать</button>
           </div>
         </div>
       </div>
@@ -130,92 +135,101 @@
   </div>
   
 
-<section class="workout" style="background-image: url('{%static "main/img/1.png" %}')">
-    <h2>ПОДДЕРЖИВАЙТЕ СЕБЯ В ФОРМЕ</h2>
-    <p>Тренируйте регулярно с помощью новых тренировок, которые можно делать не выходя из дома.</p>
-    <div class="workout-content">
-        <button class="cta-btn">Посмотреть еще</button>
-    </div>
+<section class="workout" style="background-image: url('/static/main/img/1.png');">
     <a href="https://youtu.be/cF_GnvOD52s?si=wU1P87wQu01w0tXR" class="cta-img-link">
       <img src="{% static 'main/img/but.png' %}" alt="Try it" class="cta-img">
     </a>
+    <h2>ПОДДЕРЖИВАЙТЕ СЕБЯ В ФОРМЕ</h2>
+    <p>Тренируйте регулярно с помощью новых тренировок, которые можно делать не выходя из дома.</p>
+    <div class="workout-content">
+      {% if user.is_authenticated %}
+        <a href="/expertise/" class="hero-btn">Посмотреть еще</a>
+      {% else %}
+        <a href="/fitnes/login/" class="hero-btn">Посмотреть еще</a>
+      {% endif %}
+    </div>
 </section>
 
 <section class="motivation">
-    <h2>ПОДНИМАЙТЕ СВОЮ МОТИВАЦИЮ</h2>
+    <h1>ПОДНИМАЙТЕ СВОЮ МОТИВАЦИЮ</h1>
     <p>Соревнуйтесь с другими пользователями и получайте награды за достижения.</p>
-    <button class="cta-btn">Получить награду</button>
+    <!-- Блок с движущимися изображениями -->
+      <div class="marquee-container">
+        <div class="marquee">
+          <div class="marquee-group">
+          <img src="{% static 'main/img/tag1.png' %}" alt="Image 1">
+          <img src="{% static 'main/img/tag2.png' %}" alt="Image 2">
+          <img src="{% static 'main/img/tag3.png' %}" alt="Image 3">
+          <img src="{% static 'main/img/tag4.png' %}" alt="Image 4">
+          <img src="{% static 'main/img/tag5.png' %}" alt="Image 5">
+          <img src="{% static 'main/img/tag6.png' %}" alt="Image 6">
+          <img src="{% static 'main/img/tag7.png' %}" alt="Image 7">
+          <img src="{% static 'main/img/tag8.png' %}" alt="Image 8">
+          <img src="{% static 'main/img/tag9.png' %}" alt="Image 9">
+          <img src="{% static 'main/img/tag10.png' %}" alt="Image 10">
+          <img src="{% static 'main/img/tag11.png' %}" alt="Image 11">
+          <img src="{% static 'main/img/tag12.png' %}" alt="Image 12">
+          <img src="{% static 'main/img/tag13.png' %}" alt="Image 13">
+          <img src="{% static 'main/img/tag14.png' %}" alt="Image 14">
+          <img src="{% static 'main/img/tag15.png' %}" alt="Image 15">
+          <img src="{% static 'main/img/tag1.png' %}" alt="Image 1">
+          <img src="{% static 'main/img/tag2.png' %}" alt="Image 2">
+          <img src="{% static 'main/img/tag3.png' %}" alt="Image 3">
+          <img src="{% static 'main/img/tag4.png' %}" alt="Image 4">
+          <img src="{% static 'main/img/tag5.png' %}" alt="Image 5">
+          <img src="{% static 'main/img/tag6.png' %}" alt="Image 6">
+          <img src="{% static 'main/img/tag7.png' %}" alt="Image 7">
+          <img src="{% static 'main/img/tag8.png' %}" alt="Image 8">
+          <img src="{% static 'main/img/tag9.png' %}" alt="Image 9">
+          <img src="{% static 'main/img/tag10.png' %}" alt="Image 10">
+          <img src="{% static 'main/img/tag11.png' %}" alt="Image 11">
+          <img src="{% static 'main/img/tag12.png' %}" alt="Image 12">
+          <img src="{% static 'main/img/tag13.png' %}" alt="Image 13">
+          <img src="{% static 'main/img/tag14.png' %}" alt="Image 14">
+          <img src="{% static 'main/img/tag15.png' %}" alt="Image 15">
+        </div>
+        <div class="marquee-group">
+          <img src="{% static 'main/img/tag1.png' %}" alt="Image 1">
+          <img src="{% static 'main/img/tag2.png' %}" alt="Image 2">
+          <img src="{% static 'main/img/tag3.png' %}" alt="Image 3">
+          <img src="{% static 'main/img/tag4.png' %}" alt="Image 4">
+          <img src="{% static 'main/img/tag5.png' %}" alt="Image 5">
+          <img src="{% static 'main/img/tag6.png' %}" alt="Image 6">
+          <img src="{% static 'main/img/tag7.png' %}" alt="Image 7">
+          <img src="{% static 'main/img/tag8.png' %}" alt="Image 8">
+          <img src="{% static 'main/img/tag9.png' %}" alt="Image 9">
+          <img src="{% static 'main/img/tag10.png' %}" alt="Image 10">
+          <img src="{% static 'main/img/tag11.png' %}" alt="Image 11">
+          <img src="{% static 'main/img/tag12.png' %}" alt="Image 12">
+          <img src="{% static 'main/img/tag13.png' %}" alt="Image 13">
+          <img src="{% static 'main/img/tag14.png' %}" alt="Image 14">
+          <img src="{% static 'main/img/tag15.png' %}" alt="Image 15">
+          <img src="{% static 'main/img/tag1.png' %}" alt="Image 1">
+          <img src="{% static 'main/img/tag2.png' %}" alt="Image 2">
+          <img src="{% static 'main/img/tag3.png' %}" alt="Image 3">
+          <img src="{% static 'main/img/tag4.png' %}" alt="Image 4">
+          <img src="{% static 'main/img/tag5.png' %}" alt="Image 5">
+          <img src="{% static 'main/img/tag6.png' %}" alt="Image 6">
+          <img src="{% static 'main/img/tag7.png' %}" alt="Image 7">
+          <img src="{% static 'main/img/tag8.png' %}" alt="Image 8">
+          <img src="{% static 'main/img/tag9.png' %}" alt="Image 9">
+          <img src="{% static 'main/img/tag10.png' %}" alt="Image 10">
+          <img src="{% static 'main/img/tag11.png' %}" alt="Image 11">
+          <img src="{% static 'main/img/tag12.png' %}" alt="Image 12">
+          <img src="{% static 'main/img/tag13.png' %}" alt="Image 13">
+          <img src="{% static 'main/img/tag14.png' %}" alt="Image 14">
+          <img src="{% static 'main/img/tag15.png' %}" alt="Image 15">
+        </div>
+      </div>
+      </div>
+    <div class="motivation-btn">
+      {% if user.is_authenticated %}
+          <a href="/progress/" class="cta-btn">Получить награду</a>
+      {% else %}
+          <a href="/fitnes/login/" class="cta-btn">Получить награду</a>
+      {% endif %}
+    </div>
 </section>
-
-<!-- Блок с движущимися изображениями -->
-<div class="marquee-container">
-  <div class="marquee">
-    <div class="marquee-group">
-    <img src="{% static 'main/img/tag1.png' %}" alt="Image 1">
-    <img src="{% static 'main/img/tag2.png' %}" alt="Image 2">
-    <img src="{% static 'main/img/tag3.png' %}" alt="Image 3">
-    <img src="{% static 'main/img/tag4.png' %}" alt="Image 4">
-    <img src="{% static 'main/img/tag5.png' %}" alt="Image 5">
-    <img src="{% static 'main/img/tag6.png' %}" alt="Image 6">
-    <img src="{% static 'main/img/tag7.png' %}" alt="Image 7">
-    <img src="{% static 'main/img/tag8.png' %}" alt="Image 8">
-    <img src="{% static 'main/img/tag9.png' %}" alt="Image 9">
-    <img src="{% static 'main/img/tag10.png' %}" alt="Image 10">
-    <img src="{% static 'main/img/tag11.png' %}" alt="Image 11">
-    <img src="{% static 'main/img/tag12.png' %}" alt="Image 12">
-    <img src="{% static 'main/img/tag13.png' %}" alt="Image 13">
-    <img src="{% static 'main/img/tag14.png' %}" alt="Image 14">
-    <img src="{% static 'main/img/tag15.png' %}" alt="Image 15">
-    <img src="{% static 'main/img/tag1.png' %}" alt="Image 1">
-    <img src="{% static 'main/img/tag2.png' %}" alt="Image 2">
-    <img src="{% static 'main/img/tag3.png' %}" alt="Image 3">
-    <img src="{% static 'main/img/tag4.png' %}" alt="Image 4">
-    <img src="{% static 'main/img/tag5.png' %}" alt="Image 5">
-    <img src="{% static 'main/img/tag6.png' %}" alt="Image 6">
-    <img src="{% static 'main/img/tag7.png' %}" alt="Image 7">
-    <img src="{% static 'main/img/tag8.png' %}" alt="Image 8">
-    <img src="{% static 'main/img/tag9.png' %}" alt="Image 9">
-    <img src="{% static 'main/img/tag10.png' %}" alt="Image 10">
-    <img src="{% static 'main/img/tag11.png' %}" alt="Image 11">
-    <img src="{% static 'main/img/tag12.png' %}" alt="Image 12">
-    <img src="{% static 'main/img/tag13.png' %}" alt="Image 13">
-    <img src="{% static 'main/img/tag14.png' %}" alt="Image 14">
-    <img src="{% static 'main/img/tag15.png' %}" alt="Image 15">
-  </div>
-  <div class="marquee-group">
-    <img src="{% static 'main/img/tag1.png' %}" alt="Image 1">
-    <img src="{% static 'main/img/tag2.png' %}" alt="Image 2">
-    <img src="{% static 'main/img/tag3.png' %}" alt="Image 3">
-    <img src="{% static 'main/img/tag4.png' %}" alt="Image 4">
-    <img src="{% static 'main/img/tag5.png' %}" alt="Image 5">
-    <img src="{% static 'main/img/tag6.png' %}" alt="Image 6">
-    <img src="{% static 'main/img/tag7.png' %}" alt="Image 7">
-    <img src="{% static 'main/img/tag8.png' %}" alt="Image 8">
-    <img src="{% static 'main/img/tag9.png' %}" alt="Image 9">
-    <img src="{% static 'main/img/tag10.png' %}" alt="Image 10">
-    <img src="{% static 'main/img/tag11.png' %}" alt="Image 11">
-    <img src="{% static 'main/img/tag12.png' %}" alt="Image 12">
-    <img src="{% static 'main/img/tag13.png' %}" alt="Image 13">
-    <img src="{% static 'main/img/tag14.png' %}" alt="Image 14">
-    <img src="{% static 'main/img/tag15.png' %}" alt="Image 15">
-    <img src="{% static 'main/img/tag1.png' %}" alt="Image 1">
-    <img src="{% static 'main/img/tag2.png' %}" alt="Image 2">
-    <img src="{% static 'main/img/tag3.png' %}" alt="Image 3">
-    <img src="{% static 'main/img/tag4.png' %}" alt="Image 4">
-    <img src="{% static 'main/img/tag5.png' %}" alt="Image 5">
-    <img src="{% static 'main/img/tag6.png' %}" alt="Image 6">
-    <img src="{% static 'main/img/tag7.png' %}" alt="Image 7">
-    <img src="{% static 'main/img/tag8.png' %}" alt="Image 8">
-    <img src="{% static 'main/img/tag9.png' %}" alt="Image 9">
-    <img src="{% static 'main/img/tag10.png' %}" alt="Image 10">
-    <img src="{% static 'main/img/tag11.png' %}" alt="Image 11">
-    <img src="{% static 'main/img/tag12.png' %}" alt="Image 12">
-    <img src="{% static 'main/img/tag13.png' %}" alt="Image 13">
-    <img src="{% static 'main/img/tag14.png' %}" alt="Image 14">
-    <img src="{% static 'main/img/tag15.png' %}" alt="Image 15">
-  </div>
-</div>
-</div>
 
 <section class="creators">
     <p>СОЗДАТЕЛИ</p>
