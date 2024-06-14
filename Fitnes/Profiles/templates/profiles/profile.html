@@ -5,7 +5,7 @@
 
 <link rel="stylesheet" href="{% static 'main/css/styles.css' %}" type="text/css" media="all">
 <link rel="stylesheet" href="{% static 'main/css/forms.css' %}" type="text/css" media="all">
-<link rel="stylesheet" href="{% static 'main/css/profile.css' %}" type="text/css" media="all">
+<link rel="stylesheet" href="{% static 'profiles/css/profile.css' %}" type="text/css" media="all">
 
 <body>
     <h1>Личный кабинет пользователя</h1>
@@ -30,9 +30,11 @@
                     <div class="container-text-head">Ваша цель</div>
                     <div class="container-text-base">
                         <p>Достигнуть вес {{goal.target_weight}} (кг) к {{goal.end_date}}</p>
-                        <a href="{% url 'tracking_current_weight' %}" class="btn btn-secondary">Отслеживать вес</a>
                     </div>
-                    <a class="btn btn-primary" href="{% url 'index-progress' %}">Подробнее про цели</a>
+                    <div class="container-second-button">
+                        <a href="{% url 'tracking_current_weight' %}" class="btn btn-secondary">Отслеживать вес</a>
+                        <a class="btn btn-secondary" href="{% url 'index-progress' %}">Цели</a>
+                    </div>
                 </div>
             </div>
             <div class="container-second-second">

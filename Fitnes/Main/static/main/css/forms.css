@@ -23,7 +23,7 @@ form input[type="text"] {
     padding: 3px;
     margin-bottom: 30px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 8px;
     box-sizing: border-box;
     font-size: 16px;
     box-shadow: 0 0 10px #f8c325;
@@ -35,7 +35,7 @@ form input[type="email"] {
     padding: 3px;
     margin-bottom: 30px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 8px;
     box-sizing: border-box;
     font-size: 16px;
     box-shadow: 0 0 10px #f8c325;
@@ -47,7 +47,7 @@ form input[type="date"] {
     padding: 3px;
     margin-bottom: 30px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 8px;
     box-sizing: border-box;
     font-size: 16px;
     box-shadow: 0 0 10px #f8c325;
@@ -59,7 +59,7 @@ form input[type="date"] {
     padding: 3px;
     margin-bottom: 30px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 8px;
     box-sizing: border-box;
     font-size: 16px;
     box-shadow: 0 0 10px #f8c325;
@@ -71,7 +71,7 @@ form input[type="password"] {
     padding: 3px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 8px;
     box-sizing: border-box;
     font-size: 16px;
     box-shadow: 0 0 10px #f8c325;
