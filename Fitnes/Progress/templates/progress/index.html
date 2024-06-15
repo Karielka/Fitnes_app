@@ -51,11 +51,15 @@
                           <p>{{ achievement.description }}</p>
                           <img src="{{ achievement.icon }}" alt="{{ achievement.title }}"/>
                           <p>Status: {{ achievement.status }}</p>
-                          {% if achievement.status != 'Not earned yet' and not achievement.claimed %}
-                              <form action="{% url 'claim_achievement' achievement.id %}" method="post">
+                          {% if achievement.completed and not achievement.claimed %}
+                              <form action="{% url 'index-progress' %}" method="post">
                                   {% csrf_token %}
-                                  <button type="submit">Claim</button>
+                                  <input type="hidden" name="achievement_id" value="{{ achievement.id }}">
+                                  <button type="submit">Забрать</button>
                               </form>
+                          {% endif %}
+                          {% if achievement.claimed %}
+                              <p>Награда уже получена</p>
                           {% endif %}
                       </div>
                   </li>

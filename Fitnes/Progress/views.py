@@ -9,52 +9,19 @@ import base64
 from django.contrib.auth.models import User
 from django.urls import reverse
 
-# @login_required
-# def index(request):
-#     goals = Goal.objects.filter(user=request.user)
-#     all_achievements = Achievement.objects.all()
-#     user_achievements = UserAchievement.objects.filter(user=request.user)
-#     user_achievements_dict = {ua.achievement.id: ua for ua in user_achievements}
-#     # Преобразуем данные для шаблона
-#     achievements_data = []
-#     for achievement in all_achievements:
-#         data = {
-#             'id': achievement.id,
-#             'title': achievement.title,
-#             'description': achievement.description,
-#             'icon': achievement.icon,
-#             'status': 'Ещё нужно потрудиться',
-#             'claimed': False
-#         }
-#         if achievement.id in user_achievements_dict:
-#             user_achievement = user_achievements_dict[achievement.id]
-#             data['status'] = f"Достигнуто {user_achievement.date_earned}"
-#             data['claimed'] = user_achievement.claimed
-#         achievements_data.append(data)
-#     context = {
-#         'title': 'Страница Вашего прогресса',
-#         'message': 'Вы находитесь на главной странице Progress',
-#         'page': 'progress_main',
-#         'goals': goals,
-#         'achievements_data': achievements_data,
-#     }
-#     return render(request, 'progress/index.html', context)
-
 @login_required
 def index(request):
     if request.method == 'POST':
         achievement_id = request.POST.get('achievement_id')
         if achievement_id:
             return claim_achievement(request, achievement_id)
-        else:
-            # Handle error or redirect as needed
-            pass
-    
-    goals = Goal.objects.filter(user=request.user)
-    all_achievements = Achievement.objects.all()
-    user_achievements = UserAchievement.objects.filter(user=request.user)
-    user_achievements_dict = {ua.achievement.id: ua for ua in user_achievements}
+    # Обновляем достижения пользователя
+    check_user_achievements(request.user)
 
+    goals = Goal.objects.filter(user=request.user) #цели
+    all_achievements = Achievement.objects.all() 
+    user_achievements = UserAchievement.objects.filter(user=request.user)
+    user_achievements_dict = {x.achievement.id: x for x in user_achievements}
     achievements_data = []
     for achievement in all_achievements:
         data = {
@@ -62,13 +29,18 @@ def index(request):
             'title': achievement.title,
             'description': achievement.description,
             'icon': achievement.icon,
+            'points': achievement.points,
             'status': 'Ещё нужно потрудиться',
-            'claimed': False
+            'claimed': False,
+            'completed': False,
         }
         if achievement.id in user_achievements_dict:
             user_achievement = user_achievements_dict[achievement.id]
-            data['status'] = f"Достигнуто {user_achievement.date_earned}"
-            data['claimed'] = user_achievement.claimed
+            if ((user_achievement.completed) or (user_achievement.claimed)):
+                data['status'] = f"Достигнуто {user_achievement.date_earned}"
+                data['completed'] = user_achievement.completed
+            if user_achievement.claimed:
+                data['claimed'] = user_achievement.claimed
         achievements_data.append(data)
 
     context = {
@@ -77,37 +49,56 @@ def index(request):
         'page': 'progress_main',
         'goals': goals,
         'achievements_data': achievements_data,
+        #'all_achievements': all_achievements,
     }
     return render(request, 'progress/index.html', context)
 
+@login_required
+def claim_achievement(request, achievement_id):
+    achievement = get_object_or_404(Achievement, id=achievement_id)
+    user_achievement, created = UserAchievement.objects.get_or_create(
+        user=request.user, 
+        achievement=achievement,
+        defaults={'claimed': False}
+    )
+    if not created and not user_achievement.claimed:
+        user_achievement.claimed = True
+        user_achievement.save()
+    # Ensure the user has a UserRating profile, create it if not exists
+    user_rating, created = UserRating.objects.get_or_create(user=request.user)
+    if created:
+        # Initialize the new UserRating profile with default values
+        user_rating.rating = 0
+        user_rating.save()
+    # Update the user's rating
+    user_rating.update_rating()
+    return redirect('index-progress')
+
+def check_user_achievements(user):
+    achievements = Achievement.objects.all()
+    for achievement in achievements:
+        user_achievement, created = UserAchievement.objects.get_or_create(
+            user=user, 
+            achievement=achievement,
+            defaults={'claimed': False, 'completed': False}
+        )
+        try:
+            # allowed names for eval (Расширять при формировании наград)
+            allowed_names = {'user': user, 'Goal': Goal}
+            completed = eval(achievement.rule, {"__builtins__": None}, allowed_names)
+            if completed:
+                user_achievement.completed = True
+                user_achievement.save()
+        except Exception as e:
+            print(f"Error evaluating rule for achievement {achievement.id}: {e}")
 
 @login_required
 def users_rating_read(request):
-    #возможно стоит брать всех пользователей и если профиля не существует = 0
     user_ratings = UserRating.objects.all().order_by('-rating')
     context = {
         'user_ratings': user_ratings,
     }
     return render(request, 'progress/users_rating_read.html', context)
-
-@login_required
-def claim_achievement(request, achievement_id):
-    user_achievement = get_object_or_404(UserAchievement, user=request.user, achievement_id=achievement_id)
-    if not user_achievement.claimed:
-        user_achievement.claimed = True
-        user_achievement.save()
-
-        # Ensure the user has a UserRating profile, create it if not exists
-        user_rating, created = UserRating.objects.get_or_create(user=request.user)
-        if created:
-            # Initialize the new UserRating profile with default values
-            user_rating.rating = 0
-            user_rating.save()
-        
-        # Update the user's rating
-        user_rating.update_rating()
-    return redirect(reverse('index-progress'))
-    #return redirect('index-progress')
 
 @login_required
 def create_goal(request):
@@ -168,6 +159,7 @@ def update_current_weight(request):
     }
     return render(request, 'progress/weight_tracking.html', context)
 
+@login_required
 def weight_chart(request, user_id):
     user = get_object_or_404(User, pk=user_id)
     history = user.weight_history.all().order_by('date') # Получаем историю изменений

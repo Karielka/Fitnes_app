@@ -8,5 +8,4 @@ urlpatterns = [
     path('goal/delete/<int:pk>/', views.delete_goal, name='delete_goal'),
     path('tracking-weight/', views.update_current_weight, name='tracking_current_weight'),
     path('users_rating_read/', views.users_rating_read, name='users_rating_read'),
-    path('achievements/claim/<int:achievement_id>/', views.claim_achievement, name='claim_achievement'),
 ]

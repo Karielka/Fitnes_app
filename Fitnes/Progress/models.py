@@ -40,12 +40,15 @@ class Achievement(models.Model):
     description = models.CharField(max_length=255)
     icon = models.CharField(max_length=255)
     points = models.PositiveIntegerField(default=1)
+    rule = models.TextField(default='', help_text='''Запрос на питоне для определения выполнения задания
+    Будем считать, что оно возращает кортеж из двух объектов. Текущего количества условных единиц и необходимого''')
 
 class UserAchievement(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     achievement = models.ForeignKey(Achievement, on_delete=models.CASCADE)
     date_earned = models.DateField(auto_now_add=True)
-    claimed = models.BooleanField(default=False)  # Добавлено поле claimed
+    completed = models.BooleanField(default=False) # завершено
+    claimed = models.BooleanField(default=False)  # собрано
 
     class Meta:
         unique_together = ('user', 'achievement')
