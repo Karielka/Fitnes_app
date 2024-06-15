@@ -1,0 +1,19 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2>{{ title }}</h2>
+    <ul>
+        {% for record in sleep_records %}
+            <li>
+                <p>{{ record.notes }}</p>
+                <p>{{ record.duration }}</p>
+                <a href="{% url 'sleep_record_update' record.id %}">Редактировать</a>
+                <a href="{% url 'sleep_record_delete' record.id %}">Удалить</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+<a class="btn-primary" href="{%url 'index-activity' %}">На главную страницу activity</a>
+{% endblock %}
