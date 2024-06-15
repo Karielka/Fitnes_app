@@ -8,7 +8,6 @@ class WeightHistory(models.Model):
     weight = models.FloatField()
     date = models.DateTimeField(auto_now_add=True)
 
-
 class Goal(models.Model):
     status_choices = [
         ('New', 'Новая'),
@@ -37,19 +36,27 @@ class Goal(models.Model):
         super(Goal, self).save(*args, **kwargs)
 
 class Achievement(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='achievements')
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=255)
     icon = models.CharField(max_length=255)
-    date = models.DateField()
     points = models.PositiveIntegerField(default=1)
+
+class UserAchievement(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    achievement = models.ForeignKey(Achievement, on_delete=models.CASCADE)
+    date_earned = models.DateField(auto_now_add=True)
+    claimed = models.BooleanField(default=False)  # Добавлено поле claimed
+
+    class Meta:
+        unique_together = ('user', 'achievement')
 
 class UserRating(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='rating')
     rating = models.PositiveIntegerField(default=0)
-    #функция, каждые n-единиц времени обновляющая рейтинг
+
+    # функция, каждые n-единиц времени обновляющая рейтинг
     def update_rating(self):
-        achievements_points_sum = self.user.achievements.aggregate(models.Sum('points'))['points__sum']
+        achievements_points_sum = UserAchievement.objects.filter(user=self.user).aggregate(models.Sum('achievement__points'))['achievement__points__sum']
         self.rating = (achievements_points_sum or 0)
         completed_goals_points = self.user.goals.filter(status='Done').aggregate(models.Sum('points'))['points__sum']
         self.rating += (completed_goals_points or 0)
