@@ -47,7 +47,7 @@
                             <p>Пол: Женщина</p>
                         {% endif %}
                         <p>Рост: {{ calory_profile.height }} см</p>
-                        <p>Вес: {{ calory_profile.weight }} кг</p>
+                        <p>Вес: {{ calory_profile.current_weight }} кг</p>
                     </div>
                     <a href="{% url 'calory_profile_edit' %}" class="btn btn-primary">Редактировать профиль калорий</a>
                 </div>
@@ -64,7 +64,7 @@
                             <j>Посмотреть</j>
                             <j>награды</j>
                         </div>
-                        <a class="btn_btn-primary" href="{% url 'register' %}"> > </a>
+                        <a class="btn_btn-primary" href="{% url 'index-progress' %}"> > </a>
                     </div>
                 </div>
             </div>

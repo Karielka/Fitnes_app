@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 import base64
 from Activity.models import Sleep, Exercise
 from datetime import datetime, timedelta, date
+from Profiles.models import UserCaloryProfile
 
 def colory_dynamic(request):
     context = {
@@ -44,6 +45,15 @@ def calculate_today_sleep(user):
     sleep_minutes = int((total_sleep_seconds % 3600) // 60)
     return sleep_hours, sleep_minutes
 
+def per_day_colories(user_name):
+    profile = UserCaloryProfile.objects.get(user=user_name)
+    age = date.today().year - profile.birthdate.year
+    if (profile.gender.lower() == 'male'):
+        need = 10 * profile.current_weight + (6.25 * profile.height) - (5 * age) + 5
+    else:
+        need = 10 * profile.current_weight + (6.25 * profile.height) - (5 * age) - 161
+    return need
+
 def index(request):
     meal_record = MealRecord.objects.filter(user=request.user)
     if request.user.is_authenticated:
@@ -69,6 +79,9 @@ def index(request):
         macronutrient_chart_data = macronutrient_chart(request, user_id, proteins_sum, fats_sum, carbs_sum)
         # Вычисляем количество сна за сегодняшний день
         sleep_hours, sleep_minutes = calculate_today_sleep(request.user)
+
+        needed = per_day_colories(request.user)
+
         context = {
             'title': 'Страница для учёта Ваших калорий',
             'message': 'Вы находитесь на главной странице Colories',
@@ -90,6 +103,8 @@ def index(request):
             'carb_percent': carb_percent,
             'sleep_hours': sleep_hours,  # Передаем количество сна в часах
             'sleep_minutes': sleep_minutes,  # Передаем количество сна в минутах
+            'needed': needed,
+            'ostatok': needed - calories_sum,
         }
     else:
         context = {

@@ -183,7 +183,7 @@
   <div class="container">
     <div class="food-entry water">
         <div class="label">Вода</div>
-        <div class="value" id="water">{{ water_data.water_l|floatformat:3 }}</div>
+        <div class="value" id="water">{{ water_data.water_l }}</div>
         <div class="value">мл</div>
         <form action="{% url 'meal_record_create' %}" method="get">
           <input type="hidden" name="category" value="Water">
@@ -214,7 +214,7 @@
 </div>
 
 
-<a class="btn-primary" href="{%url 'meal_record_read' %}">Посмотреть всю еду</a>
+<p><a class="btn-primary" href="{%url 'meal_record_read' %}">Посмотреть всю еду</a></p>
 
 
 <div class="right-section">
@@ -245,9 +245,10 @@
               }
           </script>
 
-          <div>Осталось: <span id="remainingCalories"></span></div>
-          <div>Съедено: <span id="eatenCalories"></span></div>
-          <div>Всего: <span id="totalCalories"></span></div>
+          <div>Требуется: <span id="totalCalories"> {{ needed }} </span></div>
+          <div>Съедено: <span id="eatenCalories"> {{ calories_sum }} </span></div>
+          <div>Осталось: <span id="remainingCalories"> {{ ostatok }} </span></div>
+          
           <div class="macros">
             <div style="color: rgb(248, 195, 37);">Белки: <span id="proteinPercent">{{ protein_percent|floatformat:1 }}</span>%</div>
             <div style="color: rgb(93, 161, 48);">Жиры: <span id="fatPercent">{{ fat_percent|floatformat:1 }}</span>%</div>
@@ -269,7 +270,7 @@
 
 <!-- Скрипт для построения круговой диаграммы -->
 <!-- Удален, так как делаем с помощью питона -->
-<script>
+  <script>
     // Установка значений в HTML
     document.getElementById('remainingCalories').innerText = remainingCalories;
     document.getElementById('eatenCalories').innerText = eatenCalories;
