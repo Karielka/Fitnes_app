@@ -119,6 +119,7 @@ def index(request):
             'sleep_minutes': sleep_minutes,  # Передаем количество сна в минутах
             'needed': needed,
             'ostatok': needed - calories_sum,
+            'selected_date': selected_date.strftime("%Y-%m-%d"),
         }
     else:
         context = {

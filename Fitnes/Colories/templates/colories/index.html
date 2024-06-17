@@ -36,12 +36,16 @@
   </div>
 
   <div class="date">
-    <div class="text">СЕГОДНЯ</div>
+    {% if selected_date == today_date|date:"Y-m-d" %}
+        <div class="text">СЕГОДНЯ</div>
+    {% else %}
+        <div class="text">{{ selected_date }}</div>
+    {% endif %}
     <div class="triangle"></div>
 
     <form id="updateContentForm" method="post" action="{% url 'index-colories' %}">
       {% csrf_token %}
-      <input type="hidden" id="selectedDateInput" name="selected_date" value="">
+      <input type="hidden" id="selectedDateInput" name="selected_date" value="{{ selected_date }}">
     </form>
 
   </div>
@@ -52,6 +56,7 @@
       </div>
   </div>
 
+  <!--Всего наели-->
   <table class="data">
       <tr>
           <td class="column">
@@ -73,6 +78,7 @@
         </tr>
   </table>
 
+  <!--Завтра-Ужин + Вода + Тренировки + Сон-->
   <div class="left-section">
     <div class="container">
         <div class="food-entry breakfast">
@@ -161,6 +167,7 @@
 
   <p><a class="btn-primary" href="{%url 'meal_record_read' %}">Посмотреть всю еду</a></p>
 
+  <!--Диаграмма + данные-->
   <div class="right-section">
     <div class="summary">
         <div class="details">
@@ -190,51 +197,17 @@
   </div>
 
   <!--Обработка календаря-->
-  <!-- <script>
-    $(document).ready(function() {
-      $.datepicker.setDefaults($.datepicker.regional["ru"]);
-        // Инициализация календаря
-        $('.datepicker').click(function() {
-          $('#overlay').fadeIn();
-      });
-      $('#datepicker').datepicker({
-          dateFormat: "dd-mm",
-          firstDay: 1,
-          onSelect: function(dateText) {
-              $('.date .text').text(dateText === $.datepicker.formatDate('dd-mm', new Date()) ? 'СЕГОДНЯ' : dateText);
-              $('#overlay').fadeOut();
-          },
-          beforeShowDay: function(date) {
-              if (date.toDateString() === new Date().toDateString()) {
-                  return [1, '', 'СЕГОДНЯ'];
-              }
-              return [1];
-          }
-        });
-
-        // Обработчик события клика на треугольник
-        $('.triangle').click(function() {
-            // Отображаем затемнение и всплывающее окно с календарем
-            $('#overlay').fadeIn();
-        });
-
-        // Закрытие календаря при клике вне всплывающего окна
-        $(document).mouseup(function(e) {
-            var container = $(".popup");
-            if (!container.is(e.target) && container.has(e.target).length === 0) {
-                $('#overlay').fadeOut();
-            }
-        });
-    });
-  </script> -->
   <script>
     $(document).ready(function() {
         $.datepicker.setDefaults($.datepicker.regional["ru"]);
 
+        // Получение выбранной даты из скрытого поля
+        var selectedDate = $('#selectedDateInput').val();
         // Инициализация календаря
         $('#datepicker').datepicker({
             dateFormat: "yy-mm-dd",
             firstDay: 1,
+            defaultDate: selectedDate,
             onSelect: function(dateText) {
                 $('.date .text').text(dateText === $.datepicker.formatDate('yy-mm-dd', new Date()) ? 'СЕГОДНЯ' : dateText);
                 updateContent(dateText); // Вызываем функцию для обновления содержимого страницы
@@ -247,6 +220,9 @@
                 return [1];
             }
         });
+
+        // Установка текста даты при загрузке страницы
+        $('.date .text').text(selectedDate === $.datepicker.formatDate('yy-mm-dd', new Date()) ? 'СЕГОДНЯ' : selectedDate);
 
         // Обработчик события клика на треугольник
         $('.triangle').click(function() {
@@ -271,7 +247,6 @@
 
   </script>
   
-
   <!--Обработка бургерного меню-->
   <script>
     $(document).ready(function() {
