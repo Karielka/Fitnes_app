@@ -37,8 +37,14 @@ def index(request):
             'need': achievement.needed_for_reach,
         }
         try:
-            have = int(eval(achievement.rule))
+            have = eval(achievement.rule)
+            if have is None:
+                have = 0
+            else: 
+                have = float(have)
             data['have'] = have
+            progress = int((have / achievement.needed_for_reach) * 100) if achievement.needed_for_reach != 0 else 0  # Вычисление процента выполнения
+            data['progress'] = progress
         except Exception as e:
             print(f"Error evaluating rule for achievement {achievement.id}: {e}")
 
@@ -91,7 +97,10 @@ def check_user_achievements(user):
         )
         try:
             have = eval(achievement.rule)
-            if (int(have) >= achievement.needed_for_reach):
+            if have is None:
+                have = 0
+            else: have = float(have)
+            if have >= achievement.needed_for_reach:
                 user_achievement.completed = True
                 user_achievement.save()
         except Exception as e:
