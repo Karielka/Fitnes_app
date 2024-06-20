@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from simple_history.models import HistoricalRecords # type: ignore
 from django.utils import timezone
+from Profiles.models import UserCaloryProfile
 
 class WeightHistory(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='weight_history')
@@ -33,6 +34,9 @@ class Goal(models.Model):
             if old_instance.current_weight != self.current_weight:
                 self.updated_at = timezone.now()
                 WeightHistory.objects.create(user=self.user, weight=self.current_weight)  # Добавляем запись в историю
+                Prof = UserCaloryProfile.objects.get(user=self.user)
+                Prof.current_weight = self.current_weight
+                Prof.save()
         super(Goal, self).save(*args, **kwargs)
 
 class Achievement(models.Model):

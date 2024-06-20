@@ -98,6 +98,9 @@
     height: auto;
     max-width: 400px;
     border-radius: 10px;
+    cursor: pointer;
+    margin-top: 100px;
+    margin-left: 0px;
 }
 
 /* Стили для ошибки */
