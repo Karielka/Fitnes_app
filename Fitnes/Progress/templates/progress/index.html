@@ -51,6 +51,10 @@
                           <p>{{ achievement.description }}</p>
                           <img src="{{ achievement.icon }}" alt="{{ achievement.title }}"/>
                           <p>Status: {{ achievement.status }}</p>
+                          {% if not achievement.completed and not achievement.claimed %}
+                            <p>Have {{achievement.have}}</p>
+                            <p>Need {{achievement.need}}</p>
+                          {% endif %}
                           {% if achievement.completed and not achievement.claimed %}
                               <form action="{% url 'index-progress' %}" method="post">
                                   {% csrf_token %}
@@ -66,6 +70,7 @@
               {% endfor %}
           </ul>
         </div>
+        <p>{{max_weight_loss}}</p>
         <p><a class="btn btn-primary" href="{% url 'users_rating_read' %}">Просмотреть рейтинг пользователей</a></p>
       </div>
 

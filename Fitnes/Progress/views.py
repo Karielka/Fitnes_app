@@ -8,6 +8,7 @@ import io
 import base64
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.db.models import F, ExpressionWrapper, FloatField, Max
 
 @login_required
 def index(request):
@@ -33,7 +34,14 @@ def index(request):
             'status': 'Ещё нужно потрудиться',
             'claimed': False,
             'completed': False,
+            'need': achievement.needed_for_reach,
         }
+        try:
+            have = int(eval(achievement.rule))
+            data['have'] = have
+        except Exception as e:
+            print(f"Error evaluating rule for achievement {achievement.id}: {e}")
+
         if achievement.id in user_achievements_dict:
             user_achievement = user_achievements_dict[achievement.id]
             if ((user_achievement.completed) or (user_achievement.claimed)):
@@ -49,7 +57,6 @@ def index(request):
         'page': 'progress_main',
         'goals': goals,
         'achievements_data': achievements_data,
-        #'all_achievements': all_achievements,
     }
     return render(request, 'progress/index.html', context)
 
@@ -83,10 +90,8 @@ def check_user_achievements(user):
             defaults={'claimed': False, 'completed': False}
         )
         try:
-            # allowed names for eval (Расширять при формировании наград)
-            allowed_names = {'user': user, 'Goal': Goal}
-            completed = eval(achievement.rule, {"__builtins__": None}, allowed_names)
-            if completed:
+            have = eval(achievement.rule)
+            if (int(have) >= achievement.needed_for_reach):
                 user_achievement.completed = True
                 user_achievement.save()
         except Exception as e:

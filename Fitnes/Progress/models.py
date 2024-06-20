@@ -46,6 +46,7 @@ class Achievement(models.Model):
     points = models.PositiveIntegerField(default=1)
     rule = models.TextField(default='', help_text='''Запрос на питоне для определения выполнения задания
     Будем считать, что оно возращает кортеж из двух объектов. Текущего количества условных единиц и необходимого''')
+    needed_for_reach = models.PositiveIntegerField(default=1)
 
 class UserAchievement(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
