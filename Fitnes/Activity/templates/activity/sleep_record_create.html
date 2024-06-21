@@ -1,0 +1,29 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'main/css/forms.css' %}" type="text/css" media="all">
+<link rel="stylesheet" href="{% static 'activity/css/index.css' %}" type="text/css" media="all">
+
+<div class="container">
+    <div class="form-container">
+        <div class="form-left">
+            <h2>{{ title }}</h2>
+            {% if error_message %}
+                <div class="error-message">{{ error_message }}</div>
+            {% else %}
+                <form action="{% url 'sleep_record_create' %}" method="post" class="sleep-form">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit">Создать запись о сне</button>
+                </form>    
+            {% endif %}
+            <a href="{% url 'index-colories' %}" class="back-link">Вернуться</a>
+        </div>
+        <div class="form-right">
+            <img src="{% static 'activity/img/sleep_add.png' %}" alt="logo" class="cta-img">       
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -13,15 +13,15 @@ class Product(models.Model):
         return self.name
 
 class MealRecord(models.Model):
-    category_choices = [('Breakfast','Завтрак'),('Dinner','Обед'),('Supper','Ужин'),('Snack','Перекус')]
+    category_choices = [('Breakfast','Завтрак'),('Dinner','Обед'),('Supper','Ужин'),('Snack','Перекус'), ('Water', 'Вода')]
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='meal_records')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    measure = models.FloatField() # сколько граммов/литров было употреблено
+    measure = models.FloatField() # сколько граммов/милилитров было употреблено
     meal_time = models.DateTimeField(auto_now_add=True)
     category = models.CharField(max_length=20, choices=category_choices, default='Новая')
 
     def __str__(self):
-        return f"{self.maesure} {self.product} в {self.meal_time}"
+        return f"{self.measure} {self.product} в {self.meal_time}"
 
 #экземпляр класса должен создаваться каждый день для каждого пользователя
 #или же создаваться после циклом, для более детальной обработки калорий за день

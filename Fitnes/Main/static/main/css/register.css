@@ -6,7 +6,7 @@
     background-color: #f0f0f0; 
     padding: 20px; 
 }
-.container{
+.container-log{
     background-color: #faf7f7;
     box-shadow: 0 0 10px #5da130;
     background: linear-gradient(to bottom left, #5da130, #F8C325);
@@ -18,7 +18,7 @@
 
 .register-form {
     margin: 0 20px;
-    background: linear-gradient(to bottom left, #5da130, #F8C325);
+    background: transparent;
 
 }
 
@@ -127,6 +127,7 @@ form button[type="submit"]:hover {
     display: block;
     margin-top: 10px;
 }
+
 select#id_type {
     width: 100%;
     height: 45px;
@@ -137,4 +138,28 @@ select#id_type {
     box-sizing: border-box;
     font-size: 16px;
     box-shadow: 0 0 10px #f8c325;
+}
+
+.btn-light{
+    width: 20%;
+    height: 100%;
+    background-color: transparent;
+    color: black;
+    font-size: large;
+    padding-left: 50px;
+    padding-top: 7px;
+    padding-bottom: 0px;
+    padding-right: 100px;
+    padding: 7px 25px;
+    margin-top: 30px;
+    align-items: center;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-light:hover {
+    background-color: transparent;
+    color: rgb(128, 128, 128);
 }

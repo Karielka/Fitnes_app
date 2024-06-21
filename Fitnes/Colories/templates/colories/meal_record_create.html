@@ -3,15 +3,32 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'main/css/forms.css' %}" type="text/css" media="all">
-<link rel="stylesheet" href="{% static 'colories/css/styles_colories.css' %}" type="text/css" media="all">
+<link rel="stylesheet" href="{% static 'activity/css/index.css' %}" type="text/css" media="all">
 
 <div class="container">
     <h2>{{ title }}</h2>
-    <form action="{% url 'meal_record_create' %}" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Создать запись о приёме пищи</button>
-    </form>    
+    <div class="row">
+        <div class="col-6">
+            {% if error_message %}
+                <div class="error-message">{{ error_message }}</div>
+            {% else %}
+                <form action="{% url 'meal_record_create' %}?category={{ category }}" method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="hidden" name="category" value="{{ category }}">
+                    <button type="submit">Создать запись</button>
+                </form>    
+            {% endif %}
+            <a href="{% url 'index-colories' %}" class="back-link">Вернуться</a>
+        </div>
+        <div class="col-6">
+            {% if category == "Water" %}
+                <img src="{% static 'colories/img/water_add.png' %}" alt="logo" class="cta-img">
+            {% else %}
+                <img src="{% static 'colories/img/food_add.png' %}" alt="logo" class="cta-img">
+            {% endif %}            
+        </div>
+    </div>
 </div>
 
 {% endblock %}

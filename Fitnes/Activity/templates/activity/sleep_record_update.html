@@ -1,0 +1,13 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2>{{ title }}</h2>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" href="{% url 'sleep_records_read' %}">Обновить запись о сне</button>
+    </form>    
+</div>
+{% endblock %}
