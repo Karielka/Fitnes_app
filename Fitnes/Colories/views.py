@@ -21,43 +21,8 @@ def colory_dynamic(request):
     }
     return render(request, 'colories/dynamic.html', context)
 
-def calculate_today_sleep(user, selected_date):
-    start_of_day = datetime.combine(selected_date, datetime.min.time())
-    end_of_day = datetime.combine(selected_date, datetime.max.time())
-    total_sleep_duration = timedelta()
-    
-    sleep_records = Sleep.objects.filter(user=user, date=selected_date)
-    for record in sleep_records:
-        # Начало и конец сна
-        sleep_start = datetime.combine(record.date, datetime.min.time())
-        sleep_end = sleep_start + record.duration
-        
-        # Пересечение сна с выбранным днем
-        if sleep_end > start_of_day and sleep_start < end_of_day:
-            # Начало периода внутри выбранного дня
-            if sleep_start < start_of_day:
-                sleep_start = start_of_day
-            # Конец периода внутри выбранного дня
-            if sleep_end > end_of_day:
-                sleep_end = end_of_day
-                
-            total_sleep_duration += (sleep_end - sleep_start)
-    
-    # Возвращаем продолжительность сна в секундах, минутах и часах
-    total_sleep_seconds = total_sleep_duration.total_seconds()
-    sleep_hours = int(total_sleep_seconds // 3600)
-    sleep_minutes = int((total_sleep_seconds % 3600) // 60)
-    return sleep_hours, sleep_minutes
-
-
-def per_day_colories(user_name):
-    profile = UserCaloryProfile.objects.get(user=user_name)
-    age = date.today().year - profile.birthdate.year
-    if (profile.gender.lower() == 'male'):
-        need = 10 * profile.current_weight + (6.25 * profile.height) - (5 * age) + 5
-    else:
-        need = 10 * profile.current_weight + (6.25 * profile.height) - (5 * age) - 161
-    return need
+def create_selections(user):
+    pass
 
 @login_required
 def index(request):
@@ -162,6 +127,44 @@ def get_user_history(user_id, start_date=None, end_date=None):
         histories = histories.filter(date__lte=end_date)
 
     return histories
+
+def calculate_today_sleep(user, selected_date):
+    start_of_day = datetime.combine(selected_date, datetime.min.time())
+    end_of_day = datetime.combine(selected_date, datetime.max.time())
+    total_sleep_duration = timedelta()
+    
+    sleep_records = Sleep.objects.filter(user=user, date=selected_date)
+    for record in sleep_records:
+        # Начало и конец сна
+        sleep_start = datetime.combine(record.date, datetime.min.time())
+        sleep_end = sleep_start + record.duration
+        
+        # Пересечение сна с выбранным днем
+        if sleep_end > start_of_day and sleep_start < end_of_day:
+            # Начало периода внутри выбранного дня
+            if sleep_start < start_of_day:
+                sleep_start = start_of_day
+            # Конец периода внутри выбранного дня
+            if sleep_end > end_of_day:
+                sleep_end = end_of_day
+                
+            total_sleep_duration += (sleep_end - sleep_start)
+    
+    # Возвращаем продолжительность сна в секундах, минутах и часах
+    total_sleep_seconds = total_sleep_duration.total_seconds()
+    sleep_hours = int(total_sleep_seconds // 3600)
+    sleep_minutes = int((total_sleep_seconds % 3600) // 60)
+    return sleep_hours, sleep_minutes
+
+
+def per_day_colories(user_name):
+    profile = UserCaloryProfile.objects.get(user=user_name)
+    age = date.today().year - profile.birthdate.year
+    if (profile.gender.lower() == 'male'):
+        need = 10 * profile.current_weight + (6.25 * profile.height) - (5 * age) + 5
+    else:
+        need = 10 * profile.current_weight + (6.25 * profile.height) - (5 * age) - 161
+    return need
 
 @login_required
 def calories_chart(request, user_id, selected_date):

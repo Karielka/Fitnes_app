@@ -55,3 +55,5 @@ class TimeTable(models.Model):
     breakfast_time = models.TimeField(blank=True, null=True)
     lunch_time = models.TimeField(blank=True, null=True)
     dinner_time = models.TimeField(blank=True, null=True)
+    go_to_sleep_time = models.TimeField(blank=True, null=True)
+    #время для постоянных тренировок
