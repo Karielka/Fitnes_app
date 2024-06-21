@@ -1,7 +1,9 @@
 {% extends "main/base.html" %}
 
+{% load static %}
 {% block content %}
 <body>
+  <link rel="stylesheet" href="{% static 'progress/css/index.css' %}" type="text/css" media="all">
   <div class="container">
     <h1>
       {{ message }}
@@ -20,24 +22,74 @@
       <a href="/expertise/">Приложение Expertise</a>
     </div>
   </div>
+  <div class="row">
+    <div class="col-6">
+    <p><a class="btn btn-primary" href="{% url 'create_goal' %}">Создать цель</a></p>
+    <h2>Мои цели:</h2>
+      <ul>
+          {% for goal in goals %}
+              <li>
+                  <strong>{{ goal.description }}</strong><br>
+                  <p>All fields are available</p>
+                  Стартовый вес: {{ goal.start_weight }} кг<br>
+                  Текущий вес: {{ goal.current_weight }} кг<br>
+                  Целевой вес: {{ goal.target_weight }} кг<br>
+                  Статус: {{ goal.get_status_display }}<br>
+                  <!-- Кнопка для редактирования -->
+                  <a class="btn btn-primary" href="{% url 'edit_goal' pk=goal.pk %}">Редактировать</a><br>
+                  <a class="btn btn-primary" href="{% url 'delete_goal' pk=goal.pk %}">Удалить</a>
+              </li>
+          {% endfor %}
+      </ul>
+      </div>
+      <div class="col-6">
+        <p>Достижения</p>
+        <div class="achievements-list">
+          <ul>
+              {% for achievement in achievements_data %}
+                  <li>
+                      <div class="achievement-item">
+                          <h3>{{ achievement.title }}</h3>
+                          <p>{{ achievement.description }}</p>
+                          <img src="{{ achievement.icon }}" alt="{{ achievement.title }}"/>
+                          <p>Status: {{ achievement.status }}</p>
+                          {% if not achievement.completed and not achievement.claimed %}
+                            <div class="achievement">
+                              <div class="title">{{ achievement.title }}</div>
+                              <div class="description">{{ achievement.description }}</div>
+                              <div class="progress-bar-container">
+                                {% with achievement.progress as progress %}
+                                <div class="progress-bar" style="width: {{ progress }}%;"></div>
+                                {% endwith %}
+                              </div>
+                              <div class="progress-info">
+                                  <span class="progress-have">{{ achievement.have }}</span> / 
+                                  <span class="progress-need">{{ achievement.need }}</span>
+                              </div>
+                              <div class="status">{{ achievement.status }}</div>
+                            </div>
+                          {% endif %}
+                          {% if achievement.completed and not achievement.claimed %}
+                              <form action="{% url 'index-progress' %}" method="post">
+                                  {% csrf_token %}
+                                  <input type="hidden" name="achievement_id" value="{{ achievement.id }}">
+                                  <button type="submit">Забрать</button>
+                              </form>
+                          {% endif %}
+                          {% if achievement.claimed %}
+                              <p>Награда уже получена</p>
+                          {% endif %}
+                      </div>
+                  </li>
+              {% endfor %}
+          </ul>
+        </div>
+        <p>{{max_weight_loss}}</p>
+        <p><a class="btn btn-primary" href="{% url 'users_rating_read' %}">Просмотреть рейтинг пользователей</a></p>
+      </div>
 
-  <a class="btn btn-primary" href="{% url 'create_goal' %}">Создать цель</a>
-  <h2>Мои цели:</h2>
-    <ul>
-        {% for goal in goals %}
-            <li>
-                <strong>{{ goal.description }}</strong><br>
-                <p>All fields are available</p>
-                Стартовый вес: {{ goal.start_weight }} кг<br>
-                Текущий вес: {{ goal.current_weight }} кг<br>
-                Целевой вес: {{ goal.target_weight }} кг<br>
-                Статус: {{ goal.get_status_display }}<br>
-                <!-- Кнопка для редактирования -->
-                <a class="btn btn-primary" href="{% url 'edit_goal' pk=goal.pk %}">Редактировать</a><br>
-                <a class="btn btn-primary" href="{% url 'delete_goal' pk=goal.pk %}">Удалить</a>
-            </li>
-        {% endfor %}
-    </ul>
+  </div>
+  
 
 </body>
 {% endblock content %}

@@ -1,0 +1,112 @@
+/* Общие стили для контейнера */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+    padding: 20px;
+}
+
+/* Стили для формы */
+.form-container {
+    display: flex;
+    width: 80%;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.form-left {
+    flex: 2;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+}
+
+.form-right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #e0f7fa;
+}
+
+.form-left h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+}
+
+.sleep-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.sleep-form label {
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.sleep-form input {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.sleep-form button {
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.sleep-form button:hover {
+    background-color: #45a049;
+}
+
+.back-link {
+    margin-top: 20px;
+    font-size: 16px;
+    color: #4caf50;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+    color: #388e3c;
+}
+
+.cta-img {
+    width: 100%;
+    height: auto;
+    max-width: 400px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 100px;
+    margin-left: 0px;
+}
+
+/* Стили для ошибки */
+.error-message {
+    color: red;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
