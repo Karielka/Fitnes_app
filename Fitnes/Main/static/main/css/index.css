@@ -164,52 +164,121 @@ section {
     color: black;
     position: relative;
     height: 100%;
-    margin-top: 20px;
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-.nutrition-text h2, .nutrition-text h3 {
-    margin-left: 40%;
-    font-family: FreeMono, monospace;
-    text-align: left;
-    margin-top: 2px;
-    color: black;
-}
 
-.arrow-text p {
-    margin-right: 10%;
-    font-family: FreeMono, monospace;
-    text-align: left;
-    margin-top: 2px;
-    color: black;
-}
+    .nutrition-text {
+        text-align: left;
+        font-family: FreeMono, monospace;
+        color: black;
+        padding: 10px;
+        width: 800px;
+        margin-left: 40%;
 
+    }
+    
+    .nutrition-text h2 {
+        font-size: 40px;
+        text-align: left;
+        padding: 5px;
+        font-family: 'Oswald', sans-serif;
+        color: #5da130;
+    }
+    
+    .nutrition-text h3 {
+        font-size: 25px;
+        width: 100%;
+    }
+
+    .nutrition-image {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 20px;
+      }
+      
+      .nutrition-image h4 {
+        color: black;
+        white-space: normal;
+        font-size: 15px;
+        text-align: center;
+        padding-left: 30px;
+        width: 300px;
+        position: relative;
+        justify-content: flex-start;
+        margin-top: 0;
+        display: flex;
+        flex-direction: column;
+      }
+.nutrition-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px; /* Расстояние между картинкой и текстом */
+}
+    
+.nutrition-image {
+    position: relative;
+}
+    
+.nutrition-image .arrow {
+    position: absolute;
+    top: -20px; /* Регулируйте для позиционирования стрелки */
+    left: 70%; /* Положение стрелки по горизонтали */
+    transform: translateX(-50%);
+    width: 100px; /* Подгоните под нужный размер */
+    height: 50px;
+}
 .nutrition-content {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-left: 20%;
 }
 
+.carousel-control-prev, .carousel-control-next {
+    width: auto; 
+    height: 50px;
+    top: 20%;
+    transform: translateY(-50%); 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px; 
+    background-color: #5DA130;
+}
+
+.carousel-control-prev {
+    left: 10px; 
+}
+
+.carousel-control-next {
+    right: 10px; 
+}
 
 .workout {
     color: white;
     position: relative;
     width: 100%;
     height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 
 .workout-content {
     display: flex;
-    justify-items: flex-start;
+    align-items: center;
+    margin-left: 15%;
     gap: 20px;
 }
 
 .workout h2 {
+    margin-top: 20px;
     font-size: 40px;
     color: #333;
-    text-align: right;
+    text-align: left;
     width: 1000px;
     padding: 10px;
     font-family: 'Oswald', sans-serif;
@@ -220,21 +289,36 @@ section {
 .workout p {
     font-size: 18px;
     color: #666;
-    width: 800px;
+    width: 600px;
     padding: 10px;
-    text-align: center;
-    justify-content: center;
+    text-align: left;
+    justify-content: left;
 }
 
 .motivation {
     position: relative;
     width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
 }
+
 .motivation-content {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 20px;
+}
+
+.motivation h1, .motivation p {
+    margin: 10px 0;
+    width: 100%;
 }
 
 .motivation h1 {
@@ -244,7 +328,6 @@ section {
     padding: 10px;
     font-family: 'Oswald', sans-serif;
     color: #5da130;
-
 }
 
 .motivation p {
@@ -253,7 +336,6 @@ section {
     width: 800px;
     padding: 10px;
     text-align: center;
-    justify-content: center;
     align-items: center;
 }
 
@@ -261,6 +343,9 @@ section {
     display: flex;
     gap: 10px;
     margin-top: 20px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
 }
 
 .cta-btn {
@@ -335,12 +420,13 @@ section {
     100% { transform: translateX(-50%); }
   }
 
-    .nutrition-image {
-        width: 720px;
-        height: 470px;
+    .nutrition-image img {
+        width: 648px;
+        height: 423px;
         display: block;
         padding: 5px;
         margin-left: 300px;
+        padding-bottom: 20px;
 
     }
 
@@ -352,7 +438,7 @@ section {
         width: 150px; /* Adjust the size as needed */
         height: auto;
         cursor: pointer;
-        margin-top: 0px;
-        margin-left:900px;
+        margin-top: 20px;
+        margin-left:800px;
     }
 
