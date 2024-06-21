@@ -1,0 +1,40 @@
+.achievement {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+.title {
+    font-size: 1.2em;
+    margin-bottom: 5px;
+}
+
+.description {
+    font-size: 1em;
+    margin-bottom: 10px;
+}
+
+.progress-bar-container {
+    position: relative;
+    height: 20px;
+    background-color: #f3f3f3;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: #4caf50;
+    transition: width 0.5s;
+}
+
+.progress-info {
+    font-size: 0.9em;
+}
+
+.status {
+    font-weight: bold;
+    color: #4caf50;
+}

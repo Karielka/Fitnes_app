@@ -14,6 +14,7 @@ class UserCaloryProfile(models.Model):
     birthdate = models.DateField(default='2010-01-01')
     gender = models.CharField(max_length=10)
     height = models.FloatField()  # Height in centimeters
+    current_weight = models.FloatField(default=50) #текущий вес
     activity_level = models.CharField(max_length=20, choices=ACTIVITY_LEVEL_CHOICES)
 
     def __str__(self):

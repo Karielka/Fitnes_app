@@ -6,27 +6,22 @@
 <link rel="stylesheet" href="{% static 'activity/css/index.css' %}" type="text/css" media="all">
 
 <div class="container">
-    <h2>{{ title }}</h2>
-    <div class="row">
-        <div class="col-6">
+    <div class="form-container">
+        <div class="form-left">
+            <h2>{{ title }}</h2>
             {% if error_message %}
                 <div class="error-message">{{ error_message }}</div>
             {% else %}
-                <form action="{% url 'meal_record_create' %}?category={{ category }}" method="post">
+                <form action="{% url 'sleep_record_create' %}" method="post" class="sleep-form">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <input type="hidden" name="category" value="{{ category }}">
-                    <button type="submit">Создать запись</button>
+                    <button type="submit">Создать запись о сне</button>
                 </form>    
             {% endif %}
             <a href="{% url 'index-colories' %}" class="back-link">Вернуться</a>
         </div>
-        <div class="col-6">
-            {% if category == "Water" %}
-                <img src="{% static 'colories/img/water_add.png' %}" alt="logo" class="cta-img">
-            {% else %}
-                <img src="{% static 'colories/img/food_add.png' %}" alt="logo" class="cta-img">
-            {% endif %}            
+        <div class="form-right">
+            <img src="{% static 'activity/img/sleep_add.png' %}" alt="logo" class="cta-img">       
         </div>
     </div>
 </div>

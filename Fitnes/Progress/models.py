@@ -2,6 +2,12 @@ from django.db import models
 from django.contrib.auth.models import User
 from simple_history.models import HistoricalRecords # type: ignore
 from django.utils import timezone
+from Profiles.models import UserCaloryProfile
+
+class WeightHistory(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='weight_history')
+    weight = models.FloatField()
+    date = models.DateTimeField(auto_now_add=True)
 
 class Goal(models.Model):
     status_choices = [
@@ -27,22 +33,38 @@ class Goal(models.Model):
             old_instance = Goal.objects.get(pk=self.pk)
             if old_instance.current_weight != self.current_weight:
                 self.updated_at = timezone.now()
+                WeightHistory.objects.create(user=self.user, weight=self.current_weight)  # Добавляем запись в историю
+                Prof = UserCaloryProfile.objects.get(user=self.user)
+                Prof.current_weight = self.current_weight
+                Prof.save()
         super(Goal, self).save(*args, **kwargs)
 
 class Achievement(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='achievements')
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=255)
     icon = models.CharField(max_length=255)
-    date = models.DateField()
     points = models.PositiveIntegerField(default=1)
+    rule = models.TextField(default='', help_text='''Запрос на питоне для определения выполнения задания
+    Будем считать, что оно возращает кортеж из двух объектов. Текущего количества условных единиц и необходимого''')
+    needed_for_reach = models.PositiveIntegerField(default=1)
+
+class UserAchievement(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    achievement = models.ForeignKey(Achievement, on_delete=models.CASCADE)
+    date_earned = models.DateField(auto_now_add=True)
+    completed = models.BooleanField(default=False) # завершено
+    claimed = models.BooleanField(default=False)  # собрано
+
+    class Meta:
+        unique_together = ('user', 'achievement')
 
 class UserRating(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='rating')
     rating = models.PositiveIntegerField(default=0)
-    #функция, каждые n-единиц времени обновляющая рейтинг
+
+    # функция, каждые n-единиц времени обновляющая рейтинг
     def update_rating(self):
-        achievements_points_sum = self.user.achievements.aggregate(models.Sum('points'))['points__sum']
+        achievements_points_sum = UserAchievement.objects.filter(user=self.user).aggregate(models.Sum('achievement__points'))['achievement__points__sum']
         self.rating = (achievements_points_sum or 0)
         completed_goals_points = self.user.goals.filter(status='Done').aggregate(models.Sum('points'))['points__sum']
         self.rating += (completed_goals_points or 0)

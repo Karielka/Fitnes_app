@@ -1,0 +1,26 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+<h1>User Ratings</h1>
+<div class="user-ratings-list">
+    <table>
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Username</th>
+                <th>Rating</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user_rating in user_ratings %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ user_rating.user.username }}</td>
+                    <td>{{ user_rating.rating }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p><a class="btn btn-primary" href="{% url 'index-progress' %}">Вернуться</a></p>
+</div>
+{% endblock %}

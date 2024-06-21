@@ -18,6 +18,6 @@
         <p>Нет цели</p>
     {% endif %}
 
-    <p>Осталось: {{for_goal_left}}</p>
-
+    <p>Осталось: {{for_goal_left|floatformat:1}}</p>
+    <img src="data:image/png;base64,{{ weight_chart_data }}" alt="График веса">
 {% endblock %}
