@@ -49,14 +49,11 @@
               {% for achievement in achievements_data %}
                   <li>
                       <div class="achievement-item">
-                          <h3>{{ achievement.title }}</h3>
-                          <p>{{ achievement.description }}</p>
-                          <img src="{{ achievement.icon }}" alt="{{ achievement.title }}"/>
-                          <p>Status: {{ achievement.status }}</p>
                           {% if not achievement.completed and not achievement.claimed %}
                             <div class="achievement">
                               <div class="title">{{ achievement.title }}</div>
                               <div class="description">{{ achievement.description }}</div>
+                              <img src="{% static 'main/img/' %}/{{ achievement.icon }}" alt="{{ achievement.title }}"/>
                               <div class="progress-bar-container">
                                 {% with achievement.progress as progress %}
                                 <div class="progress-bar" style="width: {{ progress }}%;"></div>
@@ -70,6 +67,9 @@
                             </div>
                           {% endif %}
                           {% if achievement.completed and not achievement.claimed %}
+                              <div class="title">{{ achievement.title }}</div>
+                              <div class="description">{{ achievement.description }}</div>
+                              <img src="{% static 'main/img/' %}/{{ achievement.icon }}" alt="{{ achievement.title }}"/>
                               <form action="{% url 'index-progress' %}" method="post">
                                   {% csrf_token %}
                                   <input type="hidden" name="achievement_id" value="{{ achievement.id }}">
@@ -77,7 +77,10 @@
                               </form>
                           {% endif %}
                           {% if achievement.claimed %}
-                              <p>Награда уже получена</p>
+                            <div class="title">{{ achievement.title }}</div>
+                            <div class="description">{{ achievement.description }}</div>
+                            <img src="{% static 'main/img/' %}/{{ achievement.icon }}" alt="{{ achievement.title }}"/>
+                            <p>Награда уже получена</p>
                           {% endif %}
                       </div>
                   </li>

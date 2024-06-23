@@ -8,7 +8,9 @@ import io
 import base64
 from django.contrib.auth.models import User
 from django.urls import reverse
-from django.db.models import F, ExpressionWrapper, FloatField, Max
+from django.db.models import F, ExpressionWrapper, FloatField, Max, Case, When, IntegerField, Window
+from django.db.models.functions import RowNumber, DenseRank
+from Profiles.models import UserCaloryProfile
 
 @login_required
 def index(request):
