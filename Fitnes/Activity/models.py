@@ -1,6 +1,26 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import timedelta
+from Colories.models import TimeTable
+
+class TrainingSession(models.Model):
+    DAYS_OF_WEEK = [
+        ('Monday', 'Понедельник'),
+        ('Tuesday', 'Вторник'),
+        ('Wednesday', 'Среда'),
+        ('Thursday', 'Четверг'),
+        ('Friday', 'Пятница'),
+        ('Saturday', 'Суббота'),
+        ('Sunday', 'Воскресенье'),
+    ]
+
+    time_table = models.ForeignKey(TimeTable, on_delete=models.CASCADE, related_name='training_sessions')
+    day_of_week = models.CharField(max_length=9, choices=DAYS_OF_WEEK)
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+
+    class Meta:
+        unique_together = ('time_table', 'day_of_week', 'start_time')
 
 class Exercise(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='exercises')

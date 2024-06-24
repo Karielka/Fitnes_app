@@ -2,6 +2,28 @@
 from django import forms
 from .models import Sleep
 from datetime import timedelta
+from Activity.models import TrainingSession
+
+class TrainingSessionForm(forms.ModelForm):
+    day_of_week = forms.ChoiceField(
+        choices=[
+            ('Monday', 'Monday'),
+            ('Tuesday', 'Tuesday'),
+            ('Wednesday', 'Wednesday'),
+            ('Thursday', 'Thursday'),
+            ('Friday', 'Friday'),
+            ('Saturday', 'Saturday'),
+            ('Sunday', 'Sunday')
+        ],
+        label='',
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+    start_time = forms.TimeField(label='', widget=forms.TimeInput(attrs={'class': 'form-control', 'type': 'time'}))
+    end_time = forms.TimeField(label='', widget=forms.TimeInput(attrs={'class': 'form-control', 'type': 'time'}))
+
+    class Meta:
+        model = TrainingSession
+        fields = ['day_of_week', 'start_time', 'end_time']
 
 class SleepRecordFormForCreate(forms.ModelForm):
     hours = forms.IntegerField(min_value=0, max_value=23, label="Hours", required=True, widget=forms.NumberInput(attrs={'class': 'form-control'}))

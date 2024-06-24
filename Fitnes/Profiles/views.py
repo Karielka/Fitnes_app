@@ -3,6 +3,12 @@ from django.contrib.auth.decorators import login_required
 from .models import UserCaloryProfile, Profile
 from .forms import UserCaloryProfileForm, UserProfileForm
 from Progress.models import Goal
+from Colories.forms import TimeTableForm 
+from Colories.models import TimeTable
+from django.forms import modelformset_factory
+
+from Activity.models import TrainingSession
+from Activity.forms import TrainingSessionForm
 
 @login_required
 def profile_edit(request):
@@ -26,15 +32,45 @@ def profile_edit(request):
 
 @login_required
 def calory_profile_edit(request):
-    profile = get_object_or_404(UserCaloryProfile, user=request.user)
+    user = request.user
+    try:
+        profile = user.calory_profile
+    except UserCaloryProfile.DoesNotExist:
+        profile = UserCaloryProfile.objects.create(user=user)
+        
+    try:
+        time_table = TimeTable.objects.get(user=user)
+    except TimeTable.DoesNotExist:
+        time_table = TimeTable.objects.create(user=user)
+
+    TrainingSessionFormSet = modelformset_factory(TrainingSession, form=TrainingSessionForm, extra=1, can_delete=True)
+
     if request.method == 'POST':
         form = UserCaloryProfileForm(request.POST, instance=profile)
-        if form.is_valid():
+        time_table_form = TimeTableForm(request.POST, instance=time_table)
+        formset = TrainingSessionFormSet(request.POST, queryset=TrainingSession.objects.filter(time_table=time_table))
+
+        if form.is_valid() and time_table_form.is_valid() and formset.is_valid():
             form.save()
+            time_table_form.save()
+            instances = formset.save(commit=False)
+            for instance in instances:
+                instance.time_table = time_table
+                instance.save()
+            formset.save()
             return redirect('profile')
+
     else:
         form = UserCaloryProfileForm(instance=profile)
-    return render(request, 'profiles/calory_profile_edit.html', {'form': form})
+        time_table_form = TimeTableForm(instance=time_table)
+        formset = TrainingSessionFormSet(queryset=TrainingSession.objects.filter(time_table=time_table))
+
+    context = {
+        'form': form,
+        'time_table_form': time_table_form,
+        'formset': formset,
+    }
+    return render(request, 'profiles/calory_profile_edit.html', context)
 
 @login_required
 def profile_create(request):
