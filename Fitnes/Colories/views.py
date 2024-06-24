@@ -59,7 +59,8 @@ def index(request):
         # Вычисляем количество сна за сегодняшний день
         sleep_hours, sleep_minutes = calculate_today_sleep(request.user, selected_date)
 
-        needed = per_day_colories(request.user)
+        # Получение дневной нормы калорий через метод класса
+        needed = UserCaloryProfile.per_day_calories(request.user)
 
         context = {
             'title': 'Страница для учёта Ваших калорий',
@@ -155,16 +156,6 @@ def calculate_today_sleep(user, selected_date):
     sleep_hours = int(total_sleep_seconds // 3600)
     sleep_minutes = int((total_sleep_seconds % 3600) // 60)
     return sleep_hours, sleep_minutes
-
-
-def per_day_colories(user_name):
-    profile = UserCaloryProfile.objects.get(user=user_name)
-    age = date.today().year - profile.birthdate.year
-    if (profile.gender.lower() == 'male'):
-        need = 10 * profile.current_weight + (6.25 * profile.height) - (5 * age) + 5
-    else:
-        need = 10 * profile.current_weight + (6.25 * profile.height) - (5 * age) - 161
-    return need
 
 @login_required
 def calories_chart(request, user_id, selected_date):

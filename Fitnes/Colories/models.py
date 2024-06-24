@@ -33,7 +33,8 @@ class History(models.Model):
     total_proteins = models.FloatField(default=0)  # общее количество белков за день
     total_fats = models.FloatField(default=0)      # общее количество жиров за день
     total_carbohydrates = models.FloatField(default=0)  # общее количество углеводов за день
-
+    #нужно дополнительное поле, которое сообщает, выполнена ли дневная норма колорий
+    
     def update_history(self):
         # Получаем все записи MealRecord для данного пользователя и даты
         records = self.user.meal_records.filter(meal_time__date=self.date)
@@ -56,4 +57,23 @@ class TimeTable(models.Model):
     lunch_time = models.TimeField(blank=True, null=True)
     dinner_time = models.TimeField(blank=True, null=True)
     go_to_sleep_time = models.TimeField(blank=True, null=True)
-    #время для постоянных тренировок
+    #время для постоянных тренировок через TrainingSession
+
+class TrainingSession(models.Model):
+    DAYS_OF_WEEK = [
+        ('Monday', 'Понедельник'),
+        ('Tuesday', 'Вторник'),
+        ('Wednesday', 'Среда'),
+        ('Thursday', 'Четверг'),
+        ('Friday', 'Пятница'),
+        ('Saturday', 'Суббота'),
+        ('Sunday', 'Воскресенье'),
+    ]
+
+    time_table = models.ForeignKey(TimeTable, on_delete=models.CASCADE, related_name='training_sessions')
+    day_of_week = models.CharField(max_length=9, choices=DAYS_OF_WEEK)
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+
+    class Meta:
+        unique_together = ('time_table', 'day_of_week', 'start_time')

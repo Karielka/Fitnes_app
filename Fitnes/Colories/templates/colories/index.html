@@ -162,7 +162,7 @@
     </div>
   </div>
 
-  <p><a class="btn-primary" href="{%url 'meal_record_read' %}">Посмотреть всю еду</a></p>
+  <p><a class="btn-primary" href="{%url 'meal_record_read' %}" style="color:brown">Посмотреть всю еду</a></p>
 
   <!--Диаграмма + данные-->
   <div class="right-section">
@@ -186,13 +186,13 @@
         <!-- Pie chart here -->
         <div class="chart">
           <img src="data:image/png;base64,{{ macronutrient_chart_data }}" alt="Процентное соотношение БЖУ">
-          <a class="btn-info" href="{%url 'colory_dynamic' %}">На страницу с графиками колорий</a>
+          <a class="btn-info" href="{%url 'colory_dynamic' %}" style="color:brown">На страницу с графиками колорий</a>
         </div>
     </div>
 
     <div class="container_message" id="container_message"></div>
   </div>
-
+  
   <!--Обработка календаря-->
   <script>
     $(document).ready(function() {
