@@ -33,6 +33,7 @@ class History(models.Model):
     total_proteins = models.FloatField(default=0)  # общее количество белков за день
     total_fats = models.FloatField(default=0)      # общее количество жиров за день
     total_carbohydrates = models.FloatField(default=0)  # общее количество углеводов за день
+    #нужно дополнительное поле, которое сообщает, выполнена ли дневная норма колорий
 
     def update_history(self):
         # Получаем все записи MealRecord для данного пользователя и даты
@@ -55,3 +56,5 @@ class TimeTable(models.Model):
     breakfast_time = models.TimeField(blank=True, null=True)
     lunch_time = models.TimeField(blank=True, null=True)
     dinner_time = models.TimeField(blank=True, null=True)
+    go_to_sleep_time = models.TimeField(blank=True, null=True)
+    #время для постоянных тренировок через TrainingSession

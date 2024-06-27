@@ -14,28 +14,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 </head>
 <body>
-  <script>
-    $(document).ready(function() {
-      // Обработчик события клика на бургерное меню
-      $('.burger-menu').click(function(event) {
-        event.stopPropagation(); // Остановить всплытие события, чтобы клик на бургерном меню не приводил к закрытию меню
-        $('.dropdown-menu').toggle();
-      });
-
-      // Обработчик события клика на документ (вне меню)
-      $(document).click(function(event) {
-        if (!$(event.target).closest('.header').length) { // Проверка, что клик был сделан вне области меню
-          $('.dropdown-menu').hide(); // Скрыть меню
-        }
-      });
-
-      // Запуск карусели автоматически
-      $('#nutritionCarousel').carousel({
-        interval: 5000 // Интервал в миллисекундах
-      });
-    });
-  </script>
-
   <section class="hero" style="background-image: url('/static/main/img/main.png')">
     <div class="burger-menu">
       <div class="burger-line"></div>
@@ -75,13 +53,13 @@
       <div class="carousel-item active" style="background-image: url('/static/main/img/nutr.png'); background-size: cover; height: 100vh;">
         <div class="carousel-caption d-none d-md-block">
           <div class="nutrition-text">
-          <h2>ПИТАЙТЕСЬ ПРАВИЛЬНО</h2>
-          <h3>Следите за КБЖУ и получайте персональные рекомендации.</h3>
+            <h2>ПИТАЙТЕСЬ ПРАВИЛЬНО</h2>
+            <h3>Следите за КБЖУ и получайте персональные рекомендации</h3>
           </div>
-          <div class="arrow-text">
-            <p>Соотношение белков, жиров и углеводов</p>
+          <div class="nutrition-image">
+            <img src="{% static 'main/img/graph1.png' %}" alt="Graph 1" class="nutrition-image">
+            <h4>Соотношение белков, жиров и углеводов</h4>
           </div>
-          <img src="{% static 'main/img/graph1.png' %}" alt="Graph 1" class="nutrition-image">
           <div class="nutrition-content">
             {% if user.is_authenticated %}
               <a href="/colories/" class="hero-btn">Попробовать</a>
@@ -95,10 +73,12 @@
         <div class="carousel-caption d-none d-md-block">
           <div class="nutrition-text">
           <h2>ПИТАЙТЕСЬ ПРАВИЛЬНО</h2>
-          <p>Отслеживайте динамику изменения веса</p>
-          <p>Динамика изменения веса</p>
-          </div>
+          <h3>Отслеживайте динамику изменения веса</h3>
+        </div>
+        <div class="nutrition-image">
           <img src="{% static 'main/img/graph2.png' %}" alt="Graph 2" class="nutrition-image">
+          <h4>Динамика изменения веса</h4>
+          </div>
           <div class="nutrition-content">
               <button class="cta-btn">Попробовать</button>
           </div>
@@ -108,10 +88,12 @@
         <div class="carousel-caption d-none d-md-block">
           <div class="nutrition-text">
           <h2>ПИТАЙТЕСЬ ПРАВИЛЬНО</h2>
-          <p>Контролируйте количество съеденного, чтобы добиться результата</p>
-          <p>Соблюдение нормы калорий в разное время</p>
-          </div>
+          <h3>Контролируйте количество съеденного за периоды</h3>
+        </div>
+        <div class="nutrition-image">
           <img src="{% static 'main/img/graph3.png' %}" alt="Graph 3" class="nutrition-image">
+          <h4>Анализ вашего ритма жизни</h4>
+          </div>
           <div class="nutrition-content">
               <button class="cta-btn">Попробовать</button>
           </div>
@@ -129,7 +111,7 @@
   </div>
   
 
-<section class="workout" style="background-image: url('/static/main/img/1.png');">
+<section class="workout" style="background-image: url('/static/main/img/2.png');">
     <a href="https://youtu.be/cF_GnvOD52s?si=wU1P87wQu01w0tXR" class="cta-img-link">
       <img src="{% static 'main/img/but.png' %}" alt="Try it" class="cta-img">
     </a>
@@ -145,11 +127,10 @@
 </section>
 
 <section class="motivation">
-    <h1>ПОДНИМАЙТЕ СВОЮ МОТИВАЦИЮ</h1>
-    <p>Соревнуйтесь с другими пользователями и получайте награды за достижения.</p>
-    <!-- Блок с движущимися изображениями -->
-      <div class="marquee-container">
-        <div class="marquee">
+  <h1>ПОДНИМАЙТЕ СВОЮ МОТИВАЦИЮ</h1>
+  <p>Соревнуйтесь с другими пользователями и получайте награды за достижения</p>
+  <div class="marquee-container">
+      <div class="marquee">
           <div class="marquee-group">
           <img src="{% static 'main/img/tag1.png' %}" alt="Image 1">
           <img src="{% static 'main/img/tag2.png' %}" alt="Image 2">
@@ -215,13 +196,13 @@
           <img src="{% static 'main/img/tag15.png' %}" alt="Image 15">
         </div>
       </div>
-      </div>
-    <div class="motivation-btn">
-      {% if user.is_authenticated %}
-          <a href="/progress/" class="cta-btn">Получить награду</a>
-      {% else %}
-          <a href="/fitnes/login/" class="cta-btn">Получить награду</a>
-      {% endif %}
+  </div>
+  <div class="motivation-btn">
+    {% if user.is_authenticated %}
+      <a href="/progress/" class="cta-btn">Получить награду</a>
+    {% else %}
+      <a href="/fitnes/login/" class="cta-btn">Получить награду</a>
+    {% endif %}
     </div>
 </section>
 
@@ -236,6 +217,26 @@
 </body>
 </html>
 
+<script>
+  $(document).ready(function() {
+    // Обработчик события клика на бургерное меню
+    $('.burger-menu').click(function(event) {
+      event.stopPropagation(); // Остановить всплытие события, чтобы клик на бургерном меню не приводил к закрытию меню
+      $('.dropdown-menu').toggle();
+    });
 
+    // Обработчик события клика на документ (вне меню)
+    $(document).click(function(event) {
+      if (!$(event.target).closest('.header').length) { // Проверка, что клик был сделан вне области меню
+        $('.dropdown-menu').hide(); // Скрыть меню
+      }
+    });
+
+    // Запуск карусели автоматически
+    $('#nutritionCarousel').carousel({
+      interval: 5000 // Интервал в миллисекундах
+    });
+  });
+</script>
 </body>
 {% endblock content %}
