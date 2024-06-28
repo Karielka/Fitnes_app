@@ -15,31 +15,62 @@
     <div class="col-6">
       <div class="container-first">
         <h2 class="text-head-1">МОИ ЦЕЛИ:</h2>
-        <a class="btn btn-primary btn-small" href="{% url 'create_goal' %}">Создать цель</a>
       </div>
       <div class="container-left">
-          {% for goal in goals %}
+        {% if current_goal %}
+        <h3>Текущая цель</h3>
+        <div class="container-left-first">
+            <div class="wrapper-left-first">
+                <div class="container-left-first-first">
+                    <div class="container-left-first-first-first">
+                        <strong>{{ current_goal.description }}</strong><br>
+                        Стартовый вес: {{ current_goal.start_weight }} кг<br>
+                        Текущий вес: {{ current_goal.current_weight }} кг<br>
+                        Целевой вес: {{ current_goal.target_weight }} кг<br>
+                        Статус: {{ current_goal.get_status_display }}<br>
+                    </div>
+                    <div class="container-left-first-first-second">
+                        <p>Вот тут столбик</p>
+                    </div>
+                </div>
+                <div class="container-left-first-button">
+                    <a class="btn btn-secondary btn-mar" href="{% url 'edit_goal' pk=current_goal.pk %}">Редактировать</a><br>
+                    <a class="btn btn-danger btn-mar" href="{% url 'delete_goal' pk=current_goal.pk %}">Удалить</a>
+                </div>
+            </div>
+        </div>
+        {% else %}
+            <p>У вас нет активных целей.</p>
+            <a class="btn btn-primary btn-small" href="{% url 'create_goal' %}">Создать цель</a>
+        {% endif %}
+        
+        <h3>История целей</h3>
+        {% if historical_goals %}
+          {% for goal in historical_goals %}
               <div class="container-left-first">
                   <div class="wrapper-left-first">
-                    <div class="container-left-first-first">
-                      <div class="container-left-first-first-first">
-                        <strong>{{ goal.description }}</strong><br>
-                        Стартовый вес: {{ goal.start_weight }} кг<br>
-                        Текущий вес: {{ goal.current_weight }} кг<br>
-                        Целевой вес: {{ goal.target_weight }} кг<br>
-                        Статус: {{ goal.get_status_display }}<br>
+                      <div class="container-left-first-first">
+                          <div class="container-left-first-first-first">
+                              <strong>{{ goal.description }}</strong><br>
+                              Стартовый вес: {{ goal.start_weight }} кг<br>
+                              Текущий вес: {{ goal.current_weight }} кг<br>
+                              Целевой вес: {{ goal.target_weight }} кг<br>
+                              Статус: {{ goal.get_status_display }}<br>
+                          </div>
+                          <div class="container-left-first-first-second">
+                              <p>Вот тут столбик</p>
+                          </div>
                       </div>
-                      <div class="container-left-first-first-second">
-                        <p>Вот тут столбик</p>
+                      <div class="container-left-first-button">
+                          <a class="btn btn-secondary btn-mar" href="{% url 'edit_goal' pk=goal.pk %}">Редактировать</a><br>
+                          <a class="btn btn-danger btn-mar" href="{% url 'delete_goal' pk=goal.pk %}">Удалить</a>
                       </div>
-                    </div>
-                    <div class="container-left-first-button">
-                      <a class="btn btn-secondary btn-mar" href="{% url 'edit_goal' pk=goal.pk %}">Редактировать</a><br>
-                      <a class="btn btn-danger btn-mar" href="{% url 'delete_goal' pk=goal.pk %}">Удалить</a>
-                    </div>
                   </div>
               </div>
           {% endfor %}
+        {% else %}
+          <p>У вас ещё не было создано целей.</p>
+        {% endif %}
       </div>
     </div>
       

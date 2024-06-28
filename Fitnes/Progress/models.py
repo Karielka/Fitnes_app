@@ -29,6 +29,11 @@ class Goal(models.Model):
     history = HistoricalRecords()  # Добавляем историю изменений
 
     def save(self, *args, **kwargs):
+        if self.pk is None:  # Проверка при создании новой цели
+            active_goals = Goal.objects.filter(user=self.user, status__in=['New', 'In_work'])
+            if active_goals.exists():
+                raise ValueError("У вас уже есть активная цель. Завершите текущую цель, прежде чем создавать новую.")
+        
         if self.pk is not None:
             old_instance = Goal.objects.get(pk=self.pk)
             if old_instance.current_weight != self.current_weight:

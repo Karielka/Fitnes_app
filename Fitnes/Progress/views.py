@@ -23,6 +23,8 @@ def index(request):
     check_user_achievements(request.user)
 
     goals = Goal.objects.filter(user=request.user) #цели
+    current_goal = goals.filter(status__in=['New', 'In_work']).first()
+    historical_goals = goals.exclude(status__in=['New', 'In_work'])
     all_achievements = Achievement.objects.all() 
     user_achievements = UserAchievement.objects.filter(user=request.user)
     user_achievements_dict = {x.achievement.id: x for x in user_achievements}
@@ -69,7 +71,8 @@ def index(request):
         'title': 'Страница Вашего прогресса',
         'message': 'Вы находитесь на главной странице Progress',
         'page': 'progress_main',
-        'goals': goals,
+        'current_goal': current_goal,
+        'historical_goals': historical_goals,
         'achievements_data': achievements_data,
     }
     return render(request, 'progress/index.html', context)
