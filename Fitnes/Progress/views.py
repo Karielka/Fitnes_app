@@ -19,6 +19,7 @@ def index(request):
         if achievement_id:
             return claim_achievement(request, achievement_id)
     # Обновляем достижения пользователя
+    #Не работает!
     check_user_achievements(request.user)
 
     goals = Goal.objects.filter(user=request.user) #цели
@@ -26,6 +27,7 @@ def index(request):
     user_achievements = UserAchievement.objects.filter(user=request.user)
     user_achievements_dict = {x.achievement.id: x for x in user_achievements}
     achievements_data = []
+    have = 0
     for achievement in all_achievements:
         data = {
             'id': achievement.id,
@@ -52,6 +54,10 @@ def index(request):
 
         if achievement.id in user_achievements_dict:
             user_achievement = user_achievements_dict[achievement.id]
+            #Дополнительная проверка (функция не работаёт)
+            if have >= achievement.needed_for_reach:
+                user_achievement.completed = True
+                user_achievement.save()
             if ((user_achievement.completed) or (user_achievement.claimed)):
                 data['status'] = f"Достигнуто {user_achievement.date_earned}"
                 data['completed'] = user_achievement.completed
@@ -102,11 +108,15 @@ def check_user_achievements(user):
             if have is None:
                 have = 0
             else: have = float(have)
+            print()
+            print(have, achievement.needed_for_reach)
             if have >= achievement.needed_for_reach:
                 user_achievement.completed = True
                 user_achievement.save()
+            print(user.achievement.completed)
         except Exception as e:
-            print(f"Error evaluating rule for achievement {achievement.id}: {e}")
+            print('No')
+            #print(f"Error evaluating rule for achievement {achievement.id}: {e}")
 
 @login_required
 def users_rating_read(request):

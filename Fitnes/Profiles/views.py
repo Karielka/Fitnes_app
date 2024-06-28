@@ -43,7 +43,7 @@ def calory_profile_edit(request):
     except TimeTable.DoesNotExist:
         time_table = TimeTable.objects.create(user=user)
 
-    TrainingSessionFormSet = modelformset_factory(TrainingSession, form=TrainingSessionForm, extra=1, can_delete=True)
+    TrainingSessionFormSet = modelformset_factory(TrainingSession, form=TrainingSessionForm, extra=0, can_delete=True)
 
     if request.method == 'POST':
         form = UserCaloryProfileForm(request.POST, instance=profile)
@@ -55,11 +55,19 @@ def calory_profile_edit(request):
             time_table_form.save()
             instances = formset.save(commit=False)
             for instance in instances:
-                instance.time_table = time_table
+                if instance.id is None:  # Проверка на пустой id
+                    instance.time_table = time_table
                 instance.save()
-            formset.save()
+            for instance in formset.deleted_objects:
+                instance.delete()
             return redirect('profile')
-
+        else:
+            # Вывод ошибок форм в консоль для диагностики
+            print(form.errors)
+            print(time_table_form.errors)
+            print(formset.errors)
+            for form in formset:
+                print(form.errors)
     else:
         form = UserCaloryProfileForm(instance=profile)
         time_table_form = TimeTableForm(instance=time_table)

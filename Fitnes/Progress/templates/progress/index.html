@@ -42,69 +42,69 @@
           {% endfor %}
       </div>
     </div>
-      <div class="col-6">
-        <div class="container-second">
-          <h2 class="text-head-2">МОИ ДОСТИЖЕНИЯ</h2>
-          <a class="btn btn-primary btn-simple" href="{% url 'users_rating_read' %}">Просмотреть рейтинг пользователей >></a>
-        </div>
-        <div class="achievements-list">
-          <ul class="container-ul">
-              {% for achievement in achievements_data %}
-                  <li class="wrapper-item">
-                      <div class="achievement-item">
-                          {% if not achievement.completed and not achievement.claimed %}
-                              <div class="wrapper-text">
-                                <div class="title">{{ achievement.title }}</div>
-                                <div class="description">{{ achievement.description }}</div>
-                                <div class="progress-bar-container">
-                                  {% with achievement.progress as progress %}
-                                  <div class="progress-bar" style="width: {{ progress }}%;"></div>
-                                  {% endwith %}
-                                </div>
-                                <div class="status">{{ achievement.status }}</div>
-                                <div class="progress-info">
-                                  <span class="progress-have">{{ achievement.have }}</span> / 
-                                  <span class="progress-need">{{ achievement.need }}</span>
-                                </div>
-                              </div>
-                              <div class="wrapper-img">
-                                <img class="progress-img" src="{% static 'main/img/' %}/{{ achievement.icon }}" alt="{{ achievement.title }}"/>
-                              </div>
-                          {% endif %}
-                          {% if achievement.completed and not achievement.claimed %}
-                              <div class="wrapper-text">
-                                <div class="title">{{ achievement.title }}</div>
-                                <div class="description">{{ achievement.description }}</div>
-                                <form action="{% url 'index-progress' %}" method="post">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="achievement_id" value="{{ achievement.id }}">
-                                    <button type="submit">Забрать</button>
-                                </form>
-                              </div>
-                              <div class="wrapper-img">
-                                <img class="progress-img" src="{% static 'main/img/' %}/{{ achievement.icon }}" alt="{{ achievement.title }}"/>
-                              </div>
-                          {% endif %}
-                          {% if achievement.claimed %}
-                            <div class="wrapper-text">
-                              <div class="title">{{ achievement.title }}</div>
-                              <div class="description">{{ achievement.description }}</div>
-                              <p>Награда уже получена</p>
-                            </div>
-                            <div class="wrapper-img">
-                              <img class="progress-img" src="{% static 'main/img/' %}/{{ achievement.icon }}" alt="{{ achievement.title }}"/>
-                            </div>
-                          {% endif %}
-                      </div>
-                  </li>
-              {% endfor %}
-          </ul>
-        </div>
-        <p>{{max_weight_loss}}</p>
+      
+    <div class="col-6">
+      <div class="container-second">
+        <h2 class="text-head-2">МОИ ДОСТИЖЕНИЯ</h2>
+        <a class="btn btn-primary btn-simple" href="{% url 'users_rating_read' %}">Просмотреть рейтинг пользователей >></a>
       </div>
-
+        
+      <div class="achievements-list">
+        <ul class="container-ul">
+          {% for achievement in achievements_data %}
+            <li class="wrapper-item">
+              <div class="achievement-item">
+                {% if not achievement.completed and not achievement.claimed %}
+                  <div class="wrapper-text">
+                    <div class="title">{{ achievement.title }}</div>
+                    <div class="description">{{ achievement.description }}</div>
+                    <div class="progress-bar-container">
+                      {% with achievement.progress as progress %}
+                        <div class="progress-bar" style="width: {{ progress }}%;"></div>
+                      {% endwith %}
+                    </div>
+                    <div class="status">{{ achievement.status }}</div>
+                    <div class="progress-info">
+                      <span class="progress-have">{{ achievement.have }}</span> / 
+                      <span class="progress-need">{{ achievement.need }}</span>
+                    </div>
+                  </div>
+                  <div class="wrapper-img">
+                    <img class="progress-img" src="{% static 'main/img/' %}/{{ achievement.icon }}" alt="{{ achievement.title }}"/>
+                  </div>
+                {% endif %}
+                {% if achievement.completed and not achievement.claimed %}
+                  <div class="wrapper-text">
+                    <div class="title">{{ achievement.title }}</div>
+                    <div class="description">{{ achievement.description }}</div>
+                    <form action="{% url 'index-progress' %}" method="post">
+                      {% csrf_token %}
+                      <input type="hidden" name="achievement_id" value="{{ achievement.id }}">
+                      <button type="submit">Забрать</button>
+                    </form>
+                  </div>
+                  <div class="wrapper-img">
+                    <img class="progress-img" src="{% static 'main/img/' %}/{{ achievement.icon }}" alt="{{ achievement.title }}"/>
+                  </div>
+                {% endif %}
+                {% if achievement.claimed %}
+                  <div class="wrapper-text">
+                    <div class="title">{{ achievement.title }}</div>
+                    <div class="description">{{ achievement.description }}</div>
+                    <p>Награда уже получена</p>
+                  </div>
+                  <div class="wrapper-img">
+                    <img class="progress-img" src="{% static 'main/img/' %}/{{ achievement.icon }}" alt="{{ achievement.title }}"/>
+                  </div>
+                {% endif %}
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <p>{{max_weight_loss}}</p>
+    </div>
   </div>
   
-
 </body>
 {% endblock content %}

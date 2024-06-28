@@ -1,5 +1,6 @@
 {% extends "main/base.html" %}
 {% load static %}
+{% load form_tags %}
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'profiles/css/calory_profile_edit.css' %}" type="text/css" media="all">
@@ -8,50 +9,92 @@
     <div class="container-edit">
         <div class="form-container">
             <form method="post" class="login-edit">
-                
+                <div class="text-wrapper">
+                    <h2>Редактирование профиля калорий</h2>
+                </div>
                 <div class="form-wrapper">
-                    <div class="row">
-                        <div class="col-20">
-                            <div class="text-wrapper">
-                                <h2>Редактирование профиля калорий</h2>
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
+                    {{ form.as_p }}
+                    <h3>Время приема пищи</h3>
+                    {{ time_table_form.non_field_errors }}
+                    {{ time_table_form.as_p }}
+                    <h3>Тренировочные сессии</h3>
+                    {{ formset.management_form }}
+                    <div id="formset-container">
+                        {% for form in formset %}
+                            <div class="formset-item">
+                                {{ form.id }}
+                                {{ form.non_field_errors }}
+                                <p>День недели</p>{{ form.day_of_week.label_tag }} {{ form.day_of_week }}
+                                <p>Время начала</p>{{ form.start_time.label_tag }} {{ form.start_time }}
+                                <p>Время конца</p>{{ form.end_time.label_tag }} {{ form.end_time }}
+                                {{ form.DELETE|add_class:"hidden-checkbox" }} <!-- Поле для удаления формы -->
+                                <button type="button" class="btn btn-danger remove-form">Удалить</button>
                             </div>
-                            {% csrf_token %}
-                            {{ form.as_p }}
-                        </div>
-                        <div class="col-20">
-                            <div class="text-wrapper">
-                                <h2>Время приема пищи</h2>
-                            </div>
-                            {{ time_table_form.as_p }}
-                        </div>
-                        <div class="col-20">
-                            <div class="text-wrapper">
-                                <h2>Тренировочные сессии</h2>
-                            </div>
-                            {{ formset.management_form }}
-                            {% for form in formset %}
-                                {{ form.as_p }}
-                                {% if form.instance.pk %}
-                                    <input type="checkbox" name="form-{{ forloop.counter0 }}-DELETE" id="id_form-{{ forloop.counter0 }}-DELETE">
-                                    <label for="id_form-{{ forloop.counter0 }}-DELETE">Удалить</label>
-                                {% endif %}
-                            {% endfor %}
-                        </div>
+                        {% endfor %}
                     </div>
+                    <button type="button" class="btn btn-primary" id="add-form">Добавить тренировку</button>
                 </div>
                 <div class="button-wrapper">    
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </div>
             </form>
-            <!--
             <div class="login-text">
                 <div class="text1-wrapper">
                     <p>СУПЕР ДУПЕР ИКОНКА</p>
                     <p>Добро пожаловать! Пожалуйста, введите свои учетные данные, чтобы войти в систему. Если у вас нет учетной записи, пожалуйста, зарегистрируйтесь.</p>
                 </div>
             </div>
-            -->
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var formsetContainer = document.getElementById('formset-container');
+        var addFormButton = document.getElementById('add-form');
+        var totalForms = document.getElementById('id_form-TOTAL_FORMS');
+        var formCount = formsetContainer.children.length;
+    
+        addFormButton.addEventListener('click', function() {
+            var newForm = formsetContainer.children[0].cloneNode(true);
+            var formRegex = new RegExp('form-(\\d+)', 'g');
+            newForm.innerHTML = newForm.innerHTML.replace(formRegex, 'form-' + formCount);
+            newForm.querySelectorAll('input, select').forEach(function(input) {
+                input.value = '';  // Очистка значений
+                if (input.name.includes('DELETE')) {
+                    input.checked = false;  // Сброс значения поля DELETE
+                }
+            });
+            formsetContainer.appendChild(newForm);
+            formCount++;
+            totalForms.value = formCount;
+    
+            attachRemoveButtonHandlers();
+        });
+    
+        function attachRemoveButtonHandlers() {
+            var removeButtons = document.querySelectorAll('.remove-form');
+            removeButtons.forEach(function(button) {
+                button.removeEventListener('click', handleRemoveButtonClick);  // Удаление старых обработчиков
+                button.addEventListener('click', handleRemoveButtonClick);
+            });
+        }
+    
+        function handleRemoveButtonClick() {
+            var formItem = this.closest('.formset-item');
+            formItem.style.display = 'none';
+            var deleteInput = formItem.querySelector('input[name$="-DELETE"]');
+            if (deleteInput) {
+                deleteInput.checked = true;  // Установка значения поля DELETE
+            }
+            formCount--;
+            totalForms.value = formCount;
+        }
+    
+        attachRemoveButtonHandlers();  // Привязываем обработчики сразу после загрузки страницы
+    });
+</script>
+
 {% endblock %}

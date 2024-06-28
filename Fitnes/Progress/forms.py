@@ -30,7 +30,6 @@ class UpdateGoalForm(forms.ModelForm):
             ]),
         }
 
-
 class UpdateCurrentWeightForm(forms.ModelForm):
     class Meta:
         model = Goal
