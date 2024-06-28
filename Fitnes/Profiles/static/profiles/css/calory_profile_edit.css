@@ -57,18 +57,18 @@
     margin-top: 10px;
 }
 
-.text-button{
+.text-button {
     font-size: 20px;
     margin-bottom: 5px;
     margin-top: 12px;
     margin-right: 5px;
 }
 
-.button-wrapper{
+.button-wrapper {
     margin-top: 50px;
 }
 
-.btn_btn-primary{
+.btn_btn-primary {
     width: 50px;
     height: 50px;
     border-radius: 40px;
@@ -90,4 +90,8 @@
 
 .btn_btn-primary:hover {
     background-color: #5da130;
+}
+
+.hidden-checkbox {
+    display: none;
 }
