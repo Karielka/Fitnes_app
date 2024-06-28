@@ -18,7 +18,8 @@
 .progress-bar-container {
     position: relative;
     height: 20px;
-    background-color: #f3f3f3;
+    background-color: #ebebeb;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.45); 
     border-radius: 10px;
     overflow: hidden;
     margin-bottom: 10px;
@@ -26,7 +27,8 @@
 
 .progress-bar {
     height: 100%;
-    background-color: #4caf50;
+    background-color: rgb(76, 175, 80);
+    box-shadow: 0px 5px 10px rgba(76, 175, 80, 0.45); 
     transition: width 0.5s;
 }
 
@@ -70,9 +72,14 @@
     margin-right: 40px;
 }
 
+.text-head-2{
+    margin-left: 15px;
+}
+
 .btn-small{
     width: 25%;
     margin-top: 0;
+    margin-right: 20px;
 }
 
 .container-left{
@@ -137,14 +144,14 @@
     padding: 0px;
 }
 
-.btn-simple:active{
-    background: transparent !important; 
-    width: auto !important;
-    color: rgb(124, 124, 124) !important;
-    font-size: small !important;
-    padding: 0px !important;
-    border-color: transparent !important;
-    box-shadow: none !important;
+.btn-primary:not(:disabled):not(.disabled):active{
+    background: transparent; 
+    width: auto;
+    color: rgb(124, 124, 124) ;
+    font-size: small;
+    padding: 0px;
+    border-color: transparent;
+    box-shadow: none;
 }
 
 .btn-danger{
