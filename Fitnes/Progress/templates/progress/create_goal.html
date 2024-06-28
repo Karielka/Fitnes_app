@@ -1,10 +1,45 @@
 {% extends "main/base.html" %}
-
 {% block content %}
-  <h2>Создать цель</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Сохранить</button>
-  </form>
-{% endblock %}
+{% load static %}
+
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<link rel="stylesheet" href="{% static 'main/css/styles.css' %}" type="text/css" media="all">
+<link rel="stylesheet" href="{% static 'progress/css/forms.css' %}" type="text/css" media="all">
+<link rel="stylesheet" href="{% static 'progress/css/goal.css' %}" type="text/css" media="all">
+<body>
+    <div class="page-wrapper">
+        <div class="container-log">
+                    <form method="post" class="edit-form">
+                        <div class="text-wrapper">
+                            <h2>Создать цель</h2>
+                        </div>
+                        <div class="field-container">
+                            {% csrf_token %}
+                            <div class="first-container">
+                                <div class="first-first-container">
+                                  {{ form.description }}
+                                </div>
+                                <div class="first-second-container"> 
+                                  {{ form.start_date }}
+                                  {{ form.end_date }}
+                                </div>
+                            </div>
+                            <div class="second-container">
+                                <div class="second-first-container">
+                                  {{ form.target_weight }}
+                                  {{ form.start_weight }}
+                                </div>
+                                <div class="button-wrapper"><button type="submit">Сохранить информацию</button></div>
+                            </div>
+                        </div>
+                        <a class="btn btn-light" href="{% url 'index-progress' %}">Вернуться</a>
+                    </form>
+                    
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+</body>
+{% endblock content %}
