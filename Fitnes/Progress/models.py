@@ -49,6 +49,9 @@ class Goal(models.Model):
         if self.status == 'New' and timezone.now().date() >= self.start_date + timedelta(days=1):
             self.status = 'In_work'
             self.save()
+        elif ((self.status == 'In_work') or (self.status == 'New')) and self.current_weight <= self.target_weight:
+            self.status = 'Done'
+            self.save()
 
 class Achievement(models.Model):
     title = models.CharField(max_length=100)

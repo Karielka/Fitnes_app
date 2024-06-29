@@ -11,6 +11,7 @@ from django.urls import reverse
 from django.db.models import F, ExpressionWrapper, FloatField, Max, Case, When, IntegerField, Window
 from django.db.models.functions import RowNumber, DenseRank
 from Profiles.models import UserCaloryProfile
+from django.contrib import messages
 
 @login_required
 def fail_goal(request, pk):
@@ -30,10 +31,14 @@ def index(request):
     check_user_achievements(request.user)
 
     goals = Goal.objects.filter(user=request.user) #цели
+    main_goal = goals.filter(status__in=['New', 'In_work']).first()
     for goal in goals:
         goal.update_status_by_time()
 
     current_goal = goals.filter(status__in=['New', 'In_work']).first()
+    if main_goal and (not (current_goal)):
+        messages.success(request, f"Вы завершили цель: {main_goal.description}")
+        print('цель завершена')
     historical_goals = list(reversed((goals.exclude(status__in=['New', 'In_work']))))
     all_achievements = Achievement.objects.all() 
     user_achievements = UserAchievement.objects.filter(user=request.user)
