@@ -1,6 +1,11 @@
 from django import forms
-from .models import UserCaloryProfile
+from .models import UserCaloryProfile, ExpertProfile
 from django.contrib.auth.models import User
+
+class ExpertProfileForm(forms.ModelForm):
+    class Meta:
+        model = ExpertProfile
+        fields = ['nickname', 'experience_years', 'price_per_hour']
 
 class UserCaloryProfileForm(forms.ModelForm):
     birthdate = forms.CharField(required=True, label='', widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))

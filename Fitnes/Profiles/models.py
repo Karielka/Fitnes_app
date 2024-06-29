@@ -2,6 +2,19 @@ from datetime import date
 from django.db import models
 from django.contrib.auth.models import User
 
+class ExpertProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='expert_profile')
+    nickname = models.CharField(max_length=20)
+    experience_years = models.PositiveIntegerField(default=0)  
+    price_per_hour = models.PositiveIntegerField(default=0)  
+    followers_count = models.PositiveIntegerField(default=0)
+
+    def update_followers_count(self):
+        # Используем строковую ссылку для CourseSubscription
+        from Expertise.models import CourseSubscription
+        self.followers_count = CourseSubscription.objects.filter(course__expert=self).count()
+        self.save()
+
 class UserCaloryProfile(models.Model):
     ACTIVITY_LEVEL_CHOICES = [
         ('sedentary', 'Sedentary (little or no exercise)'),

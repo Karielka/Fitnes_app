@@ -23,6 +23,14 @@
                 </div>
                 <div class="container-button"><a href="{% url 'profile_edit' %}" class="btn-btn-primary">Редактировать профиль</a></div>
             </div>
+            {% if profile.type == 'expert' %}
+                <!-- Надо доработать в индексе, чтобы создавался ещё и профиль тренера-->
+                {% if expert %}
+                    <div class="container-button"><a href="{% url 'view_expert_profile' expert.pk %}" class="btn-btn-primary">Перейти в профиль тренера</a></div>
+                {% else %}
+                    <div class="container-button"><a href="{% url 'create_expert_profile' %}" class="btn-btn-primary">Создать профиль тренера</a></div>
+                {% endif %}
+            {% endif %}
         </div>
         <div class="container-second">
             <div class="container-second-first">

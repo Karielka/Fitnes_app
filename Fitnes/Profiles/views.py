@@ -1,14 +1,43 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import UserCaloryProfile, Profile
-from .forms import UserCaloryProfileForm, UserProfileForm
+from .models import UserCaloryProfile, Profile, ExpertProfile
+from .forms import UserCaloryProfileForm, UserProfileForm, ExpertProfileForm
 from Progress.models import Goal
 from Colories.forms import TimeTableForm 
 from Colories.models import TimeTable
 from django.forms import modelformset_factory
-
 from Activity.models import TrainingSession
 from Activity.forms import TrainingSessionForm
+
+@login_required
+def create_expert_profile(request):
+    if request.method == 'POST':
+        form = ExpertProfileForm(request.POST)
+        if form.is_valid():
+            expert_profile = form.save(commit=False)
+            expert_profile.user = request.user
+            expert_profile.save()
+            return redirect('view_expert_profile', pk=expert_profile.pk)
+    else:
+        form = ExpertProfileForm()
+    return render(request, 'profiles/expert_profile_form.html', {'form': form})
+
+@login_required
+def edit_expert_profile(request, pk):
+    expert_profile = get_object_or_404(ExpertProfile, pk=pk)
+    if request.method == 'POST':
+        form = ExpertProfileForm(request.POST, instance=expert_profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profiles/view_expert_profile', pk=expert_profile.pk)
+    else:
+        form = ExpertProfileForm(instance=expert_profile)
+    return render(request, 'profiles/expert_profile_form.html', {'form': form})
+
+@login_required
+def view_expert_profile(request, pk):
+    expert_profile = get_object_or_404(ExpertProfile, pk=pk)
+    return render(request, 'profiles/expert_profile_detail.html', {'expert_profile': expert_profile})
 
 @login_required
 def profile_edit(request):
@@ -104,6 +133,11 @@ def profile(request):
         calory_profile = request.user.calory_profile
     except UserCaloryProfile.DoesNotExist:
         calory_profile = None
+    
+    try:
+        expert = request.user.expert_profile
+    except Profile.DoesNotExist:
+        expert = None
 
     user = request.user
     active_goal = Goal.objects.filter(user=user, status__in=['New', 'In_work']).order_by('-start_date').first()
@@ -113,5 +147,6 @@ def profile(request):
         'calory_profile': calory_profile,
         'page': 'profile',
         'goal': active_goal,
+        'expert': expert,
     }
     return render(request, 'profiles/profile.html', context)
