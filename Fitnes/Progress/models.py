@@ -76,10 +76,27 @@ class UserRating(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='rating')
     rating = models.PositiveIntegerField(default=0)
 
-    # функция, каждые n-единиц времени обновляющая рейтинг
     def update_rating(self):
-        achievements_points_sum = UserAchievement.objects.filter(user=self.user).aggregate(models.Sum('achievement__points'))['achievement__points__sum']
-        self.rating = (achievements_points_sum or 0)
-        completed_goals_points = self.user.goals.filter(status='Done').aggregate(models.Sum('points'))['points__sum']
-        self.rating += (completed_goals_points or 0)
+        achievements_points_sum = UserAchievement.objects.filter(user=self.user).aggregate(models.Sum('achievement__points'))['achievement__points__sum'] or 0
+        completed_goals_points = self.user.goals.filter(status='Done').aggregate(models.Sum('points'))['points__sum'] or 0
+        self.rating = achievements_points_sum + completed_goals_points
         self.save()
+        GlobalRating.update_user_rating(self.user.id, self.rating)
+
+class GlobalRating(models.Model):
+    ratings = models.JSONField(default=dict)
+
+    @classmethod
+    def update_user_rating(cls, user_id, new_rating):
+        rating_record, created = cls.objects.get_or_create(pk=1)
+        rating_record.ratings[str(user_id)] = new_rating
+        rating_record.save()
+
+    @classmethod
+    def get_user_rank(cls, user_id):
+        rating_record = cls.objects.get(pk=1)
+        sorted_ratings = sorted(rating_record.ratings.items(), key=lambda x: x[1], reverse=True)
+        for rank, (uid, rating) in enumerate(sorted_ratings, 1):
+            if str(user_id) == uid:
+                return rank
+        return None

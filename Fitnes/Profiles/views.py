@@ -8,6 +8,7 @@ from Colories.models import TimeTable
 from django.forms import modelformset_factory
 from Activity.models import TrainingSession
 from Activity.forms import TrainingSessionForm
+from Progress.models import UserAchievement, UserRating, GlobalRating
 
 @login_required
 def create_expert_profile(request):
@@ -141,6 +142,19 @@ def profile(request):
 
     user = request.user
     active_goal = Goal.objects.filter(user=user, status__in=['New', 'In_work']).order_by('-start_date').first()
+    # Подсчет выполненных достижений
+    achievements_claimed = UserAchievement.objects.filter(user=user, claimed=True).count()
+    
+    # Получение рейтинга пользователя
+    # Обновление рейтинга пользователя и получение позиции
+    try:
+        user_rating = user.rating
+        user_rating.update_rating()
+        rating = user_rating.rating
+        rank = GlobalRating.get_user_rank(user.id)
+    except UserRating.DoesNotExist:
+        rating = None
+        rank = None
 
     context = {
         'profile': profile,
@@ -148,5 +162,8 @@ def profile(request):
         'page': 'profile',
         'goal': active_goal,
         'expert': expert,
+        'achievements_claimed': achievements_claimed,
+        'rating': rating,
+        'rank': rank,
     }
     return render(request, 'profiles/profile.html', context)

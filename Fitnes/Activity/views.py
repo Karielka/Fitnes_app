@@ -12,7 +12,7 @@ import base64
 def index(request):
     context = {
         'title': 'Страница Ваших физических активностей',
-        'message': 'Вы находитесь на главной странице Activity',
+        'message': 'Тренировки',
         'page': 'activity_main',
     }
     return render(request, 'activity/index.html', context)
