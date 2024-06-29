@@ -13,6 +13,13 @@ from django.db.models.functions import RowNumber, DenseRank
 from Profiles.models import UserCaloryProfile
 
 @login_required
+def fail_goal(request, pk):
+    goal = get_object_or_404(Goal, pk=pk, user=request.user)
+    goal.status = 'Failed'
+    goal.save()
+    return redirect('index-progress')
+
+@login_required
 def index(request):
     if request.method == 'POST':
         achievement_id = request.POST.get('achievement_id')
@@ -23,8 +30,11 @@ def index(request):
     check_user_achievements(request.user)
 
     goals = Goal.objects.filter(user=request.user) #цели
+    for goal in goals:
+        goal.update_status_by_time()
+
     current_goal = goals.filter(status__in=['New', 'In_work']).first()
-    historical_goals = goals.exclude(status__in=['New', 'In_work'])
+    historical_goals = list(reversed((goals.exclude(status__in=['New', 'In_work']))))
     all_achievements = Achievement.objects.all() 
     user_achievements = UserAchievement.objects.filter(user=request.user)
     user_achievements_dict = {x.achievement.id: x for x in user_achievements}

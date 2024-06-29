@@ -36,6 +36,7 @@
                 <div class="container-left-first-button">
                     <a class="btn btn-secondary btn-mar" href="{% url 'edit_goal' pk=current_goal.pk %}">Редактировать</a><br>
                     <a class="btn btn-danger btn-mar" href="{% url 'delete_goal' pk=current_goal.pk %}">Удалить</a>
+                    <a class="btn btn-danger btn-mar" href="{% url 'fail_goal' pk=current_goal.pk %}">Сдаться</a>
                 </div>
             </div>
         </div>
@@ -62,7 +63,8 @@
                           </div>
                       </div>
                       <div class="container-left-first-button">
-                          <a class="btn btn-secondary btn-mar" href="{% url 'edit_goal' pk=goal.pk %}">Редактировать</a><br>
+                          <!--Нельзя редактировать завершённые цели
+                            <a class="btn btn-secondary btn-mar" href="{% url 'edit_goal' pk=goal.pk %}">Редактировать</a><br>-->
                           <a class="btn btn-danger btn-mar" href="{% url 'delete_goal' pk=goal.pk %}">Удалить</a>
                       </div>
                   </div>

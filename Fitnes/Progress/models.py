@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from simple_history.models import HistoricalRecords # type: ignore
 from django.utils import timezone
 from Profiles.models import UserCaloryProfile
+from datetime import timedelta
 
 class WeightHistory(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='weight_history')
@@ -24,7 +25,7 @@ class Goal(models.Model):
     target_weight = models.FloatField(default=50) #желаемый вес
     start_date = models.DateField() #дата постановки цели
     end_date = models.DateField() #желаемая дата достижения цели
-    status = models.CharField(max_length=20, choices=status_choices, default='Новая')
+    status = models.CharField(max_length=20, choices=status_choices, default='New')
     points = models.PositiveIntegerField(default=0)  # Количество баллов за выполнение цели
     history = HistoricalRecords()  # Добавляем историю изменений
 
@@ -43,6 +44,11 @@ class Goal(models.Model):
                 Prof.current_weight = self.current_weight
                 Prof.save()
         super(Goal, self).save(*args, **kwargs)
+    
+    def update_status_by_time(self):
+        if self.status == 'New' and timezone.now().date() >= self.start_date + timedelta(days=1):
+            self.status = 'In_work'
+            self.save()
 
 class Achievement(models.Model):
     title = models.CharField(max_length=100)
