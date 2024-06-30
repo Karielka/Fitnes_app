@@ -24,7 +24,11 @@
                                 <div class="container-input">
                                     <p class="p2">ПРОДУКТ</p>
                                     <div class="form-wrapper-1">{{ form.product }}</div>
-                                    <p class="p2">ГРАММОВКА</p>
+                                    {% if category == "Water" %}
+                                        <p class="p2">МИЛЛИЛИТРЫ</p>
+                                    {% else %}
+                                        <p class="p2">ГРАММОВКА</p>
+                                    {% endif %}
                                     <div class="form-wrapper-1">{{ form.measure }}</div>
                                 </div>
                                 <input type="hidden" name="category" value="{{ category }}">
