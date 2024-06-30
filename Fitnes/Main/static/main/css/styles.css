@@ -1,5 +1,6 @@
 body {
     background-color: #f6f6f6;
+    font-family: Arial, sans-serif;
 }
 
 header {
@@ -23,6 +24,7 @@ header {
     cursor: pointer;
     transition: background-color 0.3s ease;
     text-decoration: none !important;
+    font-family: Arial, sans-serif;
 }
 
 .btn-primary:hover {
@@ -46,6 +48,7 @@ header {
     cursor: pointer;
     transition: background-color 0.3s ease;
     text-decoration: none !important;
+    font-family: Arial, sans-serif;
 }
 
 .btn-secondary:hover {
@@ -60,7 +63,7 @@ header {
     background-color: #F8C325;
     border: none;
     color: white;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: Arial, sans-serif;
     font-weight: bolder;
     font-size: 28px;
     display: flex;
@@ -75,4 +78,10 @@ header {
 .btn_btn-primary:hover {
     background-color: #5da130;
     color: white;
+}
+
+h1 {
+    font-family: 'Oswald', sans-serif;
+    color: #5da130;
+    font-size: 40px;
 }

@@ -5,12 +5,14 @@
 <link rel="stylesheet" href="{% static 'main/css/styles.css' %}" type="text/css" media="all">
 <link rel="stylesheet" href="{% static 'main/css/forms.css' %}" type="text/css" media="all">
 <link rel="stylesheet" href="{% static 'main/css/register.css' %}" type="text/css" media="all">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap">
+
 <body>
     <div class="page-wrapper">
         <div class="container-log">
                     <form method="post" class="register-form">
                         <div class="text-wrapper">
-                            <h2>Регистрация</h2>
+                            <h2>РЕГИСТРАЦИЯ</h2>
                         </div>
                         <div class="field-container">
                             {% csrf_token %}
@@ -25,7 +27,7 @@
                                 {{ form.type }}
                             </div>
                         </div>
-                        <div class="button-wrapper"><button type="submit">Регистрация</button></div>
+                        <div class="button-wrapper"><button type="submit">Зарегистрироваться</button></div>
                         <a class="btn btn-light" href="{% url 'login' %}">Вернуться</a>
                     </form>
                     

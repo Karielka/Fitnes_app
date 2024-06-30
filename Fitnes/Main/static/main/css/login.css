@@ -5,11 +5,13 @@
     min-height: 100vh;
     background-color: #f0f0f0; 
     padding: 20px; 
+    position: relative;
 }
 .container-log {
     background-color: #faf7f7;
     box-shadow: 0 0 10px #5da130;
-    padding: 30px; 
+    padding-left: 30px; 
+    padding-right: 0px;
     max-width: 800px; 
     width: 100%;
     box-sizing: border-box; 
@@ -25,6 +27,7 @@
 .login-form, .login-text {
     flex: 1;
     margin: 0 20px;
+    font-family: Arial, sans-serif;
 }
 
 .login-form {
@@ -33,25 +36,28 @@
 
 .login-text {
     flex: 2;
-    height: 290px;
+    height: 320px;
     max-width: 50%;
     background: linear-gradient(to bottom left, #5da130, #F8C325);
     color: white;
     font-size: medium;
-    padding: 15px; 
+    padding: 20px; 
     border-radius: 8px;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    font-family: Arial, sans-serif;
 }
 
 .login-form p {
     margin: 0;
+    font-family: Arial, sans-serif;
 }
 
 .login-form button {
     display: block;
     margin-top: 10px;
+    font-family: Arial, sans-serif;
 }
 
 .text-button{
@@ -59,10 +65,12 @@
     margin-bottom: 5px;
     margin-top: 12px;
     margin-right: 5px;
+    font-family: Arial, sans-serif;
 }
 
 .button-wrapper{
-    margin-top: 50px;
+    margin-top: 0px;
+    font-family: Arial, sans-serif;
 }
 
 .btn_btn-primary{
@@ -73,7 +81,7 @@
     background-color: #F8C325;
     border: none;
     color: white;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: Arial, sans-serif;
     font-weight: bolder;
     font-size: 28px;
     display: flex;
@@ -91,6 +99,14 @@
 
 .errorlist{
     font-size: medium;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-family: Arial, sans-serif;
+}
+
+.logo img{
+    width: 150px;
+    height: 54px;
+    margin-left: 28%;
+    margin-top: 5px;
+    margin-bottom: 20px;
 }
 
