@@ -4,13 +4,15 @@
 
 <link rel="stylesheet" href="{% static 'main/css/forms.css' %}" type="text/css" media="all">
 <link rel="stylesheet" href="{% static 'main/css/login.css' %}" type="text/css" media="all">
+<link rel="stylesheet" href="{% static 'main/css/styles.css' %}" type="text/css" media="all">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap">
 <body>
     <div class="page-wrapper">
         <div class="container-log">
             <div class="form-container">
                 <form method="post" class="login-form">
                     <div class="text-wrapper">
-                        <h2>Авторизация</h2>
+                        <h2>АВТОРИЗАЦИЯ</h2>
                     </div>
                     <div class="error-container">
                         {{ form.errors }}
@@ -24,7 +26,9 @@
                 </form>
                 <div class="login-text">
                     <div class="text1-wrapper">
-                        <p>СУПЕР ДУПЕР ИКОНКА</p>
+                        <div class=logo>
+                            <img src="{% static 'main/img/name1.png' %}" alt="logo" class="cta-img">
+                        </div>
                         <p>Добро пожаловать! Пожалуйста, введите свои учетные данные, чтобы войти в систему. Если у вас нет учетной записи, пожалуйста, зарегистрируйтесь.</p>
                     </div>
                     <div class="button-wrapper">

@@ -3,6 +3,11 @@ body {
     overflow-x: hidden; 
 }
 
+h2{
+    font-family: 'Oswald', sans-serif;
+    font-size: 30px;
+}
+
 .container-log {
     max-width: 500px;
     margin: 0 auto;
@@ -15,6 +20,7 @@ body {
 form {
     background-color: #f6f6f6;
     margin-right: 60%;
+    font-family: Arial, sans-serif;
 }
 
 form input[type="text"] {
