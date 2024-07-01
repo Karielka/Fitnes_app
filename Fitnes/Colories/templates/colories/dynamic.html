@@ -2,22 +2,73 @@
 {% load static %}
 
 {% block content %}
+
 <link rel="stylesheet" href="{% static 'main/css/forms.css' %}" type="text/css" media="all">
 
-<h2>Динамика изменения питания по дням/неделям/месяцам/годам</h2>
-<body>
-    <h1>Ваша динамика питания</h1>
+<h2>Динамика</h2>
 
-    <div>
-        <h2>График калорийности</h2>
-        {{ calories_chart_data }} 
+<div class="dynamics-container">
+    <div class="selection-area">
+        <label for="tracking-select">Отслеживать:</label>
+        <select id="tracking-select">
+            <option value="calories" {% if selected_period == 'calories' %}selected{% endif %}>Съеденное</option>
+            <option value="training" {% if selected_period == 'training' %}selected{% endif %}>Тренировки</option>
+        </select>
+    </div>
+    <div class="period-buttons">
+        <button class="period-button {% if selected_period == 'week' %}active{% endif %}" data-period="week">Неделя</button>
+        <button class="period-button {% if selected_period == 'month' %}active{% endif %}" data-period="month">Месяц</button>
+        <button class="period-button {% if selected_period == '3months' %}active{% endif %}" data-period="3months">3 месяца</button>
     </div>
 
-    <div>
-        <h2>Процентное соотношение БЖУ</h2>
-        {{ macronutrient_chart_data }}
+    
+        {{train_chart|safe}}
+        <div class="charts">
+            <div class="chart" id="calories-burned-chart-container"></div>
+        </div>
     </div>
-    <a class="btn-info" href="{%url 'index-colories' %}">На главную страницу колорий</a>
-</body>
+
+    <div class="charts-container" id="calories-section">
+        <div class="chart-buttons">
+            <button class="active">Неделя</button>
+            <button>Месяц</button>
+            <button>3 месяца</button>
+        </div>
+        <div class="charts">
+            <div class="chart" id="calories-chart">
+                {{ chart|safe }}
+            </div>
+        </div>
+    </div>
+</div>
+<!--Фронт нуждается в переработке, сделал просто чтоб было-->
+<a class="btn-info" href="{% url 'index-colories' %}">На главную страницу колорий</a>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const caloriesBurnedChartData = JSON.parse('{{ calories_burned_chart_data | safe }}');
+        Plotly.newPlot('calories-burned-chart-container', caloriesBurnedChartData.data, caloriesBurnedChartData.layout);
+
+        const macronutrientChartData = JSON.parse('{{ macronutrient_chart_data | safe }}');
+        Plotly.newPlot('macronutrient-chart-container', macronutrientChartData.data, macronutrientChartData.layout);
+    });
+
+
+    const trackingSelect = document.getElementById('tracking-select');
+    const caloriesSection = document.getElementById('calories-section');
+    const trainingSection = document.getElementById('training-section');
+
+    trackingSelect.addEventListener('change', () => {
+        const selectedValue = trackingSelect.value;
+
+        if (selectedValue === 'calories') {
+            caloriesSection.style.display = 'block';
+            trainingSection.style.display = 'none';
+        } else if (selectedValue === 'training') {
+            caloriesSection.style.display = 'none';
+            trainingSection.style.display = 'block';
+        }
+    });
+</script>
 
 {% endblock %}

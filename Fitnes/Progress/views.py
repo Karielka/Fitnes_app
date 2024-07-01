@@ -239,8 +239,5 @@ def weight_chart(request, user_id):
             line=dict(color='red', dash='dash'),  # Красная пунктирная линия
             name='Цель'  # Добавляем название для легенды (если она включена)
         ))
-    buf = io.BytesIO()
-    fig.write_image(buf, format='png')
-    buf.seek(0)
-    chart_data = base64.b64encode(buf.getvalue()).decode('utf-8') # Возвращаем график в виде base64-строки
-    return chart_data
+    chart = fig.to_html
+    return chart
