@@ -27,8 +27,7 @@ class Exercise(models.Model):
     date = models.DateField() 
     title = models.CharField(max_length=255)
     duration = models.DurationField()  
-    # можно добавить ссылку на тренировку(например из экспертного контекста, тогда и записывать
-    # количество колорий не нужно, это указано в самой тренировке)
+    link_to_video = models.CharField(max_length=200, default='')
     calories_burned = models.PositiveIntegerField()
     notes = models.TextField(blank=True)  
 

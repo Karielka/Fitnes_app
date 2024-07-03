@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from Profiles.models import ExpertProfile
+from Activity.models import Exercise
+from Colories.models import Selection
         
 class MasterCourse(models.Model):
     expert = models.ForeignKey(ExpertProfile, on_delete=models.CASCADE, related_name='master_courses')
@@ -9,6 +11,8 @@ class MasterCourse(models.Model):
     duration_weeks = models.PositiveIntegerField(default=0) 
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)  
     rating = models.FloatField(default=0.0)
+    exercises = models.ManyToManyField(Exercise)
+    selections = models.ManyToManyField(Selection)
 
     def update_rating(self):
         average_rating = self.reviews.aggregate(models.Avg('rating'))['rating__avg']

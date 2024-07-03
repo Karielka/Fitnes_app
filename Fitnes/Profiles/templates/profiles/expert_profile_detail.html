@@ -6,4 +6,8 @@
   <p>Цена за час: {{ expert_profile.price_per_hour }} рублей</p>
   <p>Подписчиков: {{ expert_profile.followers_count }}</p>
   <a href="{% url 'edit_expert_profile' expert_profile.pk %}">Edit</a>
+  <br>
+  <a href="{% url 'exercise_list' %}">Перейти к тренировкам</a>
+  <br>
+  <a href="{% url 'timetable_list' %}">Перейти к расписанию</a>
 {% endblock %}

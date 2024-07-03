@@ -1,0 +1,16 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<h2>Расписание тренера</h2>
+<a href="{% url 'timetable_create' %}">Добавить расписание</a>
+<ul>
+    {% for timetable in timetables %}
+    <li>
+        <a href="{% url 'timetable_detail' timetable.pk %}">{{ timetable.expert }} - {{ timetable.day_of_week }}: {{ timetable.start_time }} - {{ timetable.end_time }}</a>
+        <a href="{% url 'timetable_update' timetable.pk %}">Редактировать</a>
+        <a href="{% url 'timetable_delete' timetable.pk %}">Удалить</a>
+    </li>
+    {% endfor %}
+</ul>
+<div class="container-button"><a href="{% url 'view_expert_profile' expert.pk %}" class="btn-btn-primary">Перейти в профиль тренера</a></div>
+{% endblock %}

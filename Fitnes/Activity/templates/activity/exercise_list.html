@@ -1,0 +1,16 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<h2>Список упражнений</h2>
+<a href="{% url 'exercise_create' %}">Добавить упражнение</a>
+<ul>
+    {% for exercise in exercises %}
+    <li>
+        <a href="{% url 'exercise_detail' exercise.pk %}">{{ exercise.title }} - {{ exercise.date }}</a>
+        <a href="{% url 'exercise_update' exercise.pk %}">Редактировать</a>
+        <a href="{% url 'exercise_delete' exercise.pk %}">Удалить</a>
+    </li>
+    {% endfor %}
+</ul>
+<div class="container-button"><a href="{% url 'view_expert_profile' expert.pk %}" class="btn-btn-primary">Перейти в профиль тренера</a></div>
+{% endblock %}

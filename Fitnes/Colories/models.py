@@ -46,9 +46,16 @@ class History(models.Model):
         self.save()
 
 class Selection(models.Model):
+    MEAL_TIMES = [
+        ('Breakfast', 'Завтрак'),
+        ('Dinner', 'Обед'),
+        ('Lunch', 'Ланч'),
+        ('Snack', 'Перекус'),
+        ('Supper', 'Ужин'),
+    ]
     title = models.CharField(max_length=255)
     description = models.TextField()
-    category = models.CharField(max_length=100)  # Категория подборки(завтрак, обед)
+    category = models.CharField(max_length=25, choices=MEAL_TIMES)
     products = models.ManyToManyField(Product)
 
 class TimeTable(models.Model):

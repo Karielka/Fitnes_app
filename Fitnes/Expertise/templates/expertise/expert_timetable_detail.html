@@ -1,0 +1,13 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<h2>Детали расписания</h2>
+<p>Эксперт: {{ timetable.expert }}</p>
+<p>Студент: {{ timetable.student }}</p>
+<p>День недели: {{ timetable.get_day_of_week_display }}</p>
+<p>Начало: {{ timetable.start_time }}</p>
+<p>Конец: {{ timetable.end_time }}</p>
+<a href="{% url 'timetable_update' timetable.pk %}">Редактировать</a>
+<a href="{% url 'timetable_delete' timetable.pk %}">Удалить</a>
+<a href="{% url 'timetable_list' %}">Назад к списку</a>
+{% endblock %}
