@@ -30,7 +30,7 @@
                 <p>Осталось: {{for_goal_left|floatformat:1}}</p>
             </div>
             
-            <div class="container-graph"><img src="data:image/png;base64,{{ weight_chart_data }}" alt="График веса"></div>
+            <div class="container-graph">{{ weight_chart_data|safe }}</div>
         </div>
     </body>
 {% endblock %}
