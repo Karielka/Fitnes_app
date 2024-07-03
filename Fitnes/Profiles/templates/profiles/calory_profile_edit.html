@@ -13,15 +13,21 @@
                     <h2>Редактирование профиля калорий</h2>
                 </div>
                 <div class="form-wrapper">
-                    {% csrf_token %}
-                    {{ form.non_field_errors }}
-                    {{ form.as_p }}
-                    <h3>Время приема пищи</h3>
-                    {{ time_table_form.non_field_errors }}
-                    {{ time_table_form.as_p }}
-                    <h3>Тренировочные сессии</h3>
-                    {{ formset.management_form }}
-                    <div id="formset-container">
+                    <div class="container-first">
+                        {% csrf_token %}
+                        {{ form.non_field_errors }}
+                        {{ form.as_p }}
+                    </div>
+                    <div class="container-second">
+                        <h3>Время приема пищи</h3>
+                        {{ time_table_form.non_field_errors }}
+                        {{ time_table_form.as_p }}
+                    </div>
+                    <div class="container-third">
+                        <h3>Тренировочные сессии</h3>
+                        {{ formset.management_form }}
+                    </div>
+                    <div id="container-fourth">
                         {% for form in formset %}
                             <div class="formset-item">
                                 {{ form.id }}
@@ -34,7 +40,9 @@
                             </div>
                         {% endfor %}
                     </div>
-                    <button type="button" class="btn btn-primary" id="add-form">Добавить тренировку</button>
+                    <div class="button-wrapper">
+                        <button type="button" class="btn btn-primary" id="add-form">Добавить тренировку</button>
+                    </div>
                 </div>
                 <div class="button-wrapper">    
                     <button type="submit" class="btn btn-primary">Сохранить</button>

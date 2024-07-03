@@ -2,22 +2,35 @@
 {% load static %}
 
 {% block content %}
-    <h1>Обновить текущий вес</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Сохранить</button>
-    </form>
-    {% if active_goal %}
-    <h3>Цель:</h3>
-        <p>Описание: {{ active_goal.description }}</p>
-        <p>Начальный вес: {{ active_goal.start_weight }}</p>
-        <p>Желаемый вес: {{ active_goal.target_weight }}</p>
-        <p>Текущий вес: {{ active_goal.current_weight }}</p>
-    {% else %}
-        <p>Нет цели</p>
-    {% endif %}
+<link rel="stylesheet" href="{% static 'progress/css/weight_tracking.css' %}" type="text/css" media="all">
 
-    <p>Осталось: {{for_goal_left|floatformat:1}}</p>
-    <img src="data:image/png;base64,{{ weight_chart_data }}" alt="График веса">
+    <body>
+        <div class="page-wrapper">
+            <h1>Обновить текущий вес</h1>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-wrapper">{{ form.as_p }}</div>
+                <div class="btn-wrapper"><button type="submit" class="btn btn-primary">Сохранить</button></div>
+            </form>
+            <div class="container-text">
+                {% if active_goal %}
+                    <div class="container-text-1">
+                        <div class="container-first">
+                            <p>Начальный вес:</p>
+                            <div class="container-weight-1">{{ active_goal.start_weight }}</div>
+                        </div>
+                        <div class="container-second">
+                            <p>Желаемый вес:</p>
+                            <div class="container-weight-2">{{ active_goal.target_weight }}</div>
+                        </div>
+                    </div>
+                {% else %}
+                    <p>Нет цели</p>
+                {% endif %}
+                <p>Осталось: {{for_goal_left|floatformat:1}}</p>
+            </div>
+            
+            <div class="container-graph"><img src="data:image/png;base64,{{ weight_chart_data }}" alt="График веса"></div>
+        </div>
+    </body>
 {% endblock %}
