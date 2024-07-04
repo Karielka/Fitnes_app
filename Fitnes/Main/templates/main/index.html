@@ -58,7 +58,8 @@
           </div>
           <div class="nutrition-image">
             <img src="{% static 'main/img/graph1.png' %}" alt="Graph 1" class="nutrition-image">
-            <h4>Соотношение белков, жиров и углеводов</h4>
+            <img src="{% static 'main/img/arrow.png' %}" alt="arrow" class="arrow">
+            <h4>Соотношение КБЖУ</h4>
           </div>
           <div class="nutrition-content">
             {% if user.is_authenticated %}
@@ -77,6 +78,7 @@
         </div>
         <div class="nutrition-image">
           <img src="{% static 'main/img/graph2.png' %}" alt="Graph 2" class="nutrition-image">
+          <img src="{% static 'main/img/arrow.png' %}" alt="arrow" class="arrow">
           <h4>Динамика изменения веса</h4>
           </div>
           <div class="nutrition-content">
@@ -92,7 +94,8 @@
         </div>
         <div class="nutrition-image">
           <img src="{% static 'main/img/graph3.png' %}" alt="Graph 3" class="nutrition-image">
-          <h4>Анализ вашего ритма жизни</h4>
+          <img src="{% static 'main/img/arrow.png' %}" alt="arrow" class="arrow">
+          <h4>Анализ самого важного</h4>
           </div>
           <div class="nutrition-content">
               <button class="cta-btn">Попробовать</button>
@@ -116,7 +119,9 @@
       <img src="{% static 'main/img/but.png' %}" alt="Try it" class="cta-img">
     </a>
     <h2>ПОДДЕРЖИВАЙТЕ СЕБЯ В ФОРМЕ</h2>
-    <p>Тренируйте регулярно с помощью новых тренировок, которые можно делать не выходя из дома.</p>
+    <p>Независимо от уровня вашей подготовки, наши программы помогут вам достичь желаемых результатов.</p>
+    <p>Откройте для себя разнообразные упражнения, разработанные профессиональными тренерами, и наслаждайтесь удобством занятий в комфортной домашней обстановке.</p> 
+
     <div class="workout-content">
       {% if user.is_authenticated %}
         <a href="/expertise/" class="hero-btn">Посмотреть еще</a>
@@ -206,12 +211,94 @@
     </div>
 </section>
 
-<section class="creators">
-    <p>СОЗДАТЕЛИ</p>
-</section>
-
-<footer>
+<footer class="footer">
+  <div class="footer__addr">
+    <h1 class="footer__logo">BODY BALANCE</h1>
+        
+    <h2>Контакты</h2>
+    
+    <address>
+      Студенты группы ИУ6-43Б<br>
+          
+      <a class="footer__btn" href="mailto:yu_shibitova@mail.com">Пишите нам</a>
+    </address>
+  </div>
   
+  <ul class="footer__nav">
+    <li class="nav__item">
+      <h2 class="nav__title">Создатели</h2>
+
+      <ul class="nav__ul">
+        <li>
+          <a href="#">Архипов Артем</a>
+        </li>
+
+        <li>
+          <a href="#">Косыхин Тимофей</a>
+        </li>
+            
+        <li>
+          <a href="#">Мальков Олег</a>
+        </li>
+
+        <li>
+          <a href="#">Шибитова Юлиана</a>
+        </li>
+      </ul>
+    </li>
+    
+    <li class="nav__item nav__item--extra">
+      <h2 class="nav__title">Наше приложение</h2>
+      
+      <ul class="nav__ul nav__ul--extra">
+        <li>
+          <a href="#">Счетчик калорий</a>
+        </li>
+        
+        <li>
+          <a href="#">Видео-тренировки</a>
+        </li>
+        
+        <li>
+          <a href="#">Советы по питанию</a>
+        </li>
+        
+        <li>
+          <a href="#">Соревнования</a>
+        </li>
+        
+        <li>
+          <a href="#">Награды</a>
+        </li>
+        
+        <li>
+          <a href="#">Отслеживание целей</a>
+        </li>
+      </ul>
+    </li>
+    
+    <li class="nav__item">
+      <h2 class="nav__title"></h2>
+      
+      <ul class="nav__ul">
+        <li>
+          <a href="#"></a>
+        </li>
+        
+        <li>
+          <a href="#"></a>
+        </li>
+      
+      </ul>
+    </li>
+  </ul>
+  
+  <div class="legal">
+    
+    <div class="legal__links">
+      <span>Сделано с <span class="heart">♥</span> о Вашем здоровье</span>
+    </div>
+  </div>
 </footer>
 
 </body>
@@ -234,7 +321,7 @@
 
     // Запуск карусели автоматически
     $('#nutritionCarousel').carousel({
-      interval: 5000 // Интервал в миллисекундах
+      interval: 3000 // Интервал в миллисекундах
     });
   });
 </script>

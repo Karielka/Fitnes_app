@@ -4,31 +4,54 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'main/css/forms.css' %}" type="text/css" media="all">
 <link rel="stylesheet" href="{% static 'activity/css/index.css' %}" type="text/css" media="all">
+<link rel="stylesheet" href="{% static 'colories/css/meal_record_create.css' %}" type="text/css" media="all">
 
-<div class="container">
-    <h2>{{ title }}</h2>
-    <div class="row">
-        <div class="col-6">
-            {% if error_message %}
-                <div class="error-message">{{ error_message }}</div>
-            {% else %}
-                <form action="{% url 'meal_record_create' %}?category={{ category }}" method="post">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <input type="hidden" name="category" value="{{ category }}">
-                    <button type="submit">Создать запись</button>
-                </form>    
-            {% endif %}
-            <a href="{% url 'index-colories' %}" class="back-link">Вернуться</a>
-        </div>
-        <div class="col-6">
-            {% if category == "Water" %}
-                <img src="{% static 'colories/img/water_add.png' %}" alt="logo" class="cta-img">
-            {% else %}
-                <img src="{% static 'colories/img/food_add.png' %}" alt="logo" class="cta-img">
-            {% endif %}            
+
+<body>
+    <div class="page-wrapper">
+        <div class="container-log">
+            <div class="container-first">
+                <div class="text-wrapper">
+                    <h2>Добавление продуктов</h2>
+                </div>
+                <div class="container-main-field">
+                    {% if error_message %}
+                        <div class="error-message">{{ error_message }}</div>
+                    {% else %}
+                        <div class="container-form">
+                            <form action="{% url 'meal_record_create' %}?category={{ category }}" method="post">
+                                {% csrf_token %}
+                                <div class="container-input">
+                                    {% if category == "Water" %}
+                                    <p class="p2"></p>
+                                    {% else %}
+                                    <p class="p2">ПРОДУКТ</p>
+                                    <div class="form-wrapper-1">{{ form.product }}</div>
+                                    {% endif %}
+                                    {% if category == "Water" %}
+                                        <p class="p2">МИЛЛИЛИТРЫ</p>
+                                    {% else %}
+                                        <p class="p2">ГРАММОВКА</p>
+                                    {% endif %}
+                                    <div class="form-wrapper-1">{{ form.measure }}</div>
+                                </div>
+                                <input type="hidden" name="category" value="{{ category }}">
+                                <button type="submit">Создать запись</button>
+                            </form>
+                        </div>
+                    {% endif %}
+                </div>
+                <a href="{% url 'index-colories' %}" class="back-link">Вернуться</a>
+            </div>
+            <div class="container-second">
+                {% if category == "Water" %}
+                    <img src="{% static 'colories/img/water_add.png' %}" alt="logo" class="cta-img">
+                {% else %}
+                    <img src="{% static 'colories/img/food_add.png' %}" alt="logo" class="cta-img">
+                {% endif %}
+            </div>
         </div>
     </div>
-</div>
+</body>
 
 {% endblock %}

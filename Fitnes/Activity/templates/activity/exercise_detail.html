@@ -1,0 +1,15 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<h2>Детали упражнения</h2>
+<p>Пользователь: {{ exercise.user }}</p>
+<p>Дата: {{ exercise.date }}</p>
+<p>Название: {{ exercise.title }}</p>
+<p>Продолжительность: {{ exercise.duration }}</p>
+<p>Ссылка на видео: {{ exercise.link_to_video }}</p>
+<p>Калории сожжены: {{ exercise.calories_burned }}</p>
+<p>Заметки: {{ exercise.notes }}</p>
+<a href="{% url 'exercise_update' exercise.pk %}">Редактировать</a>
+<a href="{% url 'exercise_delete' exercise.pk %}">Удалить</a>
+<a href="{% url 'exercise_list' %}">Назад к списку</a>
+{% endblock %}

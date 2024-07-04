@@ -162,7 +162,7 @@
     </div>
   </div>
 
-  <p><a class="btn-primary" href="{%url 'meal_record_read' %}">Посмотреть всю еду</a></p>
+  <p><a class="btn-primary" href="{%url 'meal_record_read' %}" style="color:brown">Посмотреть всю еду</a></p>
 
   <!--Диаграмма + данные-->
   <div class="right-section">
@@ -184,15 +184,16 @@
             </div>
         </div>
         <!-- Pie chart here -->
+        
         <div class="chart">
-          <img src="data:image/png;base64,{{ macronutrient_chart_data }}" alt="Процентное соотношение БЖУ">
-          <a class="btn-info" href="{%url 'colory_dynamic' %}">На страницу с графиками колорий</a>
-        </div>
+          
+          <a class="btn-info" href="{%url 'colory_dynamic' %}" style="color:brown">На страницу с графиками колорий</a>
     </div>
 
     <div class="container_message" id="container_message"></div>
   </div>
-
+  {{chart|safe}}
+  <!--Нужна нормальная верстка, я не умею во фронт... :-)   -->
   <!--Обработка календаря-->
   <script>
     $(document).ready(function() {
@@ -279,182 +280,9 @@
     }
   </script>
 
-<<<<<<< HEAD
-<div class="overlay" id="overlay">
-    <div class="popup">
-        <div id="datepicker"></div>
-    </div>
-</div>
-
-<table class="data">
-    <tr>
-        <td class="column">
-          <div class="label colored">Белки</div>
-          <div class="value" id="proteins_sum">{{ proteins_sum|floatformat:1 }}</div>
-        </td>
-        <td class="column">
-          <div class="label colored">Жиры</div>
-          <div class="value" id="fats_sum">{{ fats_sum|floatformat:1 }}</div>
-        </td>
-        <td class="column">
-          <div class="label colored">Углев</div>
-          <div class="value" id="carbs_sum">{{ carbs_sum|floatformat:1 }}</div>
-        </td>
-        <td class="column">
-          <div class="label colored">ККал</div>
-          <div class="value" id="calories_sum">{{ calories_sum }}</div>
-        </td>
-      </tr>
-</table>
-
-
-
-
-
-<div class="left-section">
-  <div class="container">
-      <div class="food-entry breakfast">
-        <div class="label">Завтрак</div>
-        <div class="value" id="proteins">0</div>
-        <div class="value" id="fats">0</div>
-        <div class="value" id="carbs">0</div>
-        <div class="value" id="calories">0</div>
-        <form action="{% url 'meal_record_create' %}" method="get">
-            <button class="button_colories" type="submit">+</button>
-        </form>
-      </div>
-  </div>
-  <div class="container">
-      <div class="food-entry lunch">
-          <div class="label">Обед</div>
-          <div class="value" id="proteins">0</div>
-          <div class="value" id="fats">0</div>
-          <div class="value" id="carbs">0</div>
-          <div class="value" id="calories">0</div>
-          <form action="{% url 'meal_record_create' %}" method="get">
-              <button class="button_colories" type="submit">+</button>
-          </form>
-      </div>
-  </div>
-  <div class="container">
-      <div class="food-entry dinner">
-          <div class="label">Ужин</div>
-          <div class="value" id="proteins">0</div>
-          <div class="value" id="fats">0</div>
-          <div class="value" id="carbs">0</div>
-          <div class="value" id="calories">0</div>
-          <form action="{% url 'meal_record_create' %}" method="get">
-              <button class="button_colories" type="submit">+</button>
-          </form>
-      </div>
-  </div>
-  <div class="container">
-    <div class="food-entry snack" id="snack">
-        <div class="label">Перекус</div>
-        <div class="value proteins" id="proteins">{{ snack_data.proteins }}</div>
-        <div class="value fats" id="fats">{{ snack_data.fats }}</div>
-        <div class="value carbs" id="carbs">{{ snack_data.carbs }}</div>
-        <div class="value calories" id="calories">{{ snack_data.calories }}</div>
-        <form action="{% url 'meal_record_create' %}" method="get">
-          <input type="hidden" name="category" value="Snack">
-          <button class="button_colories" type="submit">+</button>
-        </form>
-    </div>
-  </div>
-  <div class="container">
-      <div class="food-entry water">
-          <div class="label">Вода</div>
-          <div class="value" id="water">0</div>
-          <div class="value">л</div>
-          <form action="{% url 'meal_record_create' %}" method="get">
-              <button class="button_colories" type="submit">+</button>
-          </form>
-      </div>
-  </div>
-  <div class="container">
-      <div class="food-entry workout">
-          <div class="label">Активность</div>
-          <div class="value" id="calories">0</div>
-          <form action="{% url 'meal_record_create' %}" method="get">
-              <button class="button_colories" type="submit">+</button>
-          </form>
-      </div>
-  </div>
-  <div class="container">
-    <div class="food-entry sleep">
-        <div class="label">Сон</div>
-        <div class="value" id="hours">0</div>
-        <div class="value">ч</div>
-        <div class="value" id="calories">0</div>
-        <form action="{% url 'meal_record_create' %}" method="get">
-            <button class="button_colories" type="submit">+</button>
-        </form>
-    </div>
-  </div>
-</div>
-
-
-<a class="btn-primary" href="{%url 'meal_record_read' %}">Посмотреть всю еду</a>
-
-
-<div class="right-section">
-  <div class="summary">
-      <div class="details">
-          <!-- Скрипт для вычисления значений -->
-          <script>
-              // Получение значений из профиля пользователя и суммарного числа съеденных калорий
-              var totalCalories = 2000; // Пример
-              var eatenCalories = 1800; // Пример
-
-              // Вычисление оставшихся калорий
-              var remainingCalories = totalCalories - eatenCalories;
-
-              // Примерные значения для процентного соотношения белков, жиров и углеводов
-              var proteinPercent = 30;
-              var fatPercent = 30;
-              var carbPercent = 40;
-
-              // Проверка на превышение или недостаток калорий
-              var message = "";
-              if (eatenCalories < totalCalories) {
-                  message = "Вы съели слишком мало! Рекомендуем вам увеличить количество приемов пищи.";
-              } else if (eatenCalories > totalCalories * 1.1) {
-                  message = "Вы съели слишком много! Рекомендуем вам добавить тренировки.";
-              } else {
-                  message = "Отлично! Вы уложились в норму калорий! Чтобы получить желаемый результат, продолжайте в том же духе.";
-              }
-          </script>
-
-          <div>Осталось: <span id="remainingCalories"></span></div>
-          <div>Съедено: <span id="eatenCalories"></span></div>
-          <div>Всего: <span id="totalCalories"></span></div>
-          <div class="macros">
-            <div style="color: rgb(248, 195, 37);">Белки: <span id="proteinPercent">{{ protein_percent|floatformat:1 }}</span>%</div>
-            <div style="color: rgb(93, 161, 48);">Жиры: <span id="fatPercent">{{ fat_percent|floatformat:1 }}</span>%</div>
-            <div style="color: rgb(36, 56, 23);">Углеводы: <span id="carbPercent">{{ carb_percent|floatformat:1 }}</span>%</div>
-        </div>
-      </div>
-      <div class="chart">
-        <!-- Pie chart here -->
-        <img src="data:image/png;base64,{{ macronutrient_chart_data }}" alt="Процентное соотношение БЖУ">
-      </div>
-  </div>
-  <div class="graph">
-    <!-- Graph here -->
-    <img src="data:image/png;base64,{{ calories_chart_data }}" alt="График калорийности"> 
-  </div>
-  <div class="container_message"></div>
-</div>
-
-<!-- Скрипт для построения круговой диаграммы -->
-<!-- Удален, так как делаем с помощью питона -->
-<script>
-    // Установка значений в HTML
-=======
   <!--Установка значений в HTML-->
   <script>
     
->>>>>>> 60be95b2c4acc09b7dee1d4c1d3637bacd97bb2c
     document.getElementById('remainingCalories').innerText = remainingCalories;
     document.getElementById('eatenCalories').innerText = eatenCalories;
     document.getElementById('totalCalories').innerText = totalCalories;

@@ -1,0 +1,13 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+  <h2>{{ expert_profile.nickname }}</h2>
+  <p>Опыт: {{ expert_profile.experience_years }} years</p>
+  <p>Цена за час: {{ expert_profile.price_per_hour }} рублей</p>
+  <p>Подписчиков: {{ expert_profile.followers_count }}</p>
+  <a href="{% url 'edit_expert_profile' expert_profile.pk %}">Edit</a>
+  <br>
+  <a href="{% url 'exercise_list' %}">Перейти к тренировкам</a>
+  <br>
+  <a href="{% url 'timetable_list' %}">Перейти к расписанию</a>
+{% endblock %}

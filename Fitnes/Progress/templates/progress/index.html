@@ -4,92 +4,151 @@
 {% block content %}
 <body>
   <link rel="stylesheet" href="{% static 'progress/css/index.css' %}" type="text/css" media="all">
-  <div class="container">
+  <div class="container-head-text">
     <h1>
-      {{ message }}
+      ЦЕЛИ И ДОСТИЖЕНИЯ
     </h1>
   </div>
 
   <!--Создание меню адресации по приложению и его ключевыми страницами -->
-  <div class="col">
-    <div class="row-3">
-      <a href="/colories/">Приложение Colories</a>
-    </div>
-    <div class="row-3">
-      <a href="/activity/">Приложение Activity</a>
-    </div>
-    <div class="row-3">
-      <a href="/expertise/">Приложение Expertise</a>
-    </div>
-  </div>
   <div class="row">
     <div class="col-6">
-    <p><a class="btn btn-primary" href="{% url 'create_goal' %}">Создать цель</a></p>
-    <h2>Мои цели:</h2>
-      <ul>
-          {% for goal in goals %}
-              <li>
-                  <strong>{{ goal.description }}</strong><br>
-                  <p>All fields are available</p>
-                  Стартовый вес: {{ goal.start_weight }} кг<br>
-                  Текущий вес: {{ goal.current_weight }} кг<br>
-                  Целевой вес: {{ goal.target_weight }} кг<br>
-                  Статус: {{ goal.get_status_display }}<br>
-                  <!-- Кнопка для редактирования -->
-                  <a class="btn btn-primary" href="{% url 'edit_goal' pk=goal.pk %}">Редактировать</a><br>
-                  <a class="btn btn-primary" href="{% url 'delete_goal' pk=goal.pk %}">Удалить</a>
-              </li>
-          {% endfor %}
-      </ul>
+      <div class="container-first">
+        <h2 class="text-head-1">МОИ ЦЕЛИ:</h2>
       </div>
-      <div class="col-6">
-        <p>Достижения</p>
-        <div class="achievements-list">
-          <ul>
-              {% for achievement in achievements_data %}
-                  <li>
-                      <div class="achievement-item">
-                          <h3>{{ achievement.title }}</h3>
-                          <p>{{ achievement.description }}</p>
-                          <img src="{{ achievement.icon }}" alt="{{ achievement.title }}"/>
-                          <p>Status: {{ achievement.status }}</p>
-                          {% if not achievement.completed and not achievement.claimed %}
-                            <div class="achievement">
-                              <div class="title">{{ achievement.title }}</div>
-                              <div class="description">{{ achievement.description }}</div>
-                              <div class="progress-bar-container">
-                                {% with achievement.progress as progress %}
-                                <div class="progress-bar" style="width: {{ progress }}%;"></div>
-                                {% endwith %}
-                              </div>
-                              <div class="progress-info">
-                                  <span class="progress-have">{{ achievement.have }}</span> / 
-                                  <span class="progress-need">{{ achievement.need }}</span>
-                              </div>
-                              <div class="status">{{ achievement.status }}</div>
-                            </div>
-                          {% endif %}
-                          {% if achievement.completed and not achievement.claimed %}
-                              <form action="{% url 'index-progress' %}" method="post">
-                                  {% csrf_token %}
-                                  <input type="hidden" name="achievement_id" value="{{ achievement.id }}">
-                                  <button type="submit">Забрать</button>
-                              </form>
-                          {% endif %}
-                          {% if achievement.claimed %}
-                              <p>Награда уже получена</p>
-                          {% endif %}
-                      </div>
-                  </li>
-              {% endfor %}
-          </ul>
+      <div class="container-left">
+        {% if current_goal != None %}
+        <h3>Текущая цель</h3>
+        <div class="container-left-first">
+            <div class="wrapper-left-first">
+                <div class="container-left-first-first">
+                    <div class="container-left-first-first-first">
+                        <strong>{{ current_goal.description }}</strong><br>
+                        Стартовый вес: {{ current_goal.start_weight }} кг<br>
+                        Текущий вес: {{ current_goal.current_weight }} кг<br>
+                        Целевой вес: {{ current_goal.target_weight }} кг<br>
+                        Статус: {{ current_goal.get_status_display }}<br>
+                    </div>
+                    <div class="container-left-first-first-second">
+                        <p>Вот тут столбик</p>
+                    </div>
+                </div>
+                <div class="container-left-first-button">
+                    <a class="btn btn-secondary btn-mar" href="{% url 'edit_goal' pk=current_goal.pk %}">Редактировать</a>
+                    <a class="btn btn-danger btn-mar" href="{% url 'delete_goal' pk=current_goal.pk %}">Удалить</a>
+                    <a class="btn btn-danger btn-mar" href="{% url 'fail_goal' pk=current_goal.pk %}">Сдаться</a>
+                </div>
+            </div>
         </div>
-        <p>{{max_weight_loss}}</p>
-        <p><a class="btn btn-primary" href="{% url 'users_rating_read' %}">Просмотреть рейтинг пользователей</a></p>
+        {% else %}
+          <!-- Вывод сообщений -->
+          {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+          {% else %}
+            <p>У вас нет активных целей.</p>
+          {% endif %}
+          <a class="btn btn-primary btn-small" href="{% url 'create_goal' %}">Создать цель</a>
+        {% endif %}
+        
+        <h3>История целей</h3>
+        {% if historical_goals %}
+          {% for goal in historical_goals %}
+              <div class="container-left-first">
+                  <div class="wrapper-left-first">
+                      <div class="container-left-first-first">
+                          <div class="container-left-first-first-first">
+                              <strong>{{ goal.description }}</strong><br>
+                              Стартовый вес: {{ goal.start_weight }} кг<br>
+                              Текущий вес: {{ goal.current_weight }} кг<br>
+                              Целевой вес: {{ goal.target_weight }} кг<br>
+                              Статус: {{ goal.get_status_display }}<br>
+                          </div>
+                          <div class="container-left-first-first-second">
+                              <p>Вот тут столбик</p>
+                          </div>
+                      </div>
+                      <div class="container-left-first-button">
+                          <!--Нельзя редактировать завершённые цели
+                            <a class="btn btn-secondary btn-mar" href="{% url 'edit_goal' pk=goal.pk %}">Редактировать</a><br>-->
+                          <a class="btn btn-danger btn-mar" href="{% url 'delete_goal' pk=goal.pk %}">Удалить</a>
+                      </div>
+                  </div>
+              </div>
+          {% endfor %}
+        {% else %}
+          <p>У вас ещё не было создано целей.</p>
+        {% endif %}
       </div>
-
+    </div>
+      
+    <div class="col-6">
+      <div class="container-second">
+        <h2 class="text-head-2">МОИ ДОСТИЖЕНИЯ</h2>
+        <a class="btn btn-primary btn-simple" href="{% url 'users_rating_read' %}">Просмотреть рейтинг пользователей >></a>
+      </div>
+        
+      <div class="achievements-list">
+        <ul class="container-ul">
+          {% for achievement in achievements_data %}
+            <li class="wrapper-item">
+              <div class="achievement-item">
+                {% if not achievement.completed and not achievement.claimed %}
+                  <div class="wrapper-text">
+                    <div class="title">{{ achievement.title }}</div>
+                    <div class="description">{{ achievement.description }}</div>
+                    <div class="progress-bar-container">
+                      {% with achievement.progress as progress %}
+                        <div class="progress-bar" style="width: {{ progress }}%;"></div>
+                      {% endwith %}
+                    </div>
+                    <div class="status">{{ achievement.status }}</div>
+                    <div class="progress-info">
+                      <span class="progress-have">{{ achievement.have }}</span> / 
+                      <span class="progress-need">{{ achievement.need }}</span>
+                    </div>
+                  </div>
+                  <div class="wrapper-img">
+                    <img class="progress-img" src="{% static 'main/img/' %}/{{ achievement.icon }}" alt="{{ achievement.title }}"/>
+                  </div>
+                {% endif %}
+                {% if achievement.completed and not achievement.claimed %}
+                  <div class="wrapper-text">
+                    <div class="title">{{ achievement.title }}</div>
+                    <div class="description">{{ achievement.description }}</div>
+                    <form action="{% url 'index-progress' %}" method="post">
+                      {% csrf_token %}
+                      <input type="hidden" name="achievement_id" value="{{ achievement.id }}">
+                      <button type="submit">Забрать</button>
+                    </form>
+                  </div>
+                  <div class="wrapper-img">
+                    <img class="progress-img" src="{% static 'main/img/' %}/{{ achievement.icon }}" alt="{{ achievement.title }}"/>
+                  </div>
+                {% endif %}
+                {% if achievement.claimed %}
+                  <div class="wrapper-text">
+                    <div class="title">{{ achievement.title }}</div>
+                    <div class="description">{{ achievement.description }}</div>
+                    <p>Награда уже получена</p>
+                  </div>
+                  <div class="wrapper-img">
+                    <img class="progress-img" src="{% static 'main/img/' %}/{{ achievement.icon }}" alt="{{ achievement.title }}"/>
+                  </div>
+                {% endif %}
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <p>{{max_weight_loss}}</p>
+    </div>
   </div>
   
-
 </body>
 {% endblock content %}
