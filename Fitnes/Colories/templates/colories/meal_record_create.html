@@ -22,8 +22,12 @@
                             <form action="{% url 'meal_record_create' %}?category={{ category }}" method="post">
                                 {% csrf_token %}
                                 <div class="container-input">
+                                    {% if category == "Water" %}
+                                    <p class="p2"></p>
+                                    {% else %}
                                     <p class="p2">ПРОДУКТ</p>
                                     <div class="form-wrapper-1">{{ form.product }}</div>
+                                    {% endif %}
                                     {% if category == "Water" %}
                                         <p class="p2">МИЛЛИЛИТРЫ</p>
                                     {% else %}

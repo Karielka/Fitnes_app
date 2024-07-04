@@ -1,3 +1,6 @@
+body {
+    font-family: Arial, sans-serif;
+}
 .page-wrapper {
     display: flex;
     justify-content: center;
@@ -20,6 +23,8 @@
 
 .container-first{
     margin: 20px;
+    width: 50%;
+    align-items: center;
 }
 
 .register-form {
@@ -55,17 +60,16 @@
     color: #000000;
 }
 
-.container-second{
+.container-second {
+    padding: 0;
     display: flex;
     justify-content: flex-end;
+    align-items: flex-end;
+    width: 50%; 
 }
 
 .button-wrapper{
     flex: 3;
-}
-
-.cta-img{
-    width: 80%;
 }
 
 form{
@@ -117,7 +121,6 @@ form button[type="submit"] {
     color: white;
     font-size: large;
     padding-left: 50px;
-    padding-top: 7px;
     padding-bottom: 0px;
     padding-right: 100px;
     padding: 7px 25px;
@@ -127,6 +130,7 @@ form button[type="submit"] {
     border-radius: 15px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-left: 20%;
 }
 
 form button[type="submit"]:hover {
@@ -202,8 +206,13 @@ select#id_type {
     color: rgb(128, 128, 128);
 }
 
-.cta-img{
+
+.cta-img {
+    width: 100%;
+    height: auto;
+    display: block;
     margin: 0;
+    padding: 0;
 }
 
 .form-wrapper-1{
@@ -213,8 +222,11 @@ select#id_type {
 .p2{
     margin-top: 10px;
     margin-bottom: 4px;
-    font-family: Inter;
+    font-family: Arial, sans-serif;
     font-size: small;
 }
 
+h2 {
+    color: #5da130;
+}
 

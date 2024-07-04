@@ -8,7 +8,7 @@ html, body {
 }
 
 a {
-    color: black;
+    color: #333;
     text-decoration: none;
 }
 
@@ -26,7 +26,7 @@ a {
 .burger-line {
     width: 100%;
     height: 3px; 
-    background-color: black;
+    background-color: #333;
     margin: 1px 0; 
 }
 
@@ -43,7 +43,7 @@ a {
   }
 
 .dropdown-menu a {
-    color: black;
+    color: #333;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
@@ -55,7 +55,7 @@ a {
 
 .logout {
     margin-left: 600px;
-    color: black;
+    color: #333;
     justify-content: right;
 }
 
@@ -87,7 +87,7 @@ a {
 
 .hero-text p {
     font-size: 22px;
-    color: #666;
+    color: #333;
     width: 650px;
     margin-left: 20px;
     padding: 10px;
@@ -161,7 +161,7 @@ section {
 
 .nutrition {
     width: 100%;
-    color: black;
+    color: #333;
     position: relative;
     height: 100%;
     background-repeat: no-repeat;
@@ -172,7 +172,7 @@ section {
     .nutrition-text {
         text-align: left;
         font-family: Arial, sans-serif;
-        color: black;
+        color: #333;
         padding: 10px;
         width: 800px;
         margin-left: 40%;
@@ -188,7 +188,7 @@ section {
     }
     
     .nutrition-text h3 {
-        font-size: 25px;
+        font-size: 22px;
         width: 100%;
     }
 
@@ -200,17 +200,15 @@ section {
       }
       
       .nutrition-image h4 {
-        color: black;
+        color: #333;
         white-space: normal;
         font-size: 15px;
         text-align: center;
         padding-left: 30px;
-        width: 300px;
         position: relative;
         justify-content: flex-start;
         margin-top: 0;
         display: flex;
-        flex-direction: column;
       }
 .nutrition-content {
     display: flex;
@@ -246,7 +244,6 @@ section {
     align-items: center;
     justify-content: center;
     padding: 10px; 
-    background-color: #5DA130;
 }
 
 .carousel-control-prev {
@@ -258,7 +255,6 @@ section {
 }
 
 .workout {
-    color: white;
     position: relative;
     width: 100%;
     height: 100%;
@@ -283,12 +279,11 @@ section {
     padding: 10px;
     font-family: 'Oswald', sans-serif;
     color: #5da130;
-
 }
 
 .workout p {
-    font-size: 18px;
-    color: #666;
+    font-size: 22px;
+    color: #333;
     width: 600px;
     padding: 10px;
     text-align: left;
@@ -298,22 +293,20 @@ section {
 .motivation {
     position: relative;
     width: 100%;
-    height: 100%;
+    height: 70%;
     background-repeat: no-repeat;
     background-size: cover;
-    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 20px;
+    padding-top: 40px;
 }
 
 .motivation-content {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 20px;
 }
 
 .motivation h1, .motivation p {
@@ -331,9 +324,9 @@ section {
 }
 
 .motivation p {
-    font-size: 18px;
-    color: #666;
-    width: 800px;
+    font-size: 22px;
+    color: #333;
+    width: 1500px;
     padding: 10px;
     text-align: center;
     align-items: center;
@@ -341,7 +334,7 @@ section {
 
 .motivation-btn {
     display: flex;
-    gap: 10px;
+    gap: 30px;
     margin-top: 20px;
     text-align: center;
     justify-content: center;
@@ -435,9 +428,146 @@ section {
     }
     
     .cta-img {
-        width: 150px; /* Adjust the size as needed */
+        width: 100px; /* Adjust the size as needed */
         height: auto;
         cursor: pointer;
         margin-top: 20px;
         margin-left:800px;
+    }
+
+    .footer {
+        display: flex;
+        flex-flow: row wrap;
+        padding: 20px 30px 10px;
+        color: #2f2f2f;
+        background-color: #fff;
+        border-top: 1px solid #e5e5e5;
+        font-family: Arial, sans-serif;
+      }
+      
+      .footer > * {
+        flex:  1 100%;
+      }
+      
+      .footer__addr {
+        margin-right: 1.25em;
+        margin-bottom: 2em;
+      }
+      
+      .footer__logo {
+        font-family: 'Oswald', sans-serif;
+        font-weight: 400;
+        font-size: 1.5rem;
+      }
+      
+      .footer__addr h2 {
+        margin-top: 1.3em;
+        font-size: 15px;
+        font-weight: 400;
+      }
+      
+      .nav__title {
+        font-weight: 400;
+        font-size: 15px;
+      }
+      
+      .footer address {
+        font-style: normal;
+        color: #999;
+      }
+      
+      .footer__btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 36px;
+        max-width: max-content;
+        background-color: rgb(33, 33, 33, 0.07);
+        border-radius: 100px;
+        color: #2f2f2f;
+        line-height: 0;
+        margin: 0.6em 0;
+        font-size: 1rem;
+        padding: 0 1.3em;
+      }
+
+      .footer__btn:hover {
+        color:#5DA130
+      }
+      
+      .footer ul {
+        list-style: none;
+        padding-left: 0;
+      }
+      
+      .footer li {
+        line-height: 2em;
+      }
+      
+      .footer a {
+        text-decoration: none;
+      }
+      
+      .footer__nav {
+        display: flex;
+          flex-flow: row wrap;
+      }
+      
+      .footer__nav > * {
+        flex: 1 50%;
+        margin-right: 1.25em;
+      }
+      
+      .nav__ul a {
+        color: #999;
+      }
+      
+      .nav__ul--extra {
+        column-count: 2;
+        column-gap: 1.25em;
+      }
+      
+      .legal {
+        display: flex;
+        flex-wrap: wrap;
+        color: #999;
+      }
+        
+      .legal__links {
+        display: flex;
+        align-items: center;
+      }
+      
+      .heart {
+        color: #2f2f2f;
+      }
+      
+      @media screen and (min-width: 24.375em) {
+        .legal .legal__links {
+          margin-left: auto;
+        }
+      }
+      
+      @media screen and (min-width: 40.375em) {
+        .footer__nav > * {
+          flex: 1;
+        }
+        
+        .nav__item--extra {
+          flex-grow: 2;
+        }
+        
+        .footer__addr {
+          flex: 1 0px;
+        }
+        
+        .footer__nav {
+          flex: 2 0px;
+        }
+      }
+
+      .nutrition-image .arrow {
+        transform: scale(1, -1);
+        margin-top: 130px;
+        margin-left: 200px;
     }
