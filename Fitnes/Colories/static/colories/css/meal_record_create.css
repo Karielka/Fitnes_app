@@ -1,6 +1,9 @@
 body {
     font-family: Arial, sans-serif;
 }
+body {
+    font-family: Arial, sans-serif;
+}
 .page-wrapper {
     display: flex;
     justify-content: center;
@@ -131,6 +134,7 @@ form button[type="submit"] {
     cursor: pointer;
     transition: background-color 0.3s ease;
     margin-left: 20%;
+    margin-left: 20%;
 }
 
 form button[type="submit"]:hover {
@@ -213,6 +217,7 @@ select#id_type {
     display: block;
     margin: 0;
     padding: 0;
+    padding: 0;
 }
 
 .form-wrapper-1{
@@ -223,6 +228,7 @@ select#id_type {
     margin-top: 10px;
     margin-bottom: 4px;
     font-family: Arial, sans-serif;
+    font-family: Arial, sans-serif;
     font-size: small;
 }
 
@@ -230,4 +236,7 @@ h2 {
     color: #5da130;
 }
 
+h2 {
+    color: #5da130;
+}
 

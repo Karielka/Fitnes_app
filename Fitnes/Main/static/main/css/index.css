@@ -9,6 +9,7 @@ html, body {
 
 a {
     color: #333;
+    color: #333;
     text-decoration: none;
 }
 
@@ -27,6 +28,7 @@ a {
     width: 100%;
     height: 3px; 
     background-color: #333;
+    background-color: #333;
     margin: 1px 0; 
 }
 
@@ -44,6 +46,7 @@ a {
 
 .dropdown-menu a {
     color: #333;
+    color: #333;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
@@ -55,6 +58,7 @@ a {
 
 .logout {
     margin-left: 600px;
+    color: #333;
     color: #333;
     justify-content: right;
 }
@@ -87,6 +91,7 @@ a {
 
 .hero-text p {
     font-size: 22px;
+    color: #333;
     color: #333;
     width: 650px;
     margin-left: 20px;
@@ -162,6 +167,7 @@ section {
 .nutrition {
     width: 100%;
     color: #333;
+    color: #333;
     position: relative;
     height: 100%;
     background-repeat: no-repeat;
@@ -172,6 +178,7 @@ section {
     .nutrition-text {
         text-align: left;
         font-family: Arial, sans-serif;
+        color: #333;
         color: #333;
         padding: 10px;
         width: 800px;
@@ -189,6 +196,7 @@ section {
     
     .nutrition-text h3 {
         font-size: 22px;
+        font-size: 22px;
         width: 100%;
     }
 
@@ -200,6 +208,7 @@ section {
       }
       
       .nutrition-image h4 {
+        color: #333;
         color: #333;
         white-space: normal;
         font-size: 15px;
@@ -284,6 +293,8 @@ section {
 .workout p {
     font-size: 22px;
     color: #333;
+    font-size: 22px;
+    color: #333;
     width: 600px;
     padding: 10px;
     text-align: left;
@@ -294,12 +305,14 @@ section {
     position: relative;
     width: 100%;
     height: 70%;
+    height: 70%;
     background-repeat: no-repeat;
     background-size: cover;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
+    padding-top: 40px;
     padding-top: 40px;
 }
 
@@ -327,6 +340,9 @@ section {
     font-size: 22px;
     color: #333;
     width: 1500px;
+    font-size: 22px;
+    color: #333;
+    width: 1500px;
     padding: 10px;
     text-align: center;
     align-items: center;
@@ -334,6 +350,7 @@ section {
 
 .motivation-btn {
     display: flex;
+    gap: 30px;
     gap: 30px;
     margin-top: 20px;
     text-align: center;
@@ -428,6 +445,7 @@ section {
     }
     
     .cta-img {
+        width: 100px; /* Adjust the size as needed */
         width: 100px; /* Adjust the size as needed */
         height: auto;
         cursor: pointer;

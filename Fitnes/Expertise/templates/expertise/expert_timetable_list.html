@@ -1,9 +1,20 @@
 {% extends 'main/base.html' %}
+{% load static %}
 
 {% block content %}
-<h2>Расписание тренера</h2>
-<a href="{% url 'timetable_create' %}">Добавить расписание</a>
-<ul>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <div class="header-container">
+        <h1 class="title">Расписание тренера</h1>
+        <a href="{% url 'view_expert_profile' expert.pk %}">
+            <img src="{% static 'expertise/img/icon.png' %}" alt="Icon" class="header-icon">
+        </a>
+    </div>
+    <div class="btn">
+    <a href="{% url 'timetable_create' %}" class="btn btn-primary">Добавить расписание</a>
+    </div>
+    <ul>
     {% for timetable in timetables %}
     <li>
         <a href="{% url 'timetable_detail' timetable.pk %}">{{ timetable.expert }} - {{ timetable.day_of_week }}: {{ timetable.start_time }} - {{ timetable.end_time }}</a>
@@ -11,6 +22,159 @@
         <a href="{% url 'timetable_delete' timetable.pk %}">Удалить</a>
     </li>
     {% endfor %}
-</ul>
-<div class="container-button"><a href="{% url 'view_expert_profile' expert.pk %}" class="btn-btn-primary">Перейти в профиль тренера</a></div>
+    </ul>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{% static 'expertise/css/expert_timetable_list.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap">
+</head>
+<body>
+
+    <div class="calendar-container">
+        <div class="calendar-header">
+            <img src="{% static 'expertise/img/next.png' %}" alt="Предыдущий месяц" class="prevMonth" id="prevMonth">
+            <h2 id="monthYear"></h2>
+            <img src="{% static 'expertise/img/next.png' %}" alt="Следующий месяц" class="nextMonth" id="nextMonth">
+        </div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+    </div>
+
+
+
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-content">
+            <span class="close-btn">&times;</span>
+            <h2>Тренировки на <span id="selectedDate"></span></h2>
+            <div class="user-info">
+                <h3 id="userName"></h3>
+            </div>
+            <ul id="eventsList"></ul>
+        </div>
+    </div>
+
+
+    <div id="overlay" class="overlay"></div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            const calendarGrid = $('#calendarGrid');
+            const monthYear = $('#monthYear');
+            const prevMonthBtn = $('#prevMonth');
+            const nextMonthBtn = $('#nextMonth');
+            const sidebar = $('#sidebar');
+            const overlay = $('#overlay');
+            const eventsList = $('#eventsList');
+            const selectedDateSpan = $('#selectedDate');
+            const closeBtn = $('.close-btn');
+
+            let events = {};
+        
+            let today = new Date();
+            let currentMonth = today.getMonth();
+            let currentYear = today.getFullYear();
+        
+            function addEvent(date, count) {
+                if (events[date]) {
+                    events[date] += count;
+                } else {
+                    events[date] = count;
+                }
+                renderCalendar(currentMonth, currentYear);
+            }
+        
+            function renderCalendar(month, year) {
+                calendarGrid.empty();
+        
+                const firstDay = new Date(year, month).getDay();
+                const daysInMonth = 32 - new Date(year, month, 32).getDate();
+        
+                const monthNames = ['ЯНВАРЬ', 'ФЕВРАЛЬ', 'МАРТ', 'АПРЕЛЬ', 'МАЙ', 'ИЮНЬ', 'ИЮЛЬ', 'АВГУСТ', 'СЕНТЯБРЬ', 'ОКТЯБРЬ', 'НОЯБРЬ', 'ДЕКАБРЬ'];
+        
+                monthYear.text(`${monthNames[month]} ${year}`);
+        
+                for (let i = 1; i < firstDay; i++) {
+                    calendarGrid.append('<div class="day"></div>');
+                }
+        
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dateStr = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+                    const eventCount = events[dateStr] || 0;
+                    const dayClass = eventCount > 0 ? 'day has-events' : 'day';
+        
+                    calendarGrid.append(`
+                        <div class="${dayClass}" data-date="${dateStr}">
+                            <span class="date">${day}</span>
+                            <span class="events">${eventCount > 0 ? `Тренировок: ${eventCount}` : ''}</span>
+                        </div>
+                    `);
+                }
+            }
+        
+            function changeMonth(offset) {
+                currentMonth += offset;
+                if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear--;
+                } else if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                }
+                renderCalendar(currentMonth, currentYear);
+            }
+        
+            prevMonthBtn.click(function() {
+                changeMonth(-1);
+            });
+        
+            nextMonthBtn.click(function() {
+                changeMonth(1);
+            });
+        
+            renderCalendar(currentMonth, currentYear);
+        
+            calendarGrid.on('click', '.day', function() {
+                const date = $(this).data('date');
+                const dateObj = new Date(date);
+                const options = { day: 'numeric', month: 'long' };
+                const formattedDate = dateObj.toLocaleDateString('ru-RU', options);
+                
+                selectedDateSpan.text(formattedDate);
+        
+                // Заполняем список тренировок для выбранной даты
+                eventsList.empty();
+                if (events[date]) {
+                    events[date].forEach(event => {
+                        eventsList.append(`
+                            <li>
+                                <h4 class="event-title">${event.title}</h4>
+                                <p class="user-name">${event.user}</p>
+                                <p class="event-description">${event.description}</p>
+                            </li>
+                        `);
+                    });
+                } else {
+                    eventsList.append('<li>Нет тренировок</li>');
+                }
+        
+                // Показываем сайдбар и затемняем экран
+                sidebar.addClass('open');
+                overlay.addClass('open');
+            });
+        
+
+            closeBtn.click(function() {
+                sidebar.removeClass('open');
+                overlay.removeClass('open');
+            });
+
+            overlay.click(function() {
+                sidebar.removeClass('open');
+                overlay.removeClass('open');
+            });
+        });
+    </script>
+</body>
+</html>
 {% endblock %}
