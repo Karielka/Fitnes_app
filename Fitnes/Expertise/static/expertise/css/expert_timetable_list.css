@@ -6,13 +6,13 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    background-color: #f6f6f6;
 }
 
 .calendar-container {
     width: 90%;
     margin: 20px auto;
-    background-color: #f0f0f0;
+    background-color: #f6f6f6;
     padding: 20px;
 }
 
@@ -151,10 +151,11 @@ h3 {
     align-items: center;
     justify-content: center;
     display: inline-block;
-    margin-left: 35%;
 }
 .btn-primary {
     background-color: #f8c325;
+    border: 2px solid white;
+    width: 400px;
 
 }
 
@@ -181,4 +182,34 @@ h3 {
     margin-top: 40px;
     width: 171px; 
     height: 87px; 
+}
+
+.invalid-day {
+    background-color: lightgray; /* Light gray background for invalid days */
+    pointer-events: none; /* Prevent clicking */
+}
+
+.invalid-day-tag {
+    color: lightgray; /* Red text for the "Invalid Day" tag */
+}
+
+.btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* Регулируйте это значение для изменения расстояния между кнопками */
+}
+
+.btn-container .btn {
+    flex-shrink: 0;
+}
+
+.edit-link {
+    color: #5da130;
+    text-decoration: none;
+}
+
+.edit-link:hover {
+    color: #f8c325;
+    text-decoration: none;
 }

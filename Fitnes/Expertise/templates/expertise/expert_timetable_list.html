@@ -24,6 +24,7 @@
     {% endfor %}
     </ul>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{% static 'main/css/styles.css' %}" type="text/css" media="all">
     <link rel="stylesheet" href="{% static 'expertise/css/expert_timetable_list.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap">
 </head>
@@ -38,8 +39,6 @@
         <div class="calendar-grid" id="calendarGrid"></div>
     </div>
 
-
-
     <div id="sidebar" class="sidebar">
         <div class="sidebar-content">
             <span class="close-btn">&times;</span>
@@ -51,10 +50,7 @@
         </div>
     </div>
 
-
     <div id="overlay" class="overlay"></div>
-
-
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -70,11 +66,11 @@
             const closeBtn = $('.close-btn');
 
             let events = {};
-        
+
             let today = new Date();
             let currentMonth = today.getMonth();
             let currentYear = today.getFullYear();
-        
+
             function addEvent(date, count) {
                 if (events[date]) {
                     events[date] += count;
@@ -83,26 +79,29 @@
                 }
                 renderCalendar(currentMonth, currentYear);
             }
-        
+
             function renderCalendar(month, year) {
                 calendarGrid.empty();
-        
-                const firstDay = new Date(year, month).getDay();
+
+                const firstDay = new Date(year, month, 1).getDay();
                 const daysInMonth = 32 - new Date(year, month, 32).getDate();
-        
+
                 const monthNames = ['ЯНВАРЬ', 'ФЕВРАЛЬ', 'МАРТ', 'АПРЕЛЬ', 'МАЙ', 'ИЮНЬ', 'ИЮЛЬ', 'АВГУСТ', 'СЕНТЯБРЬ', 'ОКТЯБРЬ', 'НОЯБРЬ', 'ДЕКАБРЬ'];
-        
+
                 monthYear.text(`${monthNames[month]} ${year}`);
-        
-                for (let i = 1; i < firstDay; i++) {
-                    calendarGrid.append('<div class="day"></div>');
+
+                // Render days of previous month
+                const prevMonthDays = firstDay === 0 ? 6 : firstDay - 1;
+                for (let i = prevMonthDays; i > 0; i--) {
+                    calendarGrid.append('<div class="day invalid-day"><span class="invalid-day-tag"></span></div>');
                 }
-        
+
+                // Render current month days
                 for (let day = 1; day <= daysInMonth; day++) {
                     const dateStr = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
                     const eventCount = events[dateStr] || 0;
                     const dayClass = eventCount > 0 ? 'day has-events' : 'day';
-        
+
                     calendarGrid.append(`
                         <div class="${dayClass}" data-date="${dateStr}">
                             <span class="date">${day}</span>
@@ -110,8 +109,15 @@
                         </div>
                     `);
                 }
+
+                // Render days of next month
+                const totalCells = prevMonthDays + daysInMonth;
+                const nextMonthDays = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7);
+                for (let i = 0; i < nextMonthDays; i++) {
+                    calendarGrid.append('<div class="day invalid-day"><span class="invalid-day-tag">Invalid Day</span></div>');
+                }
             }
-        
+
             function changeMonth(offset) {
                 currentMonth += offset;
                 if (currentMonth < 0) {
@@ -123,25 +129,25 @@
                 }
                 renderCalendar(currentMonth, currentYear);
             }
-        
+
             prevMonthBtn.click(function() {
                 changeMonth(-1);
             });
-        
+
             nextMonthBtn.click(function() {
                 changeMonth(1);
             });
-        
+
             renderCalendar(currentMonth, currentYear);
-        
-            calendarGrid.on('click', '.day', function() {
+
+            calendarGrid.on('click', '.day:not(.invalid-day)', function() {
                 const date = $(this).data('date');
                 const dateObj = new Date(date);
                 const options = { day: 'numeric', month: 'long' };
                 const formattedDate = dateObj.toLocaleDateString('ru-RU', options);
-                
+
                 selectedDateSpan.text(formattedDate);
-        
+
                 // Заполняем список тренировок для выбранной даты
                 eventsList.empty();
                 if (events[date]) {
@@ -157,12 +163,11 @@
                 } else {
                     eventsList.append('<li>Нет тренировок</li>');
                 }
-        
+
                 // Показываем сайдбар и затемняем экран
                 sidebar.addClass('open');
                 overlay.addClass('open');
             });
-        
 
             closeBtn.click(function() {
                 sidebar.removeClass('open');
@@ -176,5 +181,4 @@
         });
     </script>
 </body>
-</html>
 {% endblock %}

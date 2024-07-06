@@ -134,6 +134,7 @@
     background: none; 
     border: none; 
     cursor: pointer;
+    border: 2px solid white;
 }
 
 .btn-simple:hover{
@@ -142,6 +143,7 @@
     color: rgb(124, 124, 124);
     font-size: small;
     padding: 0px;
+    border: 2px solid white;
 }
 
 .btn-primary:not(:disabled):not(.disabled):active{
@@ -152,6 +154,7 @@
     padding: 0px;
     border-color: transparent;
     box-shadow: none;
+    border: 2px solid white;
 }
 
 .btn-danger{
@@ -170,10 +173,12 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
     text-decoration: none !important;
+    border: 2px solid white;
 }
 
 .btn-danger:hover{
     background-color: rgb(160, 0, 0);
+    border: 2px solid white;
 }
 
 .wrapper-item{

@@ -19,7 +19,7 @@
                     </div>
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <a class="btn btn-primary" href="{% url 'password_reset' %}" >Забыли пароль?</a>
+                    <a class="btn-forgot" href="{% url 'password_reset' %}" >Забыли пароль?</a>
                     <div class="button-wrapper">    
                         <button type="submit">Войти</button>
                     </div>
@@ -33,7 +33,9 @@
                     </div>
                     <div class="button-wrapper">
                         <p class="text-button">Зарегистрироваться</p>
-                        <a class="btn_btn-primary" href="{% url 'register' %}"> > </a>
+                        <a class="btn btn-next" href="{% url 'register' %}">
+                            <img src="{% static 'main/img/next.png' %}" alt="Register">
+                        </a>
                     </div>
                 </div>
             </div>

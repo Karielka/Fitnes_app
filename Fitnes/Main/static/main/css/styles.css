@@ -25,10 +25,12 @@ header {
     transition: background-color 0.3s ease;
     text-decoration: none !important;
     font-family: Arial, sans-serif;
+    border: 2px solid white;
 }
 
 .btn-primary:hover {
     background-color: #f8c325;
+    border: 2px solid white;
 }
 
 .btn-secondary{
@@ -49,10 +51,12 @@ header {
     transition: background-color 0.3s ease;
     text-decoration: none !important;
     font-family: Arial, sans-serif;
+    border: 2px solid white;
 }
 
 .btn-secondary:hover {
     background-color: #5da130;
+    border: 2px solid white;
 }
 
 .btn_btn-primary{
@@ -73,11 +77,13 @@ header {
     padding: 0;
     line-height: 5px;
     text-decoration: none !important;
+    border: 2px solid white;
 }
 
 .btn_btn-primary:hover {
     background-color: #5da130;
     color: white;
+    border: 2px solid white;
 }
 
 h1 {
