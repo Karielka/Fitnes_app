@@ -1,15 +1,48 @@
 {% extends 'main/base.html' %}
-
+{% load static %}
 {% block content %}
-<h2>Детали упражнения</h2>
-<p>Пользователь: {{ exercise.user }}</p>
-<p>Дата: {{ exercise.date }}</p>
-<p>Название: {{ exercise.title }}</p>
-<p>Продолжительность: {{ exercise.duration }}</p>
-<p>Ссылка на видео: {{ exercise.link_to_video }}</p>
-<p>Калории сожжены: {{ exercise.calories_burned }}</p>
-<p>Заметки: {{ exercise.notes }}</p>
-<a href="{% url 'exercise_update' exercise.pk %}">Редактировать</a>
-<a href="{% url 'exercise_delete' exercise.pk %}">Удалить</a>
-<a href="{% url 'exercise_list' %}">Назад к списку</a>
+ <html>
+<body>
+<link rel="stylesheet" href="{% static 'activity/css/exercise_detail.css' %}">
+<div class="exercise-details-container">
+    <div class="exercise-info">
+        <div class="top">
+            <h1>Детали упражнения</h1>
+            <div class="action-buttons">
+                <a href="{% url 'exercise_update' exercise.pk %}" class="button btn-edit">Редактировать</a>
+                <a href="{% url 'exercise_delete' exercise.pk %}" class="button btn-delete">Удалить</a>
+            </div>
+        </div>
+        <p>Пользователь: {{ exercise.user }}</p>
+        <p>Дата: {{ exercise.date }}</p>
+        <p>Название: {{ exercise.title }}</p>
+        <p>Продолжительность: {{ exercise.duration }}</p>
+        
+        {% if exercise.link_to_video %}
+            <p>Ссылка на видео: {{ exercise.link_to_video }}</p>
+        {% endif %}
+        
+        <p>Калории сожжены: {{ exercise.calories_burned }}</p>
+        <p>Заметки: {{ exercise.notes }}</p>
+        <a href="{% url 'exercise_list' %}" class="back">Ко всем тренировкам</a>
+    </div>
+
+    {% if exercise.link_to_video %}
+        <div class="exercise-video">
+            {% if "youtube.com" in exercise.link_to_video %}
+                {% with exercise.link_to_video|cut:"https://www.youtube.com/watch?v=" as video_id %}
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ video_id }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                {% endwith %}
+            {% elif "youtu.be" in exercise.link_to_video %}
+                {% with exercise.link_to_video|cut:"https://youtu.be/" as video_id %}
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ video_id }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                {% endwith %}
+            {% else %}
+                <p>Видео не может быть отображено, так как ссылка некорректная.</p>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+</body>
+</html>
 {% endblock %}

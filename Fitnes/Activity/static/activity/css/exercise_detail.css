@@ -1,0 +1,75 @@
+html ,body {
+    background-color: #f6f6f6;
+    font-family: Arial, sans-serif;
+}
+.exercise-details-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.exercise-info {
+    width: 50%;
+    padding-left: 40px;
+}
+
+.exercise-video {
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 50px;
+    padding-right: 50px;
+}
+
+.top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.action-buttons .button {
+    padding: 5px 10px;
+    background-color: #f8c325;
+    color: white;
+    text-decoration: none;
+    border-radius: 15px;
+    border: 2px solid white;
+}
+
+.action-buttons .button:hover {
+    background-color: #5da130;
+    border: 2px solid white;
+}
+
+h1 {
+    margin: 0;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+}
+
+.action-buttons .btn-delete {
+    background-color: red; 
+}
+
+.action-buttons .btn-delete:hover {
+    background-color: #c82333; 
+}
+
+.back {
+    color: #5da130;
+    text-decoration: none;
+}
+
+.back:hover {
+    color: #f8c325;
+    text-decoration: none;
+}

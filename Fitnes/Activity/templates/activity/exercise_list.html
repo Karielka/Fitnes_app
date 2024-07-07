@@ -1,8 +1,11 @@
 {% extends 'main/base.html' %}
 
 {% block content %}
-<h2>Список упражнений</h2>
-<a href="{% url 'exercise_create' %}">Добавить упражнение</a>
+<h1>Список упражнений</h1>
+<div class="btn-container">
+    <a href="{% url 'exercise_create' %}" class="btn btn-primary">Добавить упражнение</a>
+</div>
+
 <ul>
     {% for exercise in exercises %}
     <li>

@@ -66,154 +66,162 @@
 <div id="overlay" class="overlay"></div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
 <script>
-  $(document).ready(function() {
-      const calendarGrid = $('#calendarGrid');
-      const monthYear = $('#monthYear');
-      const prevMonthBtn = $('#prevMonth');
-      const nextMonthBtn = $('#nextMonth');
-      const sidebar = $('#sidebar');
-      const overlay = $('#overlay');
-      const eventsList = $('#eventsList');
-      const selectedDateSpan = $('#selectedDate');
-      const closeBtn = $('.close-btn');
-      
-      // Новый код для профиля эксперта
-      const profileBtn = $('#profileBtn');
-      const profileSidebar = $('#profileSidebar');
-      const profileCloseBtn = profileSidebar.find('.close-btn');
+$(document).ready(function() {
+    const calendarGrid = $('#calendarGrid');
+    const monthYear = $('#monthYear');
+    const prevMonthBtn = $('#prevMonth');
+    const nextMonthBtn = $('#nextMonth');
+    const sidebar = $('#sidebar');
+    const overlay = $('#overlay');
+    const eventsList = $('#eventsList');
+    const selectedDateSpan = $('#selectedDate');
+    const closeBtn = $('.close-btn');
+    
+    // Новый код для профиля эксперта
+    const profileBtn = $('#profileBtn');
+    const profileSidebar = $('#profileSidebar');
+    const profileCloseBtn = profileSidebar.find('.close-btn');
 
-      let events = {};
+    let events = {};
 
-      let today = new Date();
-      let currentMonth = today.getMonth();
-      let currentYear = today.getFullYear();
+    let today = new Date();
+    let currentMonth = today.getMonth();
+    let currentYear = today.getFullYear();
+    let currentDateStr = today.toISOString().split('T')[0]; // YYYY-MM-DD формат
 
-      function addEvent(date, count) {
-          if (events[date]) {
-              events[date] += count;
-          } else {
-              events[date] = count;
-          }
-          renderCalendar(currentMonth, currentYear);
-      }
+    function addEvent(date, count) {
+        if (events[date]) {
+            events[date] += count;
+        } else {
+            events[date] = count;
+        }
+        renderCalendar(currentMonth, currentYear);
+    }
 
-      function renderCalendar(month, year) {
-          calendarGrid.empty();
+    function renderCalendar(month, year) {
+        calendarGrid.empty();
 
-          const firstDay = new Date(year, month, 1).getDay();
-          const daysInMonth = 32 - new Date(year, month, 32).getDate();
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = 32 - new Date(year, month, 32).getDate();
 
-          const monthNames = ['ЯНВАРЬ', 'ФЕВРАЛЬ', 'МАРТ', 'АПРЕЛЬ', 'МАЙ', 'ИЮНЬ', 'ИЮЛЬ', 'АВГУСТ', 'СЕНТЯБРЬ', 'ОКТЯБРЬ', 'НОЯБРЬ', 'ДЕКАБРЬ'];
+        const monthNames = ['ЯНВАРЬ', 'ФЕВРАЛЬ', 'МАРТ', 'АПРЕЛЬ', 'МАЙ', 'ИЮНЬ', 'ИЮЛЬ', 'АВГУСТ', 'СЕНТЯБРЬ', 'ОКТЯБРЬ', 'НОЯБРЬ', 'ДЕКАБРЬ'];
 
-          monthYear.text(`${monthNames[month]} ${year}`);
+        monthYear.text(`${monthNames[month]} ${year}`);
 
-          // Render days of previous month
-          const prevMonthDays = firstDay === 0 ? 6 : firstDay - 1;
-          for (let i = prevMonthDays; i > 0; i--) {
-              calendarGrid.append('<div class="day invalid-day"><span class="invalid-day-tag"></span></div>');
-          }
+        // Render days of previous month
+        const prevMonthDays = firstDay === 0 ? 6 : firstDay - 1;
+        for (let i = prevMonthDays; i > 0; i--) {
+            calendarGrid.append('<div class="day invalid-day"><span class="invalid-day-tag"></span></div>');
+        }
 
-          // Render current month days
-          for (let day = 1; day <= daysInMonth; day++) {
-              const dateStr = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-              const eventCount = events[dateStr] || 0;
-              const dayClass = eventCount > 0 ? 'day has-events' : 'day';
+        // Render current month days
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dateStr = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+            const eventCount = events[dateStr] || 0;
+            let dayClass = eventCount > 0 ? 'day has-events' : 'day';
 
-              calendarGrid.append(`
-                  <div class="${dayClass}" data-date="${dateStr}">
-                      <span class="date">${day}</span>
-                      <span class="events">${eventCount > 0 ? `Тренировок: ${eventCount}` : ''}</span>
-                  </div>
-              `);
-          }
+            // Highlight today's date
+            if (dateStr === currentDateStr) {
+                dayClass += ' today';
+            }
 
-          // Render days of next month
-          const totalCells = prevMonthDays + daysInMonth;
-          const nextMonthDays = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7);
-          for (let i = 0; i < nextMonthDays; i++) {
-              calendarGrid.append('<div class="day invalid-day"><span class="invalid-day-tag">Invalid Day</span></div>');
-          }
-      }
+            calendarGrid.append(`
+                <div class="${dayClass}" data-date="${dateStr}">
+                    <span class="date">${day}</span>
+                    <span class="events">${eventCount > 0 ? `Тренировок: ${eventCount}` : ''}</span>
+                </div>
+            `);
+        }
 
-      function changeMonth(offset) {
-          currentMonth += offset;
-          if (currentMonth < 0) {
-              currentMonth = 11;
-              currentYear--;
-          } else if (currentMonth > 11) {
-              currentMonth = 0;
-              currentYear++;
-          }
-          renderCalendar(currentMonth, currentYear);
-      }
+        // Render days of next month
+        const totalCells = prevMonthDays + daysInMonth;
+        const nextMonthDays = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7);
+        for (let i = 0; i < nextMonthDays; i++) {
+            calendarGrid.append('<div class="day invalid-day"><span class="invalid-day-tag">Invalid Day</span></div>');
+        }
+    }
 
-      prevMonthBtn.click(function() {
-          changeMonth(-1);
-      });
+    function changeMonth(offset) {
+        currentMonth += offset;
+        if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        } else if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        }
+        renderCalendar(currentMonth, currentYear);
+    }
 
-      nextMonthBtn.click(function() {
-          changeMonth(1);
-      });
+    prevMonthBtn.click(function() {
+        changeMonth(-1);
+    });
 
-      renderCalendar(currentMonth, currentYear);
+    nextMonthBtn.click(function() {
+        changeMonth(1);
+    });
 
-      calendarGrid.on('click', '.day:not(.invalid-day)', function() {
-          const date = $(this).data('date');
-          const dateObj = new Date(date);
-          const options = { day: 'numeric', month: 'long' };
-          const formattedDate = dateObj.toLocaleDateString('ru-RU', options);
+    renderCalendar(currentMonth, currentYear);
 
-          selectedDateSpan.text(formattedDate);
+    calendarGrid.on('click', '.day:not(.invalid-day)', function() {
+        const date = $(this).data('date');
+        const dateObj = new Date(date);
+        const options = { day: 'numeric', month: 'long' };
+        const formattedDate = dateObj.toLocaleDateString('ru-RU', options);
 
-          // Заполняем список тренировок для выбранной даты
-          eventsList.empty();
-          if (events[date]) {
-              events[date].forEach(event => {
-                  eventsList.append(`
-                      <li>
-                          <h4 class="event-title">${event.title}</h4>
-                          <p class="user-name">${event.user}</p>
-                          <p class="event-description">${event.description}</p>
-                      </li>
-                  `);
-              });
-          } else {
-              eventsList.append('<li>Нет тренировок</li>');
-          }
+        selectedDateSpan.text(formattedDate);
 
-          // Показываем сайдбар и затемняем экран
-          sidebar.addClass('open');
-          overlay.addClass('open');
-      });
+        // Заполняем список тренировок для выбранной даты
+        eventsList.empty();
+        if (events[date]) {
+            events[date].forEach(event => {
+                eventsList.append(`
+                    <li>
+                        <h4 class="event-title">${event.title}</h4>
+                        <p class="user-name">${event.user}</p>
+                        <p class="event-description">${event.description}</p>
+                    </li>
+                `);
+            });
+        } else {
+            eventsList.append('<li>Нет тренировок</li>');
+        }
 
-      closeBtn.click(function() {
-          sidebar.removeClass('open');
-          overlay.removeClass('open');
-      });
+        // Показываем сайдбар и затемняем экран
+        sidebar.addClass('open');
+        overlay.addClass('open');
+    });
 
-      overlay.click(function() {
-          sidebar.removeClass('open');
-          overlay.removeClass('open');
-      });
+    closeBtn.click(function() {
+        sidebar.removeClass('open');
+        overlay.removeClass('open');
+    });
 
-      // Новый обработчик для профиля эксперта
-      profileBtn.click(function(event) {
-          event.preventDefault();
-          profileSidebar.addClass('open');
-          overlay.addClass('open');
-      });
+    overlay.click(function() {
+        sidebar.removeClass('open');
+        overlay.removeClass('open');
+    });
 
-      profileCloseBtn.click(function() {
-          profileSidebar.removeClass('open');
-          overlay.removeClass('open');
-      });
+    // Новый обработчик для профиля эксперта
+    profileBtn.click(function(event) {
+        event.preventDefault();
+        profileSidebar.addClass('open');
+        overlay.addClass('open');
+    });
 
-      overlay.click(function() {
-          profileSidebar.removeClass('open');
-          overlay.removeClass('open');
-      });
-  });
+    profileCloseBtn.click(function() {
+        profileSidebar.removeClass('open');
+        overlay.removeClass('open');
+    });
+
+    overlay.click(function() {
+        profileSidebar.removeClass('open');
+        overlay.removeClass('open');
+    });
+});
 </script>
 
 </body>
