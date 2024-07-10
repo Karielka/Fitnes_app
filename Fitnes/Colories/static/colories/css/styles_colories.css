@@ -134,7 +134,6 @@ a {
     margin-left: 10px; 
 }
 
-/* Цвета для меток каждого типа приема пищи */
 .breakfast .label {
     color: #F8C325; 
 }
@@ -356,4 +355,12 @@ a {
     height: auto;
     max-width: 400px;
     border-radius: 10px;
+}
+
+.logo-top {
+    height: 35px;
+    width: 94px;
+    margin-top: -8px;
+    margin-left: 46%;
+    
 }

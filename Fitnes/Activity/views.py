@@ -76,6 +76,9 @@ def sleep_record_delete(request, sleep_id):
     return render(request, 'activity/sleep_record_delete.html', context)
 
 
+
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
 from .models import Exercise
 from .forms import ExerciseForm
 from Profiles.models import Profile
@@ -108,6 +111,7 @@ def exercise_create(request):
     context = {
         'title': 'Создать упражнение',
         'form': form,
+        'exercise': None, 
     }
     return render(request, 'activity/exercise_form.html', context)
 
@@ -124,8 +128,10 @@ def exercise_update(request, pk):
     context = {
         'title': 'Редактировать упражнение',
         'form': form,
+        'exercise': exercise,  # Передаем объект упражнения в контекст
     }
     return render(request, 'activity/exercise_form.html', context)
+
 
 @login_required
 def exercise_delete(request, pk):

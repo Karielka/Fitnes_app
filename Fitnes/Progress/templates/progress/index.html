@@ -29,9 +29,6 @@
                         Целевой вес: {{ current_goal.target_weight }} кг<br>
                         Статус: {{ current_goal.get_status_display }}<br>
                     </div>
-                    <div class="container-left-first-first-second">
-                        <p>Вот тут столбик</p>
-                    </div>
                 </div>
                 <div class="container-left-first-button">
                     <a class="btn btn-secondary btn-mar" href="{% url 'edit_goal' pk=current_goal.pk %}">Редактировать</a>
@@ -68,9 +65,6 @@
                               Текущий вес: {{ goal.current_weight }} кг<br>
                               Целевой вес: {{ goal.target_weight }} кг<br>
                               Статус: {{ goal.get_status_display }}<br>
-                          </div>
-                          <div class="container-left-first-first-second">
-                              <p>Вот тут столбик</p>
                           </div>
                       </div>
                       <div class="container-left-first-button">

@@ -74,7 +74,7 @@ h1 {
     color: black;
     font-size: large;
     padding-left: 50px;
-    padding-top: 10px;
+    padding-top: 20px;
     padding-bottom: 0px;
     padding-right: 100px;
     padding: 7px 25px;
@@ -94,6 +94,11 @@ h1 {
 
 .btn-secondary{
     margin: 10px;
+}
+
+.btn-next img {
+    width: 40px;
+    height:40px;
 }
 
 .container-text-button{
@@ -157,3 +162,4 @@ h1 {
     max-width: 50px;
     margin-right: 10px;
 }
+
