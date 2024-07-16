@@ -8,6 +8,17 @@ import io
 import base64
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.db.models import F, ExpressionWrapper, FloatField, Max, Case, When, IntegerField, Window
+from django.db.models.functions import RowNumber, DenseRank
+from Profiles.models import UserCaloryProfile
+from django.contrib import messages
+
+@login_required
+def fail_goal(request, pk):
+    goal = get_object_or_404(Goal, pk=pk, user=request.user)
+    goal.status = 'Failed'
+    goal.save()
+    return redirect('index-progress')
 
 @login_required
 def index(request):
@@ -16,13 +27,24 @@ def index(request):
         if achievement_id:
             return claim_achievement(request, achievement_id)
     # Обновляем достижения пользователя
+    #Не работает!
     check_user_achievements(request.user)
 
     goals = Goal.objects.filter(user=request.user) #цели
+    main_goal = goals.filter(status__in=['New', 'In_work']).first()
+    for goal in goals:
+        goal.update_status_by_time()
+
+    current_goal = goals.filter(status__in=['New', 'In_work']).first()
+    if main_goal and (not (current_goal)):
+        messages.success(request, f"Вы завершили цель: {main_goal.description}")
+        print('цель завершена')
+    historical_goals = list(reversed((goals.exclude(status__in=['New', 'In_work']))))
     all_achievements = Achievement.objects.all() 
     user_achievements = UserAchievement.objects.filter(user=request.user)
     user_achievements_dict = {x.achievement.id: x for x in user_achievements}
     achievements_data = []
+    have = 0
     for achievement in all_achievements:
         data = {
             'id': achievement.id,
@@ -33,9 +55,26 @@ def index(request):
             'status': 'Ещё нужно потрудиться',
             'claimed': False,
             'completed': False,
+            'need': achievement.needed_for_reach,
         }
+        try:
+            have = eval(achievement.rule)
+            if have is None:
+                have = 0
+            else: 
+                have = float(have)
+            data['have'] = have
+            progress = int((have / achievement.needed_for_reach) * 100) if achievement.needed_for_reach != 0 else 0  # Вычисление процента выполнения
+            data['progress'] = progress
+        except Exception as e:
+            print(f"Error evaluating rule for achievement {achievement.id}: {e}")
+
         if achievement.id in user_achievements_dict:
             user_achievement = user_achievements_dict[achievement.id]
+            #Дополнительная проверка (функция не работаёт)
+            if have >= achievement.needed_for_reach:
+                user_achievement.completed = True
+                user_achievement.save()
             if ((user_achievement.completed) or (user_achievement.claimed)):
                 data['status'] = f"Достигнуто {user_achievement.date_earned}"
                 data['completed'] = user_achievement.completed
@@ -47,9 +86,9 @@ def index(request):
         'title': 'Страница Вашего прогресса',
         'message': 'Вы находитесь на главной странице Progress',
         'page': 'progress_main',
-        'goals': goals,
+        'current_goal': current_goal,
+        'historical_goals': historical_goals,
         'achievements_data': achievements_data,
-        #'all_achievements': all_achievements,
     }
     return render(request, 'progress/index.html', context)
 
@@ -83,14 +122,19 @@ def check_user_achievements(user):
             defaults={'claimed': False, 'completed': False}
         )
         try:
-            # allowed names for eval (Расширять при формировании наград)
-            allowed_names = {'user': user, 'Goal': Goal}
-            completed = eval(achievement.rule, {"__builtins__": None}, allowed_names)
-            if completed:
+            have = eval(achievement.rule)
+            if have is None:
+                have = 0
+            else: have = float(have)
+            print()
+            print(have, achievement.needed_for_reach)
+            if have >= achievement.needed_for_reach:
                 user_achievement.completed = True
                 user_achievement.save()
+            print(user.achievement.completed)
         except Exception as e:
-            print(f"Error evaluating rule for achievement {achievement.id}: {e}")
+            print('No')
+            #print(f"Error evaluating rule for achievement {achievement.id}: {e}")
 
 @login_required
 def users_rating_read(request):
@@ -195,8 +239,5 @@ def weight_chart(request, user_id):
             line=dict(color='red', dash='dash'),  # Красная пунктирная линия
             name='Цель'  # Добавляем название для легенды (если она включена)
         ))
-    buf = io.BytesIO()
-    fig.write_image(buf, format='png')
-    buf.seek(0)
-    chart_data = base64.b64encode(buf.getvalue()).decode('utf-8') # Возвращаем график в виде base64-строки
-    return chart_data
+    chart = fig.to_html
+    return chart

@@ -1,10 +1,16 @@
 from django import forms
-from .models import UserCaloryProfile
+from .models import UserCaloryProfile, ExpertProfile
 from django.contrib.auth.models import User
+
+class ExpertProfileForm(forms.ModelForm):
+    class Meta:
+        model = ExpertProfile
+        fields = ['nickname', 'experience_years', 'price_per_hour']
 
 class UserCaloryProfileForm(forms.ModelForm):
     birthdate = forms.CharField(required=True, label='', widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
     height = forms.CharField(required=True, label='', widget=forms.NumberInput(attrs={'class': 'form-control'}))
+    current_weight = forms.CharField(required=True, label='', widget=forms.NumberInput(attrs={'class': 'form-control'}))
     gender = forms.ChoiceField(
         choices=[('male', 'Male'), ('female', 'Female')],
         label='',
@@ -26,7 +32,7 @@ class UserCaloryProfileForm(forms.ModelForm):
     )    
     class Meta:
         model = UserCaloryProfile
-        fields = ['birthdate', 'gender', 'height', 'activity_level']
+        fields = ['birthdate', 'gender', 'height', 'current_weight', 'activity_level']
 
 class UserProfileForm(forms.ModelForm):
     email = forms.EmailField(required=True, label='', widget=forms.EmailInput(attrs={

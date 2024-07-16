@@ -6,9 +6,10 @@
 <link rel="stylesheet" href="{% static 'main/css/styles.css' %}" type="text/css" media="all">
 <link rel="stylesheet" href="{% static 'main/css/forms.css' %}" type="text/css" media="all">
 <link rel="stylesheet" href="{% static 'profiles/css/profile.css' %}" type="text/css" media="all">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap">
 
 <body>
-    <h1>Личный кабинет пользователя</h1>
+    <h1>Личный кабинет</h1>
     <div class="container-main">
         <div class="container-head">
             <div class="container-image">
@@ -23,17 +24,32 @@
                 </div>
                 <div class="container-button"><a href="{% url 'profile_edit' %}" class="btn-btn-primary">Редактировать профиль</a></div>
             </div>
+            {% if profile.type == 'expert' %}
+                {% if expert %}
+                    <div class="container-button"><a href="{% url 'view_expert_profile' expert.pk %}" class="btn-btn-primary">Перейти в профиль тренера</a></div>
+                {% else %}
+                    <div class="container-button"><a href="{% url 'create_expert_profile' %}" class="btn-btn-primary">Создать профиль тренера</a></div>
+                {% endif %}
+            {% endif %}
         </div>
         <div class="container-second">
             <div class="container-second-first">
                 <div class="wrapper-second">
                     <div class="container-text-head">Ваша цель</div>
                     <div class="container-text-base">
-                        <p>Достигнуть вес {{goal.target_weight}} (кг) к {{goal.end_date}}</p>
+                        {% if goal %}
+                            <p>Достигнуть вес {{goal.target_weight}} (кг) к {{goal.end_date}}</p>
+                        {% else %}
+                            <p>Цель не установлена</p>
+                        {% endif %}
                     </div>
                     <div class="container-second-button">
-                        <a href="{% url 'tracking_current_weight' %}" class="btn btn-secondary">Отслеживать вес</a>
-                        <a class="btn btn-secondary" href="{% url 'index-progress' %}">Цели</a>
+                        {% if goal %}
+                            <a href="{% url 'tracking_current_weight' %}" class="btn btn-secondary">Отслеживать вес</a>
+                            <a class="btn btn-secondary" href="{% url 'index-progress' %}">Цели</a>
+                        {% else %}
+                            <a class="btn btn-secondary" href="{% url 'create_goal' %}">Создать цель</a>
+                        {% endif %}  
                     </div>
                 </div>
             </div>
@@ -47,7 +63,7 @@
                             <p>Пол: Женщина</p>
                         {% endif %}
                         <p>Рост: {{ calory_profile.height }} см</p>
-                        <p>Вес: {{ calory_profile.weight }} кг</p>
+                        <p>Вес: {{ calory_profile.current_weight }} кг</p>
                     </div>
                     <a href="{% url 'calory_profile_edit' %}" class="btn btn-primary">Редактировать профиль калорий</a>
                 </div>
@@ -56,15 +72,17 @@
                 <div class="wrapper-second">
                     <div class="container-text-head">Награды</div>
                     <div class="container-text-base">
-                        <p>Ваш рейтинг: </p>
-                        <p>Число наград: </p>
+                        <p>Ваш рейтинг: {{ rank }}</p>
+                        <p>Число наград: {{achievements_claimed}} </p>
                     </div>
                     <div class="button-wrapper">
                         <div class="container-text-button">
                             <j>Посмотреть</j>
                             <j>награды</j>
                         </div>
-                        <a class="btn_btn-primary" href="{% url 'register' %}"> > </a>
+                        <a class="btn btn-next" href="{% url 'index-progress' %}">
+                            <img src="{% static 'main/img/next.png' %}" alt="Register">
+                        </a>
                     </div>
                 </div>
             </div>

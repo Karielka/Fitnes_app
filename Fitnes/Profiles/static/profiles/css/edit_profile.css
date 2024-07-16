@@ -91,3 +91,11 @@
 .btn_btn-primary:hover {
     background-color: #5da130;
 }
+
+.logo img{
+    width: 150px;
+    height: 54px;
+    margin-left: 28%;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}

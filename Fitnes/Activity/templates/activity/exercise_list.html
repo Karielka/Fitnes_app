@@ -1,0 +1,96 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'activity/css/exercise_detail.css' %}">
+<div class="exercise-info">
+    <div class="top">
+        <h1>Список упражнений</h1>
+        <div class="action-buttons">
+            <a href="{% url 'exercise_create' %}" class="button btn-add">Добавить упражнение</a>
+            <a href="{% url 'view_expert_profile' expert.pk %}" class="button btn-add">В профиль</a>
+        </div>
+    </div>
+</div>
+<ul class="exercise-list">
+    {% for exercise in exercises %}
+    <li class="exercise-item">
+        <div class="exercise-thumbnail">
+            {% if exercise.link_to_video %}
+            <div class="exercise-video-small">
+                {% if "youtube.com" in exercise.link_to_video %}
+                    {% with exercise.link_to_video|cut:"https://www.youtube.com/watch?v=" as video_id %}
+                        <iframe width="140" height="79" src="https://www.youtube.com/embed/{{ video_id }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    {% endwith %}
+                {% elif "youtu.be" in exercise.link_to_video %}
+                    {% with exercise.link_to_video|cut:"https://youtu.be/" as video_id %}
+                        <iframe width="140" height="79" src="https://www.youtube.com/embed/{{ video_id }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    {% endwith %}
+                {% else %}
+                    <p>Ссылки нет или </p>
+                    <p>не корректна</p>
+                {% endif %}
+            </div>
+        {% endif %}
+        </div>
+        <div class="exercise-details">
+            <a href="{% url 'exercise_detail' exercise.pk %}">{{ exercise.title }}</a> - <span>{{ exercise.date }}</span>
+            <div class="exercise-actions">
+                <a href="{% url 'exercise_update' exercise.pk %}" class="button btn-edit edit-btn">Редактировать</a>
+                <a href="#" class="delete-link" data-exercise-id="{{ exercise.pk }}">Удалить</a>
+            </div>
+        </div>
+    </li>
+    {% if not forloop.last %}
+    <hr class="separator">
+    {% endif %}
+    {% endfor %}
+</ul>
+
+<div id="deleteModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Удалить упражнение</h2>
+        <p>Вы уверены, что хотите удалить это упражнение?</p>
+        <form method="post" action="" id="deleteForm">
+            {% csrf_token %}
+            <div class="modal-buttons">
+                <button type="submit" class="button btn-delete">Удалить</button>
+                <button type="button" id="cancelButton" class="button btn-cancel">Отмена</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<script>
+    var modal = document.getElementById("deleteModal");
+    var span = document.getElementsByClassName("close")[0];
+    var cancelButton = document.getElementById("cancelButton");
+    var deleteForm = document.getElementById("deleteForm");
+
+    document.querySelectorAll('.delete-link').forEach(function(link) {
+        link.onclick = function(event) {
+            event.preventDefault();
+            var exerciseId = this.getAttribute('data-exercise-id');
+            deleteForm.action = "{% url 'exercise_delete' 0 %}".replace('/0/', '/' + exerciseId + '/');
+            modal.style.display = "block";
+        };
+    });
+
+    span.onclick = function() {
+        modal.style.display = "none";
+    };
+
+    cancelButton.onclick = function() {
+        modal.style.display = "none";
+    };
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    };
+</script>
+
+{% endblock %}

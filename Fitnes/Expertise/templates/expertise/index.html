@@ -1,9 +1,9 @@
 {% extends "main/base.html" %}
-
 {% load static %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'expertise/css/index.css' %}" type="text/css" media="all">
+<link rel="stylesheet" href="{% static 'expertise/css/index_2.css' %}" type="text/css" media="all">
+
 <body>
   <div class="main-container">
     <div class="message-container">
@@ -11,27 +11,11 @@
         {{ message }}
       </h1>
     </div>
-    <div class="text-container">
-      <p>Попробуйте бесплатные тренировки от наших тренеров в соответствие с вашими предпочтениями</p>
-    </div>
-    <div class="button-container">
-      <div class="button-wrapper"><a class="btn btn-secondary" href="/colories/">Пресс</a></div>
-      <div class="button-wrapper"><a class="btn btn-secondary" href="/colories/">Кардио</a></div>
-      <div class="button-wrapper"><a class="btn btn-secondary" href="/colories/">Руки</a></div>
-      <div class="button-wrapper"><a class="btn btn-secondary" href="/colories/">Спина</a></div>
-      <div class="button-wrapper"><a class="btn btn-secondary" href="/colories/">Ноги</a></div>
-      <div class="button-wrapper"><a class="btn btn-secondary" href="/colories/">Ягодицы</a></div>
-    </div>
-    <div class="video-container">
-
-    </div>
   </div>
-
 
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 
 </body>
 {% endblock content %}

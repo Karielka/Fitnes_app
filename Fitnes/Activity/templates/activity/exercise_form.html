@@ -1,0 +1,76 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'activity/css/exercise_form.css' %}">
+<div class="page-wrapper">
+    <div class="container-log">
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <form id="exerciseForm" method="post" action="{% if exercise %}{% url 'exercise_update' exercise.pk %}{% else %}{% url 'exercise_create' %}{% endif %}">
+            {% csrf_token %}
+            <div class="form-container" id="step1">
+                <h1 class="centered-title">ЗАГРУЗКА ВИДЕО</h1>
+                <div class="centered-content">
+                    <img src="{% static 'activity/img/download.png' %}" alt="Download" class="download">
+                    {{ form.link_to_video }}
+                </div>
+                <div class="centered-text">
+                    <p>Вставьте ссылку с YouTube, чтобы пользователь мог посмотреть тренировку на сайте</p>
+                    <p>Или вставьте ссылку на другое место, он сможет ее скопировать и перейти по ней</p>
+                </div>
+                <div class="centered-button">
+                    <button type="button" class="button next-btn" onclick="nextStep(1)">Дальше</button>
+                </div>
+            </div>
+
+            <div class="form-container" id="step2" style="display:none;">
+                <h1>ЗАПОЛНИТЕ ОСНОВНУЮ ИНФОРМАЦИЮ</h1>
+                <p>название</p>
+                {{ form.title }}
+                <p>дата</p>
+                {{ form.date }}
+                <button type="button" class="button prev-btn" onclick="prevStep(1)">Назад</button>
+                <button type="button" class="button next-btn" onclick="nextStep(2)">Дальше</button>
+            </div>
+
+            <div class="form-container" id="step3" style="display:none;">
+                <h1>РАССКАЖИТЕ ПОБОЛЬШЕ О ТРЕНИРОВКЕ</h1>
+                <p>длительность</p>
+                {{ form.duration }}
+                <p>сожженые калории</p>
+                {{ form.calories_burned }}
+                <button type="button" class="button prev-btn" onclick="prevStep(2)">Назад</button>
+                <button type="button" class="button next-btn" onclick="nextStep(3)">Дальше</button>
+            </div>
+
+            <div class="form-container" id="step4" style="display:none;">
+                <h1>ЕСТЬ ЧТО ДОБАВИТЬ?</h1>
+                <p>Заметки</p>
+                {{ form.notes }}
+                <button type="button" class="button prev-btn" onclick="prevStep(3)">Назад</button>
+                <button type="submit">Сохранить</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function nextStep(step) {
+        document.getElementById('step' + step).style.display = 'none';
+        document.getElementById('step' + (step + 1)).style.display = 'block';
+        updateProgressBar(step + 1);
+    }
+    
+    function prevStep(step) {
+        document.getElementById('step' + (step + 1)).style.display = 'none';
+        document.getElementById('step' + step).style.display = 'block';
+        updateProgressBar(step);
+    }
+    
+    function updateProgressBar(step) {
+        var percentage = ((step - 1) / 3) * 100; // Adjusted to match 4 steps (0%, 25%, 50%, 75%, 100%)
+        document.getElementById('progressBar').style.width = percentage + '%';
+    }
+</script>
+{% endblock %}

@@ -134,7 +134,6 @@ a {
     margin-left: 10px; 
 }
 
-/* Цвета для меток каждого типа приема пищи */
 .breakfast .label {
     color: #F8C325; 
 }
@@ -272,7 +271,7 @@ a {
     margin-top: 130px;
     width: 500px;
     align-items: center;
-}
+    }
 
 
 .burger-menu {
@@ -344,4 +343,24 @@ a {
 .ui-datepicker-calendar td {
     background-color: #f0f0f0; /* Цвет фона ячеек календаря */
     color: black; /* Цвет текста в ячейках календаря */
+}
+
+.back-link:hover {
+    text-decoration: underline;
+    color: #388e3c;
+}
+
+.cta-img {
+    width: 100%;
+    height: auto;
+    max-width: 400px;
+    border-radius: 10px;
+}
+
+.logo-top {
+    height: 35px;
+    width: 94px;
+    margin-top: -8px;
+    margin-left: 46%;
+    
 }

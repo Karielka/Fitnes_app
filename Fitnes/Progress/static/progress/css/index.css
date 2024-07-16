@@ -1,0 +1,239 @@
+.achievement {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+.title {
+    font-size: 1.2em;
+    margin-bottom: 5px;
+}
+
+.description {
+    font-size: 1em;
+    margin-bottom: 10px;
+}
+
+.progress-bar-container {
+    position: relative;
+    height: 20px;
+    background-color: #ebebeb;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.45); 
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: rgb(76, 175, 80);
+    box-shadow: 0px 5px 10px rgba(76, 175, 80, 0.45); 
+    transition: width 0.5s;
+}
+
+.progress-info {
+    font-size: 0.9em;
+}
+
+.status {
+    font-weight: bold;
+    color: #4caf50;
+}
+
+.container-head-text{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: baseline;
+    margin-bottom: 30px;
+    font-family: Oswald;
+}
+
+.container-first,
+.container-second{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: baseline;
+    white-space: nowrap;
+    justify-content: space-between;
+}
+
+.container-first{
+    margin-left: 25px;
+}
+
+.text-head-1,
+.text-head-2{
+    color: #4caf50;
+    font-family: Oswald;
+    margin-right: 40px;
+}
+
+.text-head-2{
+    margin-left: 15px;
+}
+
+.btn-small{
+    width: 25%;
+    margin-top: 0;
+    margin-right: 20px;
+    font-size: 18px;
+    font-weight: lighter;
+    border: 2px solid white;
+    border-radius: 20px;
+}
+
+.container-left{
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+}
+
+.wrapper-left-first{
+    margin: 20px;
+}
+
+.container-left-first{
+    border-radius: 10px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.45); 
+    margin: 5px;
+    flex: 1;
+    position: relative;
+}
+
+.container-left-first-first{
+    margin-bottom: 40px;
+}
+
+.container-left-first-button{
+    display: flex;
+    flex-direction: row;
+    margin: 0px;
+    border: 2px solid white;
+}
+
+.btn-mar{
+    margin: 20px;
+    border: 2px solid white;
+}
+
+.container-left-first-first{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: baseline;
+    white-space: nowrap;
+    justify-content: space-between;
+}
+
+.btn-simple{
+    background: transparent;
+    width: auto;
+    color: black;
+    font-size: small;
+    padding: 0px;
+    margin-left: auto; 
+    white-space: nowrap; 
+    background: none; 
+    border: none; 
+    cursor: pointer;
+    border: 2px solid white;
+}
+
+.btn-simple:hover{
+    background: transparent;
+    width: auto;
+    color: rgb(124, 124, 124);
+    font-size: small;
+    padding: 0px;
+    border: 2px solid white;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active{
+    background: transparent; 
+    width: auto;
+    color: rgb(124, 124, 124) ;
+    font-size: small;
+    padding: 0px;
+    border-color: transparent;
+    box-shadow: none;
+    border: 2px solid white;
+}
+
+.btn-danger{
+    width: 100%;
+    height: 100%;
+    color: white;
+    font-size: large;
+    padding-left: 50px;
+    padding-top: 7px;
+    padding-bottom: 0px;
+    padding-right: 100px;
+    padding: 7px 25px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none !important;
+    border: 2px solid white;
+}
+
+.btn-danger:hover{
+    background-color: rgb(160, 0, 0);
+    border: 2px solid white;
+}
+
+.wrapper-item{
+    list-style-type: none;
+
+    margin: 5px;
+    flex: 1;
+    position: relative;
+}
+
+.container-ul{
+    padding: 0;
+}
+
+.achievement-item{
+    margin: 10px;
+    border: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    white-space: nowrap;
+    justify-content: space-between;
+}
+
+.achievement{
+    border: 0;
+}
+
+.wrapper-img{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.progress-img{
+    width: 50%;
+}
+
+.title{
+    font-weight: 400;
+    text-transform: uppercase;
+    font-family: Oswald;
+    font-size: 20px;
+}
+
+.description{
+    font-family: Inter;
+    font-weight: 300;
+    font-size: 15px;
+}
+
+h1 {
+    margin-top: 20px;
+}

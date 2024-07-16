@@ -14,28 +14,214 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/i18n/jquery-ui-i18n.min.js"></script>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> 
 </head>
+
 <body>
+
+  <div class="header">
+    <div class="burger-menu">
+        <div class="burger-line"></div>
+        <div class="burger-line"></div>
+        <div class="burger-line"></div>
+    </div>
+    <div class="dropdown-menu">
+        <a class="btn btn-primary" href="/admin/">Перейти в <strong>админку</strong></a>
+        <a class="dropdown-item" href="/expertise/">Тренировки</a>
+        <a class="dropdown-item" href="{% url 'index' %}">Главная</a>
+        <a class="dropdown-item" href="{% url 'profile' %}">Личный кабинет</a>
+    </div>
+    <img src="{% static 'main/img/name1.png' %}" alt="logo-top" class="logo-top">
+    <a class="logout" href="/fitnes/login/">Выйти</a>
+  </div>
+
+  <div class="date">
+    {% if selected_date == today_date|date:"Y-m-d" %}
+        <div class="text">СЕГОДНЯ</div>
+    {% else %}
+        <div class="text">{{ selected_date }}</div>
+    {% endif %}
+    <div class="triangle"></div>
+
+    <form id="updateContentForm" method="post" action="{% url 'index-colories' %}">
+      {% csrf_token %}
+      <input type="hidden" id="selectedDateInput" name="selected_date" value="{{ selected_date }}">
+    </form>
+
+  </div>
+
+  <div class="overlay" id="overlay">
+      <div class="popup">
+          <div id="datepicker"></div>
+      </div>
+  </div>
+
+  <!--Всего наели-->
+  <table class="data">
+      <tr>
+          <td class="column">
+            <div class="label colored">Белки</div>
+            <div class="value" id="proteins_sum">{{ proteins_sum|floatformat:1 }}</div>
+          </td>
+          <td class="column">
+            <div class="label colored">Жиры</div>
+            <div class="value" id="fats_sum">{{ fats_sum|floatformat:1 }}</div>
+          </td>
+          <td class="column">
+            <div class="label colored">Углев</div>
+            <div class="value" id="carbs_sum">{{ carbs_sum|floatformat:1 }}</div>
+          </td>
+          <td class="column">
+            <div class="label colored">ККал</div>
+            <div class="value" id="calories_sum">{{ calories_sum|floatformat:1 }}</div>
+          </td>
+        </tr>
+  </table>
+
+  <!--Завтра-Ужин + Вода + Тренировки + Сон-->
+  <div class="left-section">
+    <div class="container">
+        <div class="food-entry breakfast">
+          <div class="label">Завтрак</div>
+          <div class="value" id="proteins">{{ breakfast_data.proteins|floatformat:2 }}</div>
+          <div class="value" id="fats">{{ breakfast_data.fats|floatformat:2 }}</div>
+          <div class="value" id="carbs">{{ breakfast_data.carbs|floatformat:2 }}</div>
+          <div class="value" id="calories">{{ breakfast_data.calories|floatformat:2 }}</div>
+          <form action="{% url 'meal_record_create' %}" method="get">
+            <input type="hidden" name="category" value="Breakfast">
+            <button class="button_colories" type="submit">+</button>
+          </form>
+        </div>
+    </div>
+    <div class="container">
+      <div class="food-entry lunch">
+          <div class="label">Обед</div>
+          <div class="value" id="proteins">{{ lunch_data.proteins|floatformat:2 }}</div>
+          <div class="value" id="fats">{{ lunch_data.fats|floatformat:2 }}</div>
+          <div class="value" id="carbs">{{ lunch_data.carbs|floatformat:2 }}</div>
+          <div class="value" id="calories">{{ lunch_data.calories|floatformat:2 }}</div>
+          <form action="{% url 'meal_record_create' %}" method="get">
+            <input type="hidden" name="category" value="Dinner">
+            <button class="button_colories" type="submit">+</button>
+          </form>
+      </div>
+    </div>
+    <div class="container">
+      <div class="food-entry dinner">
+          <div class="label">Ужин</div>
+          <div class="value" id="proteins">{{ dinner_data.proteins|floatformat:2 }}</div>
+          <div class="value" id="fats">{{ dinner_data.fats|floatformat:2 }}</div>
+          <div class="value" id="carbs">{{ dinner_data.carbs|floatformat:2 }}</div>
+          <div class="value" id="calories">{{ dinner_data.calories|floatformat:2 }}</div>
+          <form action="{% url 'meal_record_create' %}" method="get">
+            <input type="hidden" name="category" value="Supper">
+            <button class="button_colories" type="submit">+</button>
+          </form>
+      </div>
+    </div>
+    <div class="container">
+      <div class="food-entry snack">
+          <div class="label">Перекус</div>
+          <div class="value" id="proteins">{{ snack_data.proteins|floatformat:2 }}</div>
+          <div class="value" id="fats">{{ snack_data.fats|floatformat:2 }}</div>
+          <div class="value" id="carbs">{{ snack_data.carbs|floatformat:2 }}</div>
+          <div class="value" id="calories">{{ snack_data.calories|floatformat:2 }}</div>
+          <form action="{% url 'meal_record_create' %}" method="get">
+            <input type="hidden" name="category" value="Snack">
+            <button class="button_colories" type="submit">+</button>
+          </form>
+      </div>
+    </div>
+    <div class="container">
+      <div class="food-entry water">
+          <div class="label">Вода</div>
+          <div class="value" id="water">{{ water_data.water_l }}</div>
+          <div class="value">мл</div>
+          <form action="{% url 'meal_record_create' %}" method="get">
+            <input type="hidden" name="category" value="Water">
+            <button class="button_colories" type="submit">+</button>
+          </form>
+      </div>
+    </div>
+    <div class="container">
+        <div class="food-entry workout">
+            <div class="label">Активность</div>
+            <div class="value" id="calories">0</div>
+            <form action="{% url 'meal_record_create' %}" method="get">
+                <button class="button_colories" type="submit">+</button>
+            </form>
+        </div>
+    </div>
+    <div class="container">
+      <div class="food-entry sleep">
+          <div class="label">Сон</div>
+          <div class="value" id="hours">{{sleep_hours}}:{{sleep_minutes}}</div>
+          <div class="value">0</div>
+          <div class="value" id="calories">ККал</div>
+          <form action="{% url 'sleep_record_create' %}" method="get">
+              <button class="button_colories" type="submit">+</button>
+          </form>
+      </div>
+    </div>
+  </div>
+
+  <p><a class="btn-primary" href="{%url 'meal_record_read' %}" style="color:brown">Посмотреть всю еду</a></p>
+
+  <!--Диаграмма + данные-->
+  <div class="right-section">
+    <div class="summary">
+        <div class="details">
+            <!-- Скрытые поля для передачи данных -->
+            <input type="hidden" id="hiddenTotalCalories" value="{{ needed }}">
+            <input type="hidden" id="hiddenEatenCalories" value="{{ calories_sum }}">
+            <input type="hidden" id="hiddenRemainingCalories" value="{{ ostatok }}">
+
+            <div>Требуется: <span id="totalCalories"> {{ needed }} </span></div>
+            <div>Съедено: <span id="eatenCalories"> {{ calories_sum }} </span></div>
+            <div>Осталось: <span id="remainingCalories"> {{ ostatok }} </span></div>
+            
+            <div class="macros">
+              <div style="color: rgb(248, 195, 37);">Белки: <span id="proteinPercent">{{ protein_percent|floatformat:1 }}</span>%</div>
+              <div style="color: rgb(93, 161, 48);">Жиры: <span id="fatPercent">{{ fat_percent|floatformat:1 }}</span>%</div>
+              <div style="color: rgb(36, 56, 23);">Углеводы: <span id="carbPercent">{{ carb_percent|floatformat:1 }}</span>%</div>
+            </div>
+        </div>
+        <!-- Pie chart here -->
+        
+        <div class="chart">
+          
+          <a class="btn-info" href="{%url 'colory_dynamic' %}" style="color:brown">На страницу с графиками колорий</a>
+    </div>
+
+    <div class="container_message" id="container_message"></div>
+  </div>
+  {{chart|safe}}
+  <!--Нужна нормальная верстка, я не умею во фронт... :-)   -->
+  <!--Обработка календаря-->
   <script>
     $(document).ready(function() {
-      $.datepicker.setDefaults($.datepicker.regional["ru"]);
+        $.datepicker.setDefaults($.datepicker.regional["ru"]);
+
+        // Получение выбранной даты из скрытого поля
+        var selectedDate = $('#selectedDateInput').val();
         // Инициализация календаря
-        $('.datepicker').click(function() {
-          $('#overlay').fadeIn();
-      });
-      $('#datepicker').datepicker({
-          dateFormat: "dd-mm",
-          firstDay: 1,
-          onSelect: function(dateText) {
-              $('.date .text').text(dateText === $.datepicker.formatDate('dd-mm', new Date()) ? 'СЕГОДНЯ' : dateText);
-              $('#overlay').fadeOut();
-          },
-          beforeShowDay: function(date) {
-              if (date.toDateString() === new Date().toDateString()) {
-                  return [1, '', 'СЕГОДНЯ'];
-              }
-              return [1];
-          }
+        $('#datepicker').datepicker({
+            dateFormat: "yy-mm-dd",
+            firstDay: 1,
+            defaultDate: selectedDate,
+            onSelect: function(dateText) {
+                $('.date .text').text(dateText === $.datepicker.formatDate('yy-mm-dd', new Date()) ? 'СЕГОДНЯ' : dateText);
+                updateContent(dateText); // Вызываем функцию для обновления содержимого страницы
+                $('#overlay').fadeOut();
+            },
+            beforeShowDay: function(date) {
+                if (date.toDateString() === new Date().toDateString()) {
+                    return [1, '', 'СЕГОДНЯ'];
+                }
+                return [1];
+            }
         });
+
+        // Установка текста даты при загрузке страницы
+        $('.date .text').text(selectedDate === $.datepicker.formatDate('yy-mm-dd', new Date()) ? 'СЕГОДНЯ' : selectedDate);
 
         // Обработчик события клика на треугольник
         $('.triangle').click(function() {
@@ -50,221 +236,55 @@
                 $('#overlay').fadeOut();
             }
         });
-    });
-</script>
-  
-<script>
-  $(document).ready(function() {
-    // Обработчик события клика на бургерное меню
-    $('.burger-menu').click(function(event) {
-        event.stopPropagation(); // Остановить всплытие события, чтобы клик на бургерном меню не приводил к закрытию меню
-        $('.dropdown-menu').toggle();
-    });
 
-    // Обработчик события клика на документ (вне меню)
-    $(document).click(function(event) {
-        if (!$(event.target).closest('.header').length) { // Проверка, что клик был сделан вне области меню
-            $('.dropdown-menu').hide(); // Скрыть меню
+        // Функция для обновления содержимого страницы в зависимости от выбранной даты
+        function updateContent(selectedDate) {
+            $('#selectedDateInput').val(selectedDate);
+            $('#updateContentForm').submit();
         }
     });
-});
-</script>
 
-
-  <div class="header">
-    <div class="burger-menu">
-        <div class="burger-line"></div>
-        <div class="burger-line"></div>
-        <div class="burger-line"></div>
-    </div>
-    <div class="dropdown-menu">
-        <a class="dropdown-item" href="/expertise/">Тренировки</a>
-        <a class="dropdown-item" href="{% url 'index' %}">Главная</a>
-        <a class="dropdown-item" href="{% url 'profile' %}">Личный кабинет</a>
-    </div>
-    <a class="logout" href="/fitnes/login/">Выйти</a>
-</div>
+  </script>
   
+  <!--Обработка бургерного меню-->
+  <script>
+    $(document).ready(function() {
+      // Обработчик события клика на бургерное меню
+      $('.burger-menu').click(function(event) {
+          event.stopPropagation(); // Остановить всплытие события, чтобы клик на бургерном меню не приводил к закрытию меню
+          $('.dropdown-menu').toggle();
+      });
 
+      // Обработчик события клика на документ (вне меню)
+      $(document).click(function(event) {
+          if (!$(event.target).closest('.header').length) { // Проверка, что клик был сделан вне области меню
+              $('.dropdown-menu').hide(); // Скрыть меню
+          }
+      });
+    });
+  </script>
 
-  <div class="col-2">
-    <a class="btn btn-primary" href="/admin/">Перейти в <strong>админку</strong></a>
-  </div>
+  <!--Обработка сообщения о колориях-->
+  <script>
+    var totalCalories = parseInt(document.getElementById('hiddenTotalCalories').value);
+    var eatenCalories = parseInt(document.getElementById('hiddenEatenCalories').value);
+    var remainingCalories = parseInt(document.getElementById('hiddenRemainingCalories').value);
+    var remainingCalories = totalCalories - eatenCalories;
 
-  <div class="date">
-    <div class="text">СЕГОДНЯ</div>
-    <div class="triangle"></div>
-</div>
+    var message = "";
+    if (eatenCalories < totalCalories) {
+        message = "Вы съели слишком мало! Рекомендуем вам увеличить количество приемов пищи.";
+    } else if (eatenCalories > totalCalories * 1.1) {
+        message = "Вы съели слишком много! Рекомендуем вам добавить тренировки.";
+    } else {
+        message = "Отлично! Вы уложились в норму калорий! Чтобы получить желаемый результат, продолжайте в том же духе.";
+    }
+  </script>
 
 <div class="overlay" id="overlay">
     <div class="popup">
         <div id="datepicker"></div>
     </div>
-</div>
-
-<table class="data">
-    <tr>
-        <td class="column">
-          <div class="label colored">Белки</div>
-          <div class="value" id="proteins_sum">{{ proteins_sum|floatformat:1 }}</div>
-        </td>
-        <td class="column">
-          <div class="label colored">Жиры</div>
-          <div class="value" id="fats_sum">{{ fats_sum|floatformat:1 }}</div>
-        </td>
-        <td class="column">
-          <div class="label colored">Углев</div>
-          <div class="value" id="carbs_sum">{{ carbs_sum|floatformat:1 }}</div>
-        </td>
-        <td class="column">
-          <div class="label colored">ККал</div>
-          <div class="value" id="calories_sum">{{ calories_sum }}</div>
-        </td>
-      </tr>
-</table>
-
-
-
-
-
-<div class="left-section">
-    <div class="container">
-        <div class="food-entry breakfast">
-          <div class="label">Завтрак</div>
-          <div class="value" id="proteins">{{ breakfast_data.proteins }}</div>
-          <div class="value" id="fats">{{ breakfast_data.fats }}</div>
-          <div class="value" id="carbs">{{ breakfast_data.carbs }}</div>
-          <div class="value" id="calories">{{ breakfast_data.calories }}</div>
-          <form action="{% url 'meal_record_create' %}" method="get">
-            <input type="hidden" name="category" value="Breakfast">
-            <button class="button_colories" type="submit">+</button>
-          </form>
-        </div>
-    </div>
-  <div class="container">
-    <div class="food-entry lunch">
-        <div class="label">Обед</div>
-        <div class="value" id="proteins">{{ lunch_data.proteins }}</div>
-        <div class="value" id="fats">{{ lunch_data.fats }}</div>
-        <div class="value" id="carbs">{{ lunch_data.carbs }}</div>
-        <div class="value" id="calories">{{ lunch_data.calories }}</div>
-        <form action="{% url 'meal_record_create' %}" method="get">
-          <input type="hidden" name="category" value="Dinner">
-          <button class="button_colories" type="submit">+</button>
-        </form>
-    </div>
-  </div>
-  <div class="container">
-    <div class="food-entry dinner">
-        <div class="label">Ужин</div>
-        <div class="value" id="proteins">{{ dinner_data.proteins }}</div>
-        <div class="value" id="fats">{{ dinner_data.fats }}</div>
-        <div class="value" id="carbs">{{ dinner_data.carbs }}</div>
-        <div class="value" id="calories">{{ dinner_data.calories }}</div>
-        <form action="{% url 'meal_record_create' %}" method="get">
-          <input type="hidden" name="category" value="Supper">
-          <button class="button_colories" type="submit">+</button>
-        </form>
-    </div>
-  </div>
-  <div class="container">
-    <div class="food-entry snack">
-        <div class="label">Перекус</div>
-        <div class="value" id="proteins">{{ snack_data.proteins }}</div>
-        <div class="value" id="fats">{{ snack_data.fats }}</div>
-        <div class="value" id="carbs">{{ snack_data.carbs }}</div>
-        <div class="value" id="calories">{{ snack_data.calories }}</div>
-        <form action="{% url 'meal_record_create' %}" method="get">
-          <input type="hidden" name="category" value="Snack">
-          <button class="button_colories" type="submit">+</button>
-        </form>
-    </div>
-  </div>
-  <div class="container">
-    <div class="food-entry water">
-        <div class="label">Вода</div>
-        <div class="value" id="water">{{ water_data.water_l|floatformat:3 }}</div>
-        <div class="value">мл</div>
-        <form action="{% url 'meal_record_create' %}" method="get">
-          <input type="hidden" name="category" value="Water">
-          <button class="button_colories" type="submit">+</button>
-        </form>
-    </div>
-  </div>
-  <div class="container">
-      <div class="food-entry workout">
-          <div class="label">Активность</div>
-          <div class="value" id="calories">0</div>
-          <form action="{% url 'meal_record_create' %}" method="get">
-              <button class="button_colories" type="submit">+</button>
-          </form>
-      </div>
-  </div>
-  <div class="container">
-    <div class="food-entry sleep">
-        <div class="label">Сон</div>
-        <div class="value" id="hours">{{sleep_hours}}:{{sleep_minutes}}</div>
-        <div class="value">0</div>
-        <div class="value" id="calories">ККал</div>
-        <form action="{% url 'sleep_record_create' %}" method="get">
-            <button class="button_colories" type="submit">+</button>
-        </form>
-    </div>
-  </div>
-</div>
-
-
-<a class="btn-primary" href="{%url 'meal_record_read' %}">Посмотреть всю еду</a>
-
-
-<div class="right-section">
-  <div class="summary">
-      <div class="details">
-          <!-- Скрипт для вычисления значений -->
-          <script>
-              // Получение значений из профиля пользователя и суммарного числа съеденных калорий
-              var totalCalories = 2000; // Пример
-              var eatenCalories = 1800; // Пример
-
-              // Вычисление оставшихся калорий
-              var remainingCalories = totalCalories - eatenCalories;
-
-              // Примерные значения для процентного соотношения белков, жиров и углеводов
-              var proteinPercent = 30;
-              var fatPercent = 30;
-              var carbPercent = 40;
-
-              // Проверка на превышение или недостаток калорий
-              var message = "";
-              if (eatenCalories < totalCalories) {
-                  message = "Вы съели слишком мало! Рекомендуем вам увеличить количество приемов пищи.";
-              } else if (eatenCalories > totalCalories * 1.1) {
-                  message = "Вы съели слишком много! Рекомендуем вам добавить тренировки.";
-              } else {
-                  message = "Отлично! Вы уложились в норму калорий! Чтобы получить желаемый результат, продолжайте в том же духе.";
-              }
-          </script>
-
-          <div>Осталось: <span id="remainingCalories"></span></div>
-          <div>Съедено: <span id="eatenCalories"></span></div>
-          <div>Всего: <span id="totalCalories"></span></div>
-          <div class="macros">
-            <div style="color: rgb(248, 195, 37);">Белки: <span id="proteinPercent">{{ protein_percent|floatformat:1 }}</span>%</div>
-            <div style="color: rgb(93, 161, 48);">Жиры: <span id="fatPercent">{{ fat_percent|floatformat:1 }}</span>%</div>
-            <div style="color: rgb(36, 56, 23);">Углеводы: <span id="carbPercent">{{ carb_percent|floatformat:1 }}</span>%</div>
-        </div>
-      </div>
-      <div class="chart">
-        <!-- Pie chart here -->
-        <img src="data:image/png;base64,{{ macronutrient_chart_data }}" alt="Процентное соотношение БЖУ">
-        <a class="btn-info" href="{%url 'colory_dynamic' %}">На страницу с графиками колорий</a>
-      </div>
-  </div>
-  <div class="graph">
-    <!-- Graph here -->
-    <!--<img src="data:image/png;base64,{{ calories_chart_data }}" alt="График калорийности"> -->
-  </div>
-  <div class="container_message"></div>
 </div>
 
 <!-- Скрипт для построения круговой диаграммы -->
@@ -277,12 +297,12 @@
     document.getElementById('proteinPercent').innerText = proteinPercent;
     document.getElementById('fatPercent').innerText = fatPercent;
     document.getElementById('carbPercent').innerText = carbPercent;
-    document.getElementById('message').innerText = message;
+    document.getElementById('container_message').innerText = message;
   </script>
   
   <script>
-      $(document).ready(function() {
-          // Получение данных из контекста
+    $(document).ready(function() {
+    // Получение данных из контекста
     var breakfastProteins = parseFloat("{{ breakfast_data.proteins|floatformat:1 }}");
     var breakfastFats = parseFloat("{{ breakfast_data.fats|floatformat:1 }}");
     var breakfastCarbs = parseFloat("{{ breakfast_data.carbs|floatformat:1 }}");
@@ -324,8 +344,9 @@
     $('#proteinPercent').text(proteinPercent);
     $('#fatPercent').text(fatPercent);
     $('#carbPercent').text(carbPercent);
-      });
+    });
   </script>
+
 </body>
 </html>
 {% endblock content %}

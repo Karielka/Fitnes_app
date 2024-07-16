@@ -9,6 +9,9 @@ from django.contrib.auth.forms import AuthenticationForm
 from .forms import RegistrationForm, LoginForm, PasswordResetForm
 from django.contrib.auth.hashers import make_password
 
+class A:
+    x = 1
+    
 def index(request):
     context = {
         'title': 'Главная страница приложения',
