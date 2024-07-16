@@ -47,6 +47,7 @@
 
 .text-wrapper{
     color: white;
+    line-height: 1.5;
 }
 
 .first-container{
@@ -110,10 +111,12 @@ form button[type="submit"] {
     border-radius: 15px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    border: 2px solid white;
 }
 
 form button[type="submit"]:hover {
     background-color: #f8c325;
+    border: 2px solid white;
 }
 
 .register-form p {

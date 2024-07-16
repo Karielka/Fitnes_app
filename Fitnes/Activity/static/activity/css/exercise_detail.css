@@ -1,0 +1,222 @@
+html, body {
+    background-color: #f6f6f6;
+    font-family: Arial, sans-serif;
+}
+
+.exercise-details-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.exercise-info {
+    width: 50%;
+    padding-left: 40px;
+}
+
+.exercise-video {
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 50px;
+    padding-right: 50px;
+}
+
+.top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.action-buttons .button {
+    padding: 5px 10px;
+    background-color: #f8c325;
+    color: white;
+    text-decoration: none;
+    border-radius: 15px;
+    border: 2px solid white;
+}
+
+.action-buttons .button:hover {
+    background-color: #5da130;
+    border: 2px solid white;
+}
+
+h1 {
+    margin: 0;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+}
+
+.action-buttons .btn-delete {
+    background-color: red; 
+}
+
+.action-buttons .btn-delete:hover {
+    background-color: #c82333; 
+}
+
+.back {
+    color: #5da130;
+    text-decoration: none;
+}
+
+.back:hover {
+    color: #f8c325;
+    text-decoration: none;
+}
+
+.modal {
+    display: none; /* Скрыто по умолчанию */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #f6f6f6;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    position: relative;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    width: 400px;
+}
+
+.modal-buttons .button {
+    padding: 10px 20px;
+    background-color: #f8c325;
+    color: white;
+    text-decoration: none;
+    border-radius: 15px;
+    border: 2px solid white;
+    text-align: center;
+    flex: 1; 
+    width: 200px;
+    height: 40px;
+    line-height: 15px; 
+    box-sizing: border-box;
+    font-size: 16px; 
+    margin: 0;
+    text-align: center;
+}
+
+.modal-buttons .btn-delete {
+    background-color: red; 
+}
+
+.modal-buttons .btn-delete:hover {
+    background-color: #c82333; 
+}
+
+.modal-buttons .btn-cancel {
+    background-color: #f8c325;
+}
+
+.modal-buttons .btn-cancel:hover {
+    background-color: #5da130;
+}
+
+.exercise-info {
+    margin-bottom: 20px;
+}
+
+.exercise-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.exercise-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.exercise-thumbnail {
+    margin-left: 50px;
+}
+
+.exercise-thumbnail img {
+    width: 120px; /* Устанавливаем ширину превью */
+    height: auto;
+    margin-right: 20px;
+}
+
+.exercise-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.exercise-details a {
+    font-weight: bold;
+    color: #333;
+    text-decoration: none;
+}
+
+.exercise-details span {
+    color: #777;
+    margin-left: 5px;
+}
+
+.exercise-actions {
+    margin-top: 10px;
+}
+
+.exercise-actions a {
+    margin-right: 15px;
+    color: #f8c325;
+    text-decoration: none;
+}
+
+.exercise-actions a:hover {
+    text-decoration: none;
+    color: #5da130;
+}
+
+.separator {
+    border: 0;
+    height: 1px;
+    background: #ddd;
+    margin: 10px 0;
+}
+
+.exercise-video-small {
+    padding-right: 50px;
+}
+

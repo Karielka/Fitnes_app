@@ -33,6 +33,7 @@ class History(models.Model):
     total_proteins = models.FloatField(default=0)  # общее количество белков за день
     total_fats = models.FloatField(default=0)      # общее количество жиров за день
     total_carbohydrates = models.FloatField(default=0)  # общее количество углеводов за день
+    #нужно дополнительное поле, которое сообщает, выполнена ли дневная норма колорий
 
     def update_history(self):
         # Получаем все записи MealRecord для данного пользователя и даты
@@ -45,9 +46,16 @@ class History(models.Model):
         self.save()
 
 class Selection(models.Model):
+    MEAL_TIMES = [
+        ('Breakfast', 'Завтрак'),
+        ('Dinner', 'Обед'),
+        ('Lunch', 'Ланч'),
+        ('Snack', 'Перекус'),
+        ('Supper', 'Ужин'),
+    ]
     title = models.CharField(max_length=255)
     description = models.TextField()
-    category = models.CharField(max_length=100)  # Категория подборки(завтрак, обед)
+    category = models.CharField(max_length=25, choices=MEAL_TIMES)
     products = models.ManyToManyField(Product)
 
 class TimeTable(models.Model):
@@ -55,3 +63,5 @@ class TimeTable(models.Model):
     breakfast_time = models.TimeField(blank=True, null=True)
     lunch_time = models.TimeField(blank=True, null=True)
     dinner_time = models.TimeField(blank=True, null=True)
+    go_to_sleep_time = models.TimeField(blank=True, null=True)
+    #время для постоянных тренировок через TrainingSession

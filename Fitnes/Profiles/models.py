@@ -1,5 +1,19 @@
+from datetime import date
 from django.db import models
 from django.contrib.auth.models import User
+
+class ExpertProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='expert_profile')
+    nickname = models.CharField(max_length=20)
+    experience_years = models.PositiveIntegerField(default=0)  
+    price_per_hour = models.PositiveIntegerField(default=0)  
+    followers_count = models.PositiveIntegerField(default=0)
+
+    def update_followers_count(self):
+        # Используем строковую ссылку для CourseSubscription
+        from Expertise.models import CourseSubscription
+        self.followers_count = CourseSubscription.objects.filter(course__expert=self).count()
+        self.save()
 
 class UserCaloryProfile(models.Model):
     ACTIVITY_LEVEL_CHOICES = [
@@ -14,11 +28,26 @@ class UserCaloryProfile(models.Model):
     birthdate = models.DateField(default='2010-01-01')
     gender = models.CharField(max_length=10)
     height = models.FloatField()  # Height in centimeters
-    current_weight = models.FloatField(default=50) #текущий вес
+    current_weight = models.FloatField(default=50)  # Текущий вес
     activity_level = models.CharField(max_length=20, choices=ACTIVITY_LEVEL_CHOICES)
 
     def __str__(self):
         return f"Профиль калорий {self.user.username}"
+
+    @property
+    def daily_calorie_needs(self):
+        age = date.today().year - self.birthdate.year
+        if self.gender.lower() == 'male':
+            need = 10 * self.current_weight + (6.25 * self.height) - (5 * age) + 5
+        else:
+            need = 10 * self.current_weight + (6.25 * self.height) - (5 * age) - 161
+        return need
+
+    @classmethod
+    def per_day_calories(cls, user_name):
+        profile = cls.objects.get(user__username=user_name)
+        return profile.daily_calorie_needs
+
 
 class Profile(models.Model):
     USER_TYPE_CHOICES = [

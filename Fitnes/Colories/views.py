@@ -12,52 +12,31 @@ from Activity.models import Sleep, Exercise
 from datetime import datetime, timedelta, date
 from Profiles.models import UserCaloryProfile
 from django.urls import reverse
+import plotly.express as px # type: ignore
+
 
 def colory_dynamic(request):
+    user_id = request.user.id
+    selected_date = request.POST.get('selected_date')
+    print()
+    print(selected_date)
+    if selected_date:
+        selected_date = datetime.strptime(selected_date, "%Y-%m-%d").date()
+    else:
+        selected_date = date.today()
+    chart = calories_chart(request, user_id, selected_date)
+    train_chart = calories_burned_chart(request, user_id, selected_date)
     context = {
         'title': 'Страница для отображения изменения калорий',
         'message': 'Вы находитесь на странице Colories_dynamic',
         'page': 'colories_dynamic',
+        'chart': chart,
+        'train_chart': train_chart
     }
     return render(request, 'colories/dynamic.html', context)
 
-def calculate_today_sleep(user, selected_date):
-    start_of_day = datetime.combine(selected_date, datetime.min.time())
-    end_of_day = datetime.combine(selected_date, datetime.max.time())
-    total_sleep_duration = timedelta()
-    
-    sleep_records = Sleep.objects.filter(user=user, date=selected_date)
-    for record in sleep_records:
-        # Начало и конец сна
-        sleep_start = datetime.combine(record.date, datetime.min.time())
-        sleep_end = sleep_start + record.duration
-        
-        # Пересечение сна с выбранным днем
-        if sleep_end > start_of_day and sleep_start < end_of_day:
-            # Начало периода внутри выбранного дня
-            if sleep_start < start_of_day:
-                sleep_start = start_of_day
-            # Конец периода внутри выбранного дня
-            if sleep_end > end_of_day:
-                sleep_end = end_of_day
-                
-            total_sleep_duration += (sleep_end - sleep_start)
-    
-    # Возвращаем продолжительность сна в секундах, минутах и часах
-    total_sleep_seconds = total_sleep_duration.total_seconds()
-    sleep_hours = int(total_sleep_seconds // 3600)
-    sleep_minutes = int((total_sleep_seconds % 3600) // 60)
-    return sleep_hours, sleep_minutes
-
-
-def per_day_colories(user_name):
-    profile = UserCaloryProfile.objects.get(user=user_name)
-    age = date.today().year - profile.birthdate.year
-    if (profile.gender.lower() == 'male'):
-        need = 10 * profile.current_weight + (6.25 * profile.height) - (5 * age) + 5
-    else:
-        need = 10 * profile.current_weight + (6.25 * profile.height) - (5 * age) - 161
-    return need
+def create_selections(user):
+    pass
 
 @login_required
 def index(request):
@@ -90,18 +69,18 @@ def index(request):
         protein_percent = (proteins_sum / total_macros) * 100 if total_macros else 0
         fat_percent = (fats_sum / total_macros) * 100 if total_macros else 0
         carb_percent = (carbs_sum / total_macros) * 100 if total_macros else 0
-        macronutrient_chart_data = macronutrient_chart(request, user_id, proteins_sum, fats_sum, carbs_sum)
+        chart = macronutrient_chart(request, user_id, proteins_sum, fats_sum, carbs_sum)
         # Вычисляем количество сна за сегодняшний день
         sleep_hours, sleep_minutes = calculate_today_sleep(request.user, selected_date)
 
-        needed = per_day_colories(request.user)
+        # Получение дневной нормы калорий через метод класса
+        needed = UserCaloryProfile.per_day_calories(request.user)
 
         context = {
             'title': 'Страница для учёта Ваших калорий',
             'message': 'Вы находитесь на главной странице Colories',
             'page': 'colories_main',
             'calories_chart_data': calories_chart_data,
-            'macronutrient_chart_data': macronutrient_chart_data,
             'mealrecord': meal_record,
             'breakfast_data': breakfast_data,
             'lunch_data': lunch_data,
@@ -120,6 +99,7 @@ def index(request):
             'needed': needed,
             'ostatok': needed - calories_sum,
             'selected_date': selected_date.strftime("%Y-%m-%d"),
+            'chart': chart
         }
     else:
         context = {
@@ -163,6 +143,34 @@ def get_user_history(user_id, start_date=None, end_date=None):
 
     return histories
 
+def calculate_today_sleep(user, selected_date):
+    start_of_day = datetime.combine(selected_date, datetime.min.time())
+    end_of_day = datetime.combine(selected_date, datetime.max.time())
+    total_sleep_duration = timedelta()
+    
+    sleep_records = Sleep.objects.filter(user=user, date=selected_date)
+    for record in sleep_records:
+        # Начало и конец сна
+        sleep_start = datetime.combine(record.date, datetime.min.time())
+        sleep_end = sleep_start + record.duration
+        
+        # Пересечение сна с выбранным днем
+        if sleep_end > start_of_day and sleep_start < end_of_day:
+            # Начало периода внутри выбранного дня
+            if sleep_start < start_of_day:
+                sleep_start = start_of_day
+            # Конец периода внутри выбранного дня
+            if sleep_end > end_of_day:
+                sleep_end = end_of_day
+                
+            total_sleep_duration += (sleep_end - sleep_start)
+    
+    # Возвращаем продолжительность сна в секундах, минутах и часах
+    total_sleep_seconds = total_sleep_duration.total_seconds()
+    sleep_hours = int(total_sleep_seconds // 3600)
+    sleep_minutes = int((total_sleep_seconds % 3600) // 60)
+    return sleep_hours, sleep_minutes
+
 @login_required
 def calories_chart(request, user_id, selected_date):
     # Получаем данные о калориях пользователя
@@ -172,18 +180,17 @@ def calories_chart(request, user_id, selected_date):
     dates = [record.date for record in user_history]
     calories = [record.total_calories for record in user_history]
     # Создаем график plotly
-    fig = go.Figure(data=go.Scatter(x=dates, y=calories))
+    
+    fig = go.Figure(data=go.Bar(x=dates, y=calories))
     fig.update_layout(title="Динамика калорийности",
                       xaxis_title="Дата",
                       yaxis_title="Калории")
-
-    buf = io.BytesIO()
-    fig.write_image(buf, format='png')
-    buf.seek(0)
-    # Возвращаем график в виде base64-строки
-    chart_data = base64.b64encode(buf.getvalue()).decode('utf-8')
-    # Возвращаем данные о графике в контекст
-    return chart_data
+    fig.update_layout(
+        paper_bgcolor="#f0f0f0",  # Цвет фона графика
+        plot_bgcolor="#f0f0f0"  # Цвет области графика
+    )
+    chart = fig.to_html()
+    return chart
 
 
 @login_required
@@ -198,13 +205,9 @@ def macronutrient_chart(request, user_id, proteins_sum, fats_sum, carbs_sum):
         paper_bgcolor="#f0f0f0",  # Цвет фона графика
         plot_bgcolor="#f0f0f0"  # Цвет области графика
     )
-    buf = io.BytesIO()
-    fig.write_image(buf, format='png')
-    buf.seek(0)
-    # Возвращаем график в виде base64-строки
-    chart_data = base64.b64encode(buf.getvalue()).decode('utf-8')
-    # Возвращаем данные о графике в контекст
-    return chart_data
+    chart = fig.to_html()
+    
+    return chart
 
 @login_required
 def food_dynamics_view(request):
@@ -302,3 +305,43 @@ def meal_record_delete(request, meal_record_id):
         'meal_record': meal_record,
     }
     return render(request, 'colories/meal_record_delete.html', context)
+
+def calories_burned_chart(request, user_id, selected_date):
+    start_of_week = selected_date - timedelta(days=selected_date.weekday())
+    end_of_week = start_of_week + timedelta(days=6)
+
+    exercises = Exercise.objects.filter(
+        user__id=user_id, 
+        date__range=[start_of_week, end_of_week]
+    ).values('date', 'calories_burned')
+
+    dates = []
+    calories = []
+
+    # Группируем данные по датам
+    daily_calories = {}
+    for exercise in exercises:
+        date_str = exercise['date'].strftime('%Y-%m-%d')
+        if date_str in daily_calories:
+            daily_calories[date_str] += exercise['calories_burned']
+        else:
+            daily_calories[date_str] = exercise['calories_burned']
+
+    # Сортируем данные по дате
+    sorted_data = sorted(daily_calories.items(), key=lambda x: x[0])
+
+    # Заполняем списки dates и calories для графика
+    for date_str, calories_burned in sorted_data:
+        dates.append(date_str)
+        calories.append(calories_burned)
+
+    fig = go.Figure(data=[go.Bar(x=dates, y=calories)])
+    fig.update_layout(
+        title="Сожженные калории за неделю",
+        xaxis_title="Дата",
+        yaxis_title="Калории",
+        xaxis_tickangle=-45
+    )
+
+    chart = fig.to_html()
+    return chart
